@@ -4,11 +4,9 @@ import {NumberInput} from "../NumberInput";
 import {Utils} from "../../../Game/Utils";
 import {IAttrComponent} from "../Attribute";
 
-export interface ISliderAttrData extends IAttrComponent {
-    value: number;
+export interface ISliderAttrData extends IAttrComponent<number> {
     min: number;
     max: number;
-    onChange: (value: number) => void;
     step?: number;
 }
 
@@ -16,10 +14,10 @@ export interface ISliderAttrData extends IAttrComponent {
  * 滑块
  */
 export function SliderAttr(data: ISliderAttrData) {
-    let [v, setV] = useState(data.value);
+    let [v, setV] = useState<string|number>(data.attrValue);
 
     useEffect(() => {
-        setV(data.value);
+        setV(data.attrValue);
     }, [data]);
     
     let step = data.step == null ? 0.1 : data.step;
@@ -30,8 +28,8 @@ export function SliderAttr(data: ISliderAttrData) {
         setV(newValue);
     }
 
-    function onChange2(newValue: number) {
-        data.onChange(newValue);
+    function onChange2(newValue: string|number) {
+        data.onChange(Utils.convertToNumber(newValue));
     }
 
     return (
@@ -42,9 +40,10 @@ export function SliderAttr(data: ISliderAttrData) {
                 step={data.step}
                 tipFormatter={null}
                 onChange={onChange}
-                value={v}
+                value={Number(v)}
+                disabled={data.disable}
             />
-            <NumberInput value={v} setValue={setV} onChange={onChange2} min={min} max={max}
+            <NumberInput value={Number(v)} setValue={setV} onChange={onChange2} min={min} max={max}
                          step={step}
                          style={{
                              width: "100px",

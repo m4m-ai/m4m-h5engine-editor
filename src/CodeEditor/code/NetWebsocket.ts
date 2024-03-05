@@ -47,7 +47,7 @@ export class NetWebscoket {
             return;
         }
         // url = "wss://kingzet.cn";
-        console.log("开始链接服务器 " + url);
+        //console.log("开始链接服务器 " + url);
         this._webscoket = new WebSocket(url) as any;
         this._webscoket["onmessage"] = this.onmessage.bind(this);
         this._webscoket["onopen"] = this.onopen.bind(this);
@@ -86,7 +86,7 @@ export class NetWebscoket {
     }
 
     public onopen(e) {
-        console.log("WebSocket连接成功!服务器onopen");
+        //console.log("WebSocket连接成功!服务器onopen");
         this._connected = true;
         WebsocketTool.Instance.ProjectManager_login("test", "test");
     }
@@ -97,7 +97,7 @@ export class NetWebscoket {
             this._webscoket.send(bytes);
         } else if (this._connected) {
         } else {
-            console.error("谁的傻逼代码 服务器都还没连上就调发送了111！");
+            //console.error("谁的傻逼代码 服务器都还没连上就调发送了111！");
         }
     }
 
@@ -105,14 +105,14 @@ export class NetWebscoket {
         if (this._webscoket && this._webscoket.readyState == 1) {
             this._webscoket.send(mess);
         } else if (this._connected) {
-            console.error("提示", "已与服务器断开连接");
+            //console.error("提示", "已与服务器断开连接");
         } else {
-            console.error("谁的傻逼代码 服务器都还没连上就调发送了222！");
+            //console.error("谁的傻逼代码 服务器都还没连上就调发送了222！");
         }
     }
 
     public onclose(e) {
-        console.error("socket close  连接关闭连接关闭连接关闭。。。", e);
+        //console.error("socket close  连接关闭连接关闭连接关闭。。。", e);
     }
     public onerror(e) {
         console.error(e);
@@ -159,13 +159,14 @@ export class NetWebscoket {
                         break;
                     case "fileInfos":
                         res = JSON.parse(messObj.args[0]);
-                        let fileInfo: EditorAssetInfo = res;
-                        console.log('fileInfo', fileInfo);
+                        //console.log("刷新文件系统...");
+                        //let fileInfo: EditorAssetInfo = res;
+                        //console.log('fileInfo', fileInfo);
                         //console.error(res);
                         FileInfoManager.Instance.diguiDirPare(res);
                         FileInfoManager.Instance.setRoot(res);
                         EditorEventMgr.Instance.emitEvent("FileTreeUpDate", cb => cb([res]));
-                        EditorEventMgr.Instance.emitEvent('WaitNetFileInfosUpdate', cb => cb())
+                        EditorEventMgr.Instance.emitEvent('WaitNetFileInfosUpdate', cb => cb());
                         // EditorEventMgr.Instance.emitEvent("ResourceFileUpDate", cb => cb(res));
                         break;
                     case "OpenProject":
@@ -185,7 +186,7 @@ export class NetWebscoket {
                         //代码编译
                         let log: string = messObj.args[0];
                         if (log != "") {
-                            console.log("编译返回  ", log);
+                            //console.log("编译返回  ", log);
                             LogManager.Instance.upDateTextNodeFun(log);
                             //临时解决, 判断编译成功
                             if (log.indexOf("Found 0 errors") != -1) {
@@ -234,7 +235,7 @@ export class NetWebscoket {
                         }
                         break;
                     case "NavFileResponse":
-                        res = JSON.parse(messObj.args[0]);
+                        res = messObj.args[0];
                         EditorEventMgr.Instance.emitEvent("OnNavMeshFileResponse", cb => cb(res));
                         break;
                     default:

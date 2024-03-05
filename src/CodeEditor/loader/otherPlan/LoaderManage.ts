@@ -25,6 +25,7 @@ export enum LoadType {
     ARRAYBUFFER = 0,
     JSON = 1,
     IMAGE = 2,//Scene
+    assetMgr = 3
 }
 export class LoaderManage {
 

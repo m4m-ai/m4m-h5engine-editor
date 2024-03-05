@@ -266,7 +266,7 @@ export function TimelineSide(datas: { datas: TimelineType[], timelineState: Reac
               expandAction={false}
               blockNode
               onRightClick={({ event, node }) => {
-                console.log(event, node)
+                //console.log(event, node)
               }}
             >
               {renderTreeNodes(trackDatasC)}

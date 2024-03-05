@@ -6,9 +6,13 @@ import { AttributeManager } from "../attribute/AttributeManager";
 import { Button, Select } from 'antd'
 import { MessageOutlined } from "@ant-design/icons";
 import { TimelineEditor } from "../timeline/timeline";
+import { ProgressLoading } from './components/progressLoading/progressLoading';
 import { EditorApplication } from "../../Game/EditorApplication";
 import { EditorComponentMgr, IComponentInfo } from "../../Game/Component/EditorComponentMgr";
+import { BuildSetting } from "./components/BuildSetting/buildSetting";
+import { PackageManager } from './components/PackageManager/packageManager'
 import { CreateProjectWindow } from "../ProjectEntrance/MainCom/ProjectWindow/CreateProjectWindow/createProjectWindow";
+import { WebsocketTool } from "../../CodeEditor/code/WebsocketTool";
 
 export class WindowManager {
 
@@ -66,24 +70,25 @@ export class WindowManager {
                         {
                             AttributeManager.getAttributeList([
                                 {
-                                    title: "保存路径",
+                                    title: "Save Path",
                                     type: "string",
                                     attr: {
+                                        attrValue: path,
                                         disable: true,
-                                        value: path,
-                                        onChange(value: string) {
-                                            p1 = value;
+                                        onChange(changeValue: string) {
+                                            p1 = changeValue;
                                         },
                                         setRefresh() { }
                                     }
                                 },
                                 {
-                                    title: "保存文件",
+                                    title: "Save Name",
                                     type: "string",
                                     attr: {
-                                        value: value,
-                                        onChange(value: string) {
-                                            n1 = value;
+                                        attrValue: value,
+                                        onChange(changeValue: string) {
+                                            // console.error("Save Name "+changeValue);
+                                            n1 = changeValue;
                                         },
                                         setRefresh() { }
                                     }
@@ -101,7 +106,7 @@ export class WindowManager {
                                 onSave(p1, n1);
                             }}
                         >
-                            保存
+                            Save
                         </div>
                         <div
                             style={{ margin: "5px" }}
@@ -110,7 +115,7 @@ export class WindowManager {
                                 WindowManager.closeWindow(id);
                             }}
                         >
-                            取消
+                            Cancel
                         </div>
                     </div>
                 </div>
@@ -170,13 +175,15 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "select",
                                     attr: {
+                                        attrValue: {
+                                            defaultValue: data.meshtype,
+                                        },
                                         options: [
                                             { value: "Solo", label: "Solo" },
                                             { value: "Tile", label: "Tile" }
                                         ],
-                                        defaultValue: data.meshtype,
-                                        onChange(value: string) {
-                                            data.meshtype = value;
+                                        onChange(value: { value: string }) {
+                                            data.meshtype = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -187,9 +194,11 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "number",
                                     attr: {
-                                        value: data.cellsize,
-                                        onChange(value: number) {
-                                            data.cellsize = value;
+                                        attrValue: {
+                                            value: data.cellsize,
+                                        },
+                                        onChange(value: { value: number }) {
+                                            data.cellsize = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -200,9 +209,11 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "number",
                                     attr: {
-                                        value: data.cellheight,
-                                        onChange(value: number) {
-                                            data.cellheight = value;
+                                        attrValue: {
+                                            value: data.cellheight,
+                                        },
+                                        onChange(value: { value: number }) {
+                                            data.cellheight = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -213,9 +224,11 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "number",
                                     attr: {
-                                        value: data.agentheight,
-                                        onChange(value: number) {
-                                            data.agentheight = value;
+                                        attrValue: {
+                                            value: data.agentheight,
+                                        },
+                                        onChange(value: { value: number }) {
+                                            data.agentheight = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -226,9 +239,11 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "number",
                                     attr: {
-                                        value: data.agentradius,
-                                        onChange(value: number) {
-                                            data.agentradius = value;
+                                        attrValue: {
+                                            value: data.agentradius,
+                                        },
+                                        onChange(value: { value: number }) {
+                                            data.agentradius = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -239,9 +254,11 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "number",
                                     attr: {
-                                        value: data.agentmaxclimb,
-                                        onChange(value: number) {
-                                            data.agentmaxclimb = value;
+                                        attrValue: {
+                                            value: data.agentmaxclimb,
+                                        },
+                                        onChange(value: { value: number }) {
+                                            data.agentmaxclimb = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -252,9 +269,11 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "number",
                                     attr: {
-                                        value: data.agentmaxslope,
-                                        onChange(value: number) {
-                                            data.agentmaxslope = value;
+                                        attrValue: {
+                                            value: data.agentmaxslope,
+                                        },
+                                        onChange(value: { value: number }) {
+                                            data.agentmaxslope = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -265,9 +284,11 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "number",
                                     attr: {
-                                        value: data.minregionsize,
-                                        onChange(value: number) {
-                                            data.minregionsize = value;
+                                        attrValue: {
+                                            value: data.minregionsize,
+                                        },
+                                        onChange(value: { value: number }) {
+                                            data.minregionsize = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -278,14 +299,16 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "select",
                                     attr: {
+                                        attrValue: {
+                                            defaultValue: data.partitioning,
+                                        },
                                         options: [
                                             { value: 0, label: "Watershed" },
                                             { value: 1, label: "Monotone" },
                                             { value: 2, label: "Layers" }
                                         ],
-                                        defaultValue: data.partitioning,
-                                        onChange(value: number) {
-                                            data.partitioning = value;
+                                        onChange(value: { value: number }) {
+                                            data.partitioning = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -296,9 +319,11 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "number",
                                     attr: {
-                                        value: data.lowHangingObstacles,
-                                        onChange(value: number) {
-                                            data.lowHangingObstacles = value;
+                                        attrValue: {
+                                            value: data.lowHangingObstacles,
+                                        },
+                                        onChange(value: { value: number }) {
+                                            data.lowHangingObstacles = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -309,9 +334,11 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "number",
                                     attr: {
-                                        value: data.ledgeSpans,
-                                        onChange(value: number) {
-                                            data.ledgeSpans = value;
+                                        attrValue: {
+                                            value: data.ledgeSpans,
+                                        },
+                                        onChange(value: { value: number }) {
+                                            data.ledgeSpans = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -322,9 +349,11 @@ export class WindowManager {
                                     rightWidth: "50%",
                                     type: "number",
                                     attr: {
-                                        value: data.walkableLowHeightSpans,
-                                        onChange(value: number) {
-                                            data.walkableLowHeightSpans = value;
+                                        attrValue: {
+                                            value: data.walkableLowHeightSpans,
+                                        },
+                                        onChange(value: { value: number }) {
+                                            data.walkableLowHeightSpans = value.value;
                                         },
                                         setRefresh() { }
                                     }
@@ -456,18 +485,51 @@ export class WindowManager {
      * 弹出新建窗口
      */
     public static showCreateProjectWindow() {
+        let str = "";
         let id = this.createWindow({
             resize: true,
             close: true,
-            width: 1280,
-            height: 720,
-            minWidth: 1280,
-            minHeight: 720,
+            width: 300,
+            height: 100,
+            minWidth: 300,
+            minHeight: 100,
             body:
                 (
-                    <CreateProjectWindow id={this._instanceIndex}></CreateProjectWindow>
+                    //<CreateProjectWindow id={this._instanceIndex}></CreateProjectWindow>
+                    <div style={{ margin: "10px" }}>
+                    {
+                        AttributeManager.getAttributeList([
+                            {
+                                title: "Project Name",
+                                type: "string",
+                                attr: {
+                                    attrValue: {
+                                        value: str,
+                                    },
+                                    setRefresh() { },
+                                    onChange(value: { value: string }) {
+                                        str = value.value;
+                                    }
+                                }
+                            }
+                        ])
+                    }
+                    <div style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(2, auto)",
+                        justifyItems: "center",
+                    }}>
+                        <Button onClick={event => {
+                            WindowManager.closeWindow(id);
+                        }}>Cancel</Button>
+                        <Button onClick={event => {
+                            WebsocketTool.Instance.ProjectManager_creatProject(str);
+                            WindowManager.closeWindow(id);
+                        }}>Create</Button>
+                    </div>
+                </div>
                 ),
-            title: "新建工程"
+            title: "Create Project"
         });
         return id;
     }
@@ -507,7 +569,9 @@ export class WindowManager {
                                 title: "属性number",
                                 type: "number",
                                 attr: {
-                                    value: 0,
+                                    attrValue: {
+                                        value: 0,
+                                    },
                                     setRefresh() { },
                                     onChange() { }
                                 }
@@ -516,7 +580,9 @@ export class WindowManager {
                                 title: "属性string",
                                 type: "string",
                                 attr: {
-                                    value: "",
+                                    attrValue: {
+                                        value: "",
+                                    },
                                     setRefresh() { },
                                     onChange() { }
                                 }
@@ -525,12 +591,155 @@ export class WindowManager {
                                 title: "属性vector3",
                                 type: "vector3",
                                 attr: {
+                                    attrValue: {
+                                        x: 0,
+                                        y: 0,
+                                        z: 0,
+                                    },
                                     disable: true,
-                                    x: 0,
-                                    y: 0,
-                                    z: 0,
                                     setRefresh() { },
                                     onChange() { }
+                                }
+                            },
+                            {
+                                title: "属性color",
+                                type: "color",
+                                attr: {
+                                    attrValue: {
+                                        r: 1,
+                                        g: 0,
+                                        b: 0,
+                                        a: 0.5,
+                                    },
+                                    setRefresh(func: Function) {
+                                        //console.log("setRefresh...");
+                                    },
+                                    onChange(r, g, b, a) {
+                                        //console.log("onChange颜色改变：", r, g, b, a);
+                                    }
+                                }
+                            },
+                            {
+                                title: "number Array",
+                                type: "number",
+                                isArray: true,
+                                arrayData: [
+                                    { value: 1 },
+                                    { value: 2 }
+                                ],
+                                defaultTemplate: {
+                                    value: 0
+                                },
+                                attr: {
+                                    attrValue: {},
+                                    setRefresh(func: Function) {
+                                    },
+                                    onChange() {
+                                    }
+                                },
+                            },
+                            {
+                                title: '属性checkbox',
+                                type: 'checkbox',
+                                attr: {
+                                    attrValue: {
+                                        value: true
+                                    },
+                                    disable: true,
+                                    setRefresh(func: Function) {
+                                    },
+                                    onChange() {
+                                    }
+                                }
+                            },
+                            {
+                                title: '属性select',
+                                type: 'select',
+                                attr: {
+                                    attrValue: {
+                                        defaultValue: 1
+                                    },
+                                    options: [
+                                        {
+                                            value: 1,
+                                            label: 'op1'
+                                        },
+                                        {
+                                            value: 2,
+                                            label: 'op2'
+                                        },
+                                    ],
+                                    disable: true,
+                                    setRefresh(func: Function) {
+                                    },
+                                    onChange() {
+                                    }
+                                }
+                            },
+                            {
+                                title: '属性SliderAttr',
+                                type: 'slider',
+                                attr: {
+                                    value: 20,
+                                    min: 0,
+                                    max: 100,
+                                    disable: true,
+                                    setRefresh(func: Function) {
+                                    },
+                                    onChange() {
+                                    }
+                                }
+                            },
+                            {
+                                title: '属性RectAttr',
+                                type: 'rect',
+                                attr: {
+                                    x: 1,
+                                    y: 2,
+                                    w: 3,
+                                    h: 4,
+                                    disable: true,
+                                    setRefresh(func: Function) {
+                                    },
+                                    onChange() {
+                                    }
+                                }
+                            },
+                            // {
+                            //     title: '属性inputGroup',
+                            //     type: 'inputGroup',
+                            //     attr: {
+                            //         array: [
+                            //             {
+                            //                 title: 'string',
+                            //                 type: "string",
+                            //                 data: [],
+                            //             }
+                            //         ],
+                            //         disable: true,
+                            //         setRefresh(func: Function) {
+                            //         },
+                            //         onChange() {
+                            //         }
+                            //     }
+                            // },
+                            {
+                                title: '属性radioGroup',
+                                type: 'radioGroup',
+                                attr: {
+                                    attrValue: {
+                                        value: 'x',
+                                        options: [
+                                            { label: 'X', value: 'x' },
+                                            { label: 'Y', value: 'y' },
+                                            { label: 'Z', value: 'z' },
+                                        ]
+                                    },
+                                    setRefresh(func: Function) {
+                                    },
+                                    onChange() {
+
+                                    }
                                 }
                             }
                         ])
@@ -552,5 +761,54 @@ export class WindowManager {
             icon: <MessageOutlined />
         });
         return id;
+    }
+    /**
+     * 进度条窗口
+     */
+    public static showProgressWindow(props: {
+        title: string, progressNum: number, infoList: [], progressRefresh: Function
+    }): number {
+
+        const id = WindowManager.createWindow({
+            title: props.title,
+            keepOut: true,
+            body: (
+                <ProgressLoading progressNum={props.progressNum} infoList={props.infoList} setRefresh={(firstRefresh, secRefresh) => {
+                    props.progressRefresh(firstRefresh, secRefresh)
+                }} />
+            ),
+            width: 514,
+            height: 120,
+            resize: false
+        })
+        return id
+    }
+    /**
+     * build Settings 窗口
+     */
+    public static showBuildSettingWindow(props) {
+        const id = WindowManager.createWindow({
+            title: 'Build Settings',
+            keepOut: true,
+            body: (
+                <BuildSetting />
+            ),
+            width: 1124,
+            height: 725,
+            minWidth: 765,
+            minHeight: 520
+        })
+        return id
+    }
+    public static showPackageManager(props) {
+        const id = WindowManager.createWindow({
+            title: 'PackageManager',
+            body: (
+                <PackageManager />
+            ),
+            width: 800,
+            height: 567,
+        })
+        return id
     }
 }

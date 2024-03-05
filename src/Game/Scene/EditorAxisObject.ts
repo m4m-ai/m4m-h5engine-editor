@@ -502,6 +502,11 @@ export class EditorAxisObject implements m4m.framework.IEditorCode {
         if (!bool) {
             //与canvas下的子物体碰撞
             let renderer = ea.editorScene.canvasRenderer;
+            if(renderer==null)
+            {
+                console.error("未取到canvas对象");
+                return;
+            }
             let tempTrans2dList = renderer.pickAll2d(ray);
             if (tempTrans2dList[tempTrans2dList.length - 1] == renderer.canvas.getRoot()) {
                 tempTrans2dList.pop();
@@ -734,9 +739,9 @@ export class EditorAxisObject implements m4m.framework.IEditorCode {
                 if (this.currAxisType == AxisType.move) {
                     let layoutState = trans.layoutState;
                     if (this.activeAxis == AxisDirection.x) { //拖拽x轴
-                        let leftFlag = !!(layoutState & layoutOption.LEFT);
-                        let centerFlag = !!(layoutState & layoutOption.H_CENTER);
-                        let rightFlag = !!(layoutState & layoutOption.RIGHT);
+                        let leftFlag = (layoutState & layoutOption.LEFT)!=0;
+                        let centerFlag = (layoutState & layoutOption.H_CENTER)!=0;
+                        let rightFlag = (layoutState & layoutOption.RIGHT)!=0;
                         if (!leftFlag && !centerFlag && !rightFlag) {
                             let pos = trans.localTranslate;
                             trans.localTranslate = new vector2(pos.x + deltaPosition.x, pos.y);
@@ -753,9 +758,9 @@ export class EditorAxisObject implements m4m.framework.IEditorCode {
                         }
 
                     } else if (this.activeAxis == AxisDirection.y) { //拖拽y轴
-                        let topFlag = !!(layoutState & layoutOption.TOP);
-                        let centerFlag = !!(layoutState & layoutOption.V_CENTER);
-                        let bottomFlag = !!(layoutState & layoutOption.BOTTOM);
+                        let topFlag = (layoutState & layoutOption.TOP)!=0;
+                        let centerFlag = (layoutState & layoutOption.V_CENTER)!=0;
+                        let bottomFlag = (layoutState & layoutOption.BOTTOM)!=0;
                         if (!topFlag && !centerFlag && !bottomFlag) {
                             let pos = trans.localTranslate;
                             trans.localTranslate = new vector2(pos.x, pos.y + deltaPosition.y);
@@ -768,7 +773,7 @@ export class EditorAxisObject implements m4m.framework.IEditorCode {
                         } else if (topFlag) {
                             trans.setLayoutValue(layoutOption.TOP, trans.getLayoutValue(layoutOption.TOP) + deltaPosition.y);
                         } else if (bottomFlag) {
-                            trans.setLayoutValue(layoutOption.BOTTOM, trans.getLayoutValue(layoutOption.BOTTOM) + deltaPosition.y);
+                            trans.setLayoutValue(layoutOption.BOTTOM, trans.getLayoutValue(layoutOption.BOTTOM) - deltaPosition.y);
                         }
                     }
 

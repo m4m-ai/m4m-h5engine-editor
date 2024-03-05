@@ -5,9 +5,10 @@ const App = () => {
   return (
     <header>
       <div className="nav-area">
-        <a href="/" className="logo">
-          Logo
-        </a>
+        <div className='logo'>
+            <img src="logo.png" style={{ width: 25, height: 25, marginRight: 10 }}></img>
+            <img src="logo2.png" style={{ width: 25 / 0.28, height: 25 }}></img>
+        </div>
         <Navbar />
       </div>
     </header>

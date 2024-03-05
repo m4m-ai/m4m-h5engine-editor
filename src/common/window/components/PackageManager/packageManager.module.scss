@@ -1,0 +1,115 @@
+.package-manager {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.package-manager :global {
+    .package-header {
+        height: 34px;
+        display: flex;
+        justify-content: space-between;
+        background: #3c3c3c;
+        .header-left {
+            display: flex;
+            >div{
+                vertical-align: middle;
+                color: #c7c7c7;
+                padding: 4px;
+                border-right: 1px solid black;
+                &:hover {
+                    background: #464646;
+                }
+            }
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            color: #c7c7c7;
+        }
+    }
+    .package-main {
+        flex: 1;
+        display: flex;
+        .package-silder {
+            width: 350px;
+            background: #383838;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .silder-footer {
+                height: 30px;
+                padding: 0 6px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: #404040;
+                color: #cbcbcb;
+                font-size: 12px;
+                font-style: italic;
+                .silder-footer-btn {
+                    display: flex;
+                    div{
+                        height: 22px;
+                        line-height: 20px;
+                        text-align: center;
+                        background: #585858;
+                        font-size: 15px;
+                        font-weight: 600;
+                        border: 1px solid black;
+                        &:hover {
+                            background: #676767;
+                        }
+                    }
+                    div:first-child {
+                        width: 25px;
+                    }
+                }
+            }
+        }
+        .package-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            .content-main {
+                flex: 1;
+            }
+            .content-footer {
+                height: 30px;
+                background: #404040;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                overflow: hidden;
+                .content-footer-btn {
+                    margin-right: 20px;
+                    width: 80px;
+                    height: 24px;
+                    line-height: 24px;
+                    text-align: center;
+                    border-radius: 10px;
+                    background: #585858;
+                    color: #cbcbcb;
+                }
+            }
+        }
+        // antd 样式
+        .ant-collapse > .ant-collapse-item {
+            background: none;
+            margin-bottom: 0;
+            padding: 0;
+            border: none;
+            border-radius: 0;
+        }
+        .ant-collapse-content>.ant-collapse-content-box {
+            padding: 0;
+        }
+    }
+    // feature 模板
+    .feature-temp {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #000;
+        font-weight: 500;
+    }
+}

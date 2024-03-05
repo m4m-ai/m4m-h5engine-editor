@@ -17,6 +17,7 @@ limitations under the License.
 import {IEvent} from "./IEvent";
 import {EventBinder} from "./EventBinder";
 import {EventMap} from "./EventMap";
+import { EventFactory } from "./EventFactory";
 
 /**
  * 编辑器事件管理类, 编辑器中所有的事件(除了输入事件)都必须走该类来管理, 在 EventMap 中注册相应的事件
@@ -83,5 +84,9 @@ export class EditorEventMgr implements IEvent<EventMap> {
                 cb((tempList[i] as EventBinder<EventMap, K, F>).func);
             }
         }
+    }
+
+    public createEventFactory() {
+        return new EventFactory();
     }
 }

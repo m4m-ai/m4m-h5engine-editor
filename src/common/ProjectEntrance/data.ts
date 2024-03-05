@@ -25,7 +25,7 @@ import AdvancedWindow from "./MainCom/AdvancedWindow/advancedWindow"
 // 首选项菜单
 const preferencesMenu = [
     {
-        label: '项目',
+        label: 'Project',
         key: 'project',
         // icon: ''
     },

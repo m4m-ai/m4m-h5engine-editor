@@ -1,23 +1,16 @@
 import React, { Component, useEffect, useState } from "react";
 import { Select } from "antd";
 import {IAttrComponent} from "../Attribute";
-export interface ISelectAttrData extends IAttrComponent {
+export interface ISelectAttrData extends IAttrComponent<string | number> {
     options: { value: string | number, label: string }[],
-    onChange: (value: string | number) => void,
-    setRefresh(func: Function): void;
-    defaultValue?: string | number
 }
 
-/**
- * 下拉框
- */
+
 export function SelectAttr(data: ISelectAttrData) {
-    let [v, setValue] = useState(data.defaultValue);
+    let [v, setValue] = useState(data.attrValue);
     useEffect(() => {
-        data.setRefresh((val) => {
-            setValue(val);
-        });
-        setValue(data.defaultValue);
+        data.setRefresh(setValue);
+        setValue(data.attrValue);
     }, [data])
     return (
         <Select size="small" onChange={(val) => {

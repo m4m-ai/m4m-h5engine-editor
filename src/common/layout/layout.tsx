@@ -20,32 +20,32 @@ import { EditorEventMgr } from '../../Game/Event/EditorEventMgr'
 import { FileInfoManager } from "../../CodeEditor/code/FileInfoManager"
 import { ContextMenu } from "./common/ContextMenu/ContextMenu"
 import { useContextMenu } from 'react-contexify'
-
+import { EventBinder } from '../../Game/Event/EventBinder'
 
 const { Sider } = Layout
 
 
 const onclick3 = () => {
-  console.log('点击按钮1')
+  //console.log('点击按钮1')
 }
 const onclick4 = () => {
-  console.log('点击按钮2')
+  //console.log('点击按钮2')
 }
 const onclick5 = () => {
-  console.log('点击按钮3')
+ // console.log('点击按钮3')
 }
 const onclick6 = () => {
-  console.log('点击按钮4')
+ // console.log('点击按钮4')
 }
 const onclick7 = e => {
   var aa: any = document.querySelector('.right-6')
-  console.log('nnnnnnnnnnnnnnnn', aa.style.backgroundColor)
+ // console.log('nnnnnnnnnnnnnnnn', aa.style.backgroundColor)
   if (aa.style.backgroundColor == 'rgb(112, 112, 112)') {
     aa.style.backgroundColor = '#363636'
   } else {
     aa.style.backgroundColor = '#707070'
   }
-  console.log('点击按钮5')
+  //console.log('点击按钮5')
 }
 
 const ProjectContext = createContext(null); // 创建Context
@@ -73,7 +73,7 @@ const Project = () => {
 
   // 增加菜单
   const addBtnFn = (event) => {
-    console.log('当前选中的 selectNode', selectNode);
+    //console.log('当前选中的 selectNode', selectNode);
     if(Object.keys(selectNode).length < 1) {
       return
     }
@@ -85,8 +85,8 @@ const Project = () => {
   // 搜索触发
   const searchInputFn = (event) => {
     const { value } = event.target
-    console.log('value', value);
-    console.log(treeData);
+    //console.log('value', value);
+    //console.log(treeData);
     
   }
  

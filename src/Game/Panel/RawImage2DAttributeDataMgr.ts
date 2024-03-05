@@ -23,67 +23,71 @@ import nodeComponent = m4m.framework.nodeComponent;
 export class RawImage2DAttributeDataMgr {
     //rawImage2D组件属性变化 (暂存 组件已被 RawAttributeDataMgr 组件替掉 )
     public static getRawImage2DData(node: nodeComponent | C2DComponent): IComponentData {
-        let selection = EditorApplication.Instance.selection;
-        let assetmgr = m4m.framework.sceneMgr.app.getAssetMgr();
-        let texture = node.comp as m4m.framework.rawImage2D;
+        return null;
 
-        let onSelectFun: Function = null;
-        //设置图片数据
-        let imageRefresh: Function = null;
-        let setImage = selection.addPropertyListener(texture, "image", ValueType.string, (value) => {
-            if (imageRefresh) {
-                imageRefresh(value.getName());
-            }
-        });
+        // let selection = EditorApplication.Instance.selection;
+        // let assetmgr = m4m.framework.sceneMgr.app.getAssetMgr();
+        // let texture = node.comp as m4m.framework.rawImage2D;
 
-        let arr = ResMgr.GetAllABForType(AssetBundleFileType.Texture);
-        let selectArr = [];
-        for (let i = 0; i < arr.length; i++) {
-            let str = arr[i];
-            selectArr.push({ label: str, value: str });
-        }
-        let textureName=texture.image.getName();
-        return {
-            enable: null,
-            title: "RawImage2D",
-            component: texture,
-            ticon: null,
-            attrs: [
-                {
-                    title: "Texture",
-                    type: "selectList",
-                    attr: {
-                        options: selectArr,
-                        value: textureName,
-                        onChange: (val: string) => {
-                            let textureData = assetmgr.getDefaultTexture(val) as m4m.framework.texture;
-                            if (!textureData) {
-                                textureData = assetmgr.getAssetByName(val) as m4m.framework.texture;
-                            }
-                            setImage(textureData);
-                            texture.transform.markDirty();
-                        },
-                        onClick: () => {
-                            // console.error("onClick1");
-                            if (onSelectFun) {
-                                let arr = ResMgr.GetAllABForType(AssetBundleFileType.Texture);
-                                let selectArr = [];
-                                for (let i = 0; i < arr.length; i++) {
-                                    let str = arr[i];
-                                    selectArr.push({ label: str, value: str });
-                                }
-                                onSelectFun(selectArr);
-                            }
-                        },
-                        onSetData: (selectFun) => {
-                            onSelectFun = selectFun;
-                        },
-                        setRefresh: (refresh) => {
-                            imageRefresh = refresh;
-                        },
-                    }
-                }
-            ]
-        }
+        // let onSelectFun: Function = null;
+        // //设置图片数据
+        // let imageRefresh: Function = null;
+        // let setImage = selection.addPropertyListener(texture, "image", ValueType.string, (value) => {
+        //     if (imageRefresh) {
+        //         imageRefresh(value.getName());
+        //     }
+        // });
+
+        // let arr = ResMgr.GetAllABForType(AssetBundleFileType.Texture);
+        // let selectArr = [];
+        // for (let i = 0; i < arr.length; i++) {
+        //     let str = arr[i];
+        //     selectArr.push({ label: str, value: str });
+        // }
+        // let textureName=texture.image.getName();
+        // return {
+        //     enable: null,
+        //     title: "RawImage2D",
+        //     component: texture,
+        //     ticon: null,
+        //     attrs: [
+        //         {
+        //             title: "Texture",
+        //             type: "selectList",
+        //             attr: {
+        //                 attrValue:{
+        //                     options: selectArr,
+        //                     value: textureName,
+        //                 },
+        //                 onChange: (val: string) => {
+        //                     let textureData = assetmgr.getDefaultTexture(val) as m4m.framework.texture;
+        //                     if (!textureData) {
+        //                         textureData = assetmgr.getAssetByName(val) as m4m.framework.texture;
+        //                     }
+        //                     setImage(textureData);
+        //                     texture.transform.markDirty();
+        //                 },
+        //                 onClick: () => {
+        //                     // console.error("onClick1");
+        //                     if (onSelectFun) {
+        //                         let arr = ResMgr.GetAllABForType(AssetBundleFileType.Texture);
+        //                         let selectArr = [];
+        //                         for (let i = 0; i < arr.length; i++) {
+        //                             let str = arr[i];
+        //                             selectArr.push({ label: str, value: str });
+        //                         }
+        //                         onSelectFun(selectArr);
+        //                     }
+        //                 },
+        //                 onSetData: (selectFun) => {
+        //                     onSelectFun = selectFun;
+        //                 },
+        //                 setRefresh: (refresh) => {
+        //                     imageRefresh = refresh;
+        //                 },
+        //             }
+        //         }
+        //     ]
+        // }
     }
 }

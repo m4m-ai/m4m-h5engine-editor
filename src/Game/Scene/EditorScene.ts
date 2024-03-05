@@ -157,7 +157,7 @@ export class EditorScene implements IEditorCode {
         return this._canvasColliderTrans;
     }
 
-    public _canvasColliderTrans: transform;
+    private _canvasColliderTrans: transform;
 
     /**
      * 获取编辑器状态下的场景canvas对象, 可能为 null, 如果需要根据运行状态获取 2D 根节点请调用 getCurrent2DRoot()
@@ -169,6 +169,77 @@ export class EditorScene implements IEditorCode {
         return this._canvasRenderer;
     }
     private _canvasRenderer: canvasRenderer;
+
+    /**
+     * 视图宽度
+     */
+    public get viewportWidth() {
+        return this._prevWidth;
+    }
+
+    /**
+     * 视图高度
+     */
+    public get viewportHeight() {
+        return this._prevHeight;
+    }
+
+    public get enablePhysical() {
+        if (EditorApplication.Instance.isPlay) {
+            return m4m.framework.physics != null;
+        }
+        return this._enablePhysical;
+    }
+    public set enablePhysical(v) {
+        if (EditorApplication.Instance.isPlay) {
+            if (v) {
+                if (m4m.framework.physics == null) { //没有开启物理
+                    let oimoJSPlugin = new m4m.framework.OimoJSPlugin();
+                    EditorApplication.Instance.editorScene.scene.enablePhysics(this._physicalGravity, oimoJSPlugin);
+                }
+            }
+        } else {
+            this._enablePhysical = v;
+        }
+    }
+    private _enablePhysical: boolean = false;
+
+    public set physicalGravity(v: m4m.math.vector3) {
+        if (EditorApplication.Instance.isPlay) {
+            if (this.enablePhysical) {
+                m4m.framework.physics.setGravity({
+                    x: v.x,
+                    y: v.y,
+                    z: v.z
+                });
+            }
+        } else {
+            this._physicalGravity = v;
+        }
+    }
+    public get physicalGravity() {
+        if (EditorApplication.Instance.isPlay) {
+            if (this.enablePhysical) {
+                let v = m4m.framework.physics.gravity;
+                return {
+                    x: v.x,
+                    y: v.y,
+                    z: v.z
+                }
+            }
+            return {
+                x: 0,
+                y: 0,
+                z: 0
+            }
+        } else {
+            return this._physicalGravity;
+        }
+    }
+    private _physicalGravity: m4m.math.vector3 = new m4m.math.vector3(0, -9.8, 0);
+
+    private _prevWidth: number;
+    private _prevHeight: number;
 
     //获取场景主相机, 可能为 null
     private _mainCamera: camera;
@@ -183,9 +254,6 @@ export class EditorScene implements IEditorCode {
     private hasChangeConponent: boolean = false;
     private changeConponentTimer: number = 0;
 
-    private _prevWidth: number;
-    private _prevHeight: number;
-
     public constructor() {
         let ea = EditorApplication.Instance;
         this.scene = ea.engineApp.getScene();
@@ -194,17 +262,31 @@ export class EditorScene implements IEditorCode {
         this.overwriteMethod();
 
         this.editorRootTrans = new transform();
+        this.editorRootTrans.gameObject.tag = "editor";
         this.editorRootTrans.name = "editorRoot";
         this.editorRootTrans.gameObject.layer = 3; //CullingMask.editor
         this.scene.addChild(this.editorRootTrans);
 
         this.sceneRootTrans = new transform();
+        this.sceneRootTrans.gameObject.tag = "editor";
         this.sceneRootTrans.name = "objectRoot";
         this.scene.addChild(this.sceneRootTrans);
 
         this.previewRootTrans = new transform();
         this.previewRootTrans.name = "previewRoot";
+        this.previewRootTrans.gameObject.tag = "editor";
         this.scene.addChild(this.previewRootTrans);
+
+        EditorEventMgr.Instance.addEventListener("OnPlay", this.setPlay.bind(this))
+    }
+
+    private setPlay(b: boolean) {
+        if (b) { //播放游戏
+            if (this._enablePhysical && !m4m.framework.physics) {
+                let oimoJSPlugin = new m4m.framework.OimoJSPlugin();
+                EditorApplication.Instance.editorScene.scene.enablePhysics(new m4m.math.vector3(0, -9.8, 0), oimoJSPlugin);
+            }
+        }
     }
 
     isClosed(): boolean {
@@ -376,8 +458,8 @@ export class EditorScene implements IEditorCode {
      */
     public openEmptyScene() {
         this.clearScene();
-        this.lightmaps = null;
-        this.fog = null;
+        // this.lightmaps = null;
+        // this.fog = null;
         this.viewType = EditorSceneViewType.Scene;
 
         let ct = EditorApplication.Instance.editorCamera.gameObject.transform;
@@ -393,9 +475,8 @@ export class EditorScene implements IEditorCode {
      */
     public changeScene(pack: rawscene) {
         this.clearScene();
-
-        this.lightmaps = null;
-        this.fog = null;
+        // this.lightmaps = null;
+        // this.fog = null;
 
         this.viewType = EditorSceneViewType.Scene;
 
@@ -424,6 +505,9 @@ export class EditorScene implements IEditorCode {
      * 清理场景内的所有物体
      */
     public clearScene() {
+        this.lightmaps = null;
+        this.fog = null;
+
         this._canvasRenderer = null;
         this._mainCamera = null;
         this._canvasColliderTrans = null;
@@ -673,7 +757,7 @@ export class EditorScene implements IEditorCode {
 
     //视图大小改变
     private changeViewportRect(width: number, height: number) {
-        console.log("viewport change: ", width, height);
+        //console.log("viewport change: ", width, height);
         //调整画布宽高
         let renderer = this.canvasRenderer;
         if (renderer) {
@@ -802,8 +886,13 @@ export class EditorScene implements IEditorCode {
     private onSaveScene() {
         if (!WindowManager.hasSaveConfirm()) {
             let path = EditorApplication.Instance.selection.activeFolderPath;
-            WindowManager.showSaveConfirm("保存场景", "Contents/" + path, "NewScene",
+            WindowManager.showSaveConfirm("Save Scene", "Contents/" + path, "NewScene",
                 (savePath, saveName) => {
+                    if (!saveName) {
+                        console.warn("警告 保存的文件名不能为空！");
+                        return;
+                    } 
+
                     // if (!saveName) {
                     //     WindowManager.showTips("警告", "保存的文件名不能为空！");
                     //     return;
@@ -825,7 +914,13 @@ export class EditorScene implements IEditorCode {
         if (!WindowManager.hasCreateNavigationConfirm()) {
             let path = EditorApplication.Instance.selection.activeFolderPath;
             WindowManager.showCreateNavigationConfirm((data) => {
-                this.handleSceneNav("", data);
+                let binder = EditorEventMgr.Instance.addEventListener("OnNavMeshFileResponse", (result) => {
+                    binder.removeListener();
+                    if (result != "") {
+                        console.log("网格生成成功!: ", result);
+                    }
+                })
+                this.handleSceneNav(EditorApplication.Instance.selection.activeFolderInfo.key, data);
             });
         }
     }
@@ -870,7 +965,7 @@ export class EditorScene implements IEditorCode {
         if (lengthArr.length == 0) {
             WindowManager.showTips("警告", "当前场景中没有效的网格数据!");
         } else {
-            WebsocketTool.Instance.ProjectManager_createNav(EditorApplication.Instance.selection.activeFolderInfo.key, config, Array.from(m4m.io.converter.StringToUtf8Array(szConfig)), lengthArr, fileData);
+            WebsocketTool.Instance.ProjectManager_createNav(path, config, Array.from(m4m.io.converter.StringToUtf8Array(szConfig)), lengthArr, fileData);
         }
     }
 
@@ -902,6 +997,14 @@ export class EditorScene implements IEditorCode {
                 _self.hasChangeNode = true;
             }
         }
+        transform.prototype["_addChildAt"] = transform.prototype.addChildAt;
+        transform.prototype.addChildAt = function (node: transform, index: number) {
+            this["_addChildAt"](node, index);
+            if (node.gameObject.tag != EditorObjectTags.hideInTreeTag) {
+                _self.hasChangeNode = true;
+            }
+        }
+
         //--------------
         transform2D.prototype["_addChild"] = transform2D.prototype.addChild;
         transform2D.prototype.addChild = function (node: transform2D) {
@@ -922,6 +1025,13 @@ export class EditorScene implements IEditorCode {
             let count = this.children.length;
             this["_removeAllChild"]();
             if (count > 0) {
+                _self.hasChangeNode = true;
+            }
+        }
+        transform2D.prototype["_addChildAt"] = transform2D.prototype.addChildAt;
+        transform2D.prototype.addChildAt = function (node: transform2D, index: number) {
+            this["_addChildAt"](node, index);
+            if (node.tag != EditorObjectTags.hideInTreeTag) {
                 _self.hasChangeNode = true;
             }
         }

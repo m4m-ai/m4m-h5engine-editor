@@ -19,7 +19,7 @@ export const MOContextMenu = (props: IMOContextMenuData) => {
         {
             name: 'Reset',
             handler: (arg)=>{
-                console.log(arg);
+                //console.log(arg);
             }
         },
         {

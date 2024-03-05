@@ -44,8 +44,13 @@ function ProjectWindow(props) {
             setValue(list);
             projectList.length = 0;
             projectList.push(...list);
+            
+            //临时处理， 如果不存在项目， 则创建test1
+            if (projectList.findIndex((value) => value.name == 'test1') == -1) {
+                WebsocketTool.Instance.ProjectManager_creatProject("test1");
+            }
         });
-        console.log("开始连服务器");
+        //console.log("开始连服务器");
         //连接服务器
         CodeEditorReference.connectWebSocket();
         return () => {
@@ -178,7 +183,7 @@ function ProjectWindow(props) {
         EditorEventMgr.Instance.emitEvent("OnOpenProject", cb => cb(record.name));
     }
     const createProject = () => {
-        console.log('创建新工程');
+        ///console.log('创建新工程');
         //暂时写死工程名  需要UI可输入创建的工程名
         // WebsocketTool.Instance.ProjectManager_creatProject("test1");
         WindowManager.showCreateProjectWindow()
@@ -187,11 +192,11 @@ function ProjectWindow(props) {
     return (
         <div className={style.box}>
             <div className="main-header">
-                <div className="main-title">项目</div>
+                <div className="main-title">Project</div>
                 <div className="header-operation">
                     {/* 未实现功能屏蔽: 导入工程 */}
                     {/* <Button className="add-btn">添加</Button> */}
-                    <Button className="create-btn" type="primary" onClick={createProject}>新建</Button>
+                    <Button className="create-btn" type="primary" onClick={createProject}>Create</Button>
                 </div>
             </div>
 

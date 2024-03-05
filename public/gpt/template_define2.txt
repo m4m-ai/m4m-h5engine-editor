@@ -1,0 +1,95 @@
+现有api
+```typescript
+interface Vector3 {x:number;y:number;z:number;}
+interface Vector2 {x:number;y:number;}
+interface Color {r:number;g:number;b:number,a:number}
+enum PrimitiveType {
+    Sphere,
+    Capsule,
+    Cylinder,
+    Cube,
+    Plane,
+    Quad,
+    Pyramid
+}
+enum LightType {
+    Direction=0,
+    Point=1,
+    Spot=2
+}
+type ComponentType = "camera"|"light"
+interface Component {
+    readonly transform:Transform
+    clone():Component
+}
+interface Camera extends Component {
+}
+interface Light extends Component {
+    type:LightType
+    //默认白色
+    color:Color
+    //默认10
+    range:number
+    //默认0.6
+    intensity:number
+}
+interface Transform {
+    name:string
+    position:Vector3
+    scale:Vector3
+    rotation:Vector3
+    visible:boolean
+    //是否启用物理
+    enablePhysics:boolean
+    //子节点数量,实时更新
+    childrenCount:number
+    getPath():string
+    findChild(name:string):Transform|null
+    //根据名称模糊查询子物体,不区分大小写
+    fuzzyFindChild(name:string):Transform[]
+    getChild(index:number):Transform|null
+    addChild(trans:Transform,index?:number)
+    clone():Transform
+    //删除物体
+    destroy()
+    equals(trans:Transform):boolean
+    getComponent(type:ComponentType):Component|null
+    addComponent(type:ComponentType):Component
+    removeComponent(type:ComponentType)
+}
+interface EditorApi {
+    //是否启用世界物理
+    enablePhysics:boolean
+    //物理下落速度
+    physicsGravity:Vector3
+    ramdomRangeFloat(min:number,max:number):number
+    ramdomRangeInt(min:number,max:number):number
+    //播放游戏
+    play()
+    //停止游戏
+    stop()
+    //重启游戏
+    restart()
+    getRoot():Transform
+    //获取编辑器相机前面的点,distance:距离,默认5
+    getCameraForwardPosition(distance?:number):Vector3
+    getSelectTrans():Transform|null
+    getSelectFolderPath():string|null
+    getSelectFilePath():string|null
+    findTrans(path:string):Transform|null
+    findComponents(type:ComponentType):Component[]
+    //创建一个空物体
+    createEmpty(name:string):Transform
+    //创建原始对象
+    createPrimitive(type:PrimitiveType):Transform
+    openNewScene()
+    openScene(sceneName:string)
+    saveScene(sceneName:string,folderPath?:string)
+}
+var api:EditorApi
+```
+轴方向:x:左,y:上,z:前
+请更具我的需求调判断需要调用的Api,所有名称都是用英文,我的需求是:
+__$requirement__
+
+请直接返回`JavaScript`代码给我

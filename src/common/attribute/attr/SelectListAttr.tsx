@@ -3,30 +3,25 @@ import React from "react";
 import {Select } from "antd";
 import {IAttrComponent} from "../Attribute";
 
-export interface ISelectListAttrData extends IAttrComponent {
-    value: string | number;
+export interface ISelectListAttrData extends IAttrComponent<string | number> {
     options: { value: string | number, label: string }[],
-    onChange: (value: string | number) => void;
     onClick: () => void;
     onSetData: (val: any) => void;
-    setRefresh(func: Function): void;
 }
 
 /**
  * 选择列表属性
  */
 export function SelectListAttr(data: ISelectListAttrData) {
-    let [v, setValue] = useState(data.value);
+    let [v, setValue] = useState(data.attrValue);
     let [arr, setArr] = useState(data.options);
     useEffect(() => {
         data.onSetData((Arr: any) => {
             setArr(Arr);
         });
 
-        data.setRefresh((val: string | number) => {
-            setValue(val);
-        });
-        setValue(data.value);
+        data.setRefresh(setValue);
+        setValue(data.attrValue);
     }, [data])
 
     return (
@@ -41,7 +36,7 @@ export function SelectListAttr(data: ISelectListAttrData) {
                     })
                 }
             </Select>
-            <button type="button" onClick={(e: any) => {
+            <button disabled={data.disable} type="button" onClick={(e: any) => {
                 data.onClick();
             }}>btn</button>
         </>

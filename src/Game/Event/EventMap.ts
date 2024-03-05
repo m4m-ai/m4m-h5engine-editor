@@ -23,11 +23,12 @@ import { TexturePackerResult } from "../Asset/TexturePackerResult";
 import { TexturePackerData } from "../Asset/TexturePackerData";
 import { EditorAssetInfo } from "../Asset/EditorAssetInfo";
 import { AssetReference } from "../Asset/AssetReference";
-import { LightCodePanel } from '../../common/LightCode/LightCodeData'
+import { LightCodePanel, ResolvedLink } from '../../common/LightCode/LightCodeData'
 import { LineType } from '../../common/LightCode/LightCodeMgr'
 import { FileData } from "../ExportManager/FileData";
-import { SettingKind } from '../../common/projectSettings/ProjectSettingsManager'
-import { IWindowData, IWindowInstance } from "../../common/window/Window";
+import { IWindowInstance } from "../../common/window/Window";
+import { IContextMenuData } from "../../common/contextMenu/ContextMenuSlot";
+import { GPTUiData } from '../UI/CreateUINodeData'
 
 /**
  * 编辑器事件声明
@@ -56,15 +57,15 @@ export interface EventMap {
 	/**
 	 * 左下文件树更新
 	 */
-	FileTreeUpDate(text: any[]): void
+	FileTreeUpDate(text: EditorAssetInfo[]): void
 	/**
 	 * 右下资源文件管理
 	 */
-	ResourceFileUpDate(text: any): void
+	ResourceFileUpDate(text: EditorAssetInfo): void
 	/**
 	 * 选中文件
 	 */
-	OnSelectFile(text: string): void
+	OnSelectFile(text: EditorAssetInfo): void;
 	/**
 	 * OnSave
 	 */
@@ -158,12 +159,14 @@ export interface EventMap {
 	/**
 	 * 拖拽虚线位置
 	 */
-	OnDrawLine(line: LineType): void;
+	OnDrawLine(line: LineType): void; 
 
-	/** 
-	 * 修改虚线透明度
+	LinkUpdateLocation(linelist:ResolvedLink[]):void
+	/**
+	 * 是否显示虚线
+	 * @param isLine 
 	 */
-	OnChangeOpacity(data: number): void;
+	OnDrawIsLine(isLine: boolean): void;
 	/**
 	 * 当拖拽文件开始上传时触发
 	 * @param fileData 文件列表
@@ -179,9 +182,9 @@ export interface EventMap {
 	OnDropFileUploadFinish(fileData: FileData[], successCount: number, failCount: number);
 
 	/**
-	 * 服务器返回NavMesh数据
+	 * 服务器返回NavMesh生成的导航数据文件
 	 */
-	OnNavMeshFileResponse(files: { bin: number[], json: number[], obj: number[] });
+	OnNavMeshFileResponse(filePath: string);
 
 	/**
 	 * 编辑器播放按钮点击
@@ -229,11 +232,6 @@ export interface EventMap {
 	OnSaveScene(): void;
 
 	/**
-	 * 打开设置面板
-	 */
-	OpenProjectSetting(data: SettingKind[]): void;
-
-	/**
 	 * 创建窗口
 	 * @param windowList 窗体列表
 	 */
@@ -243,11 +241,38 @@ export interface EventMap {
 	 * 添加动画属性
 	 * @param datas 动画属性列表
 	 */
-	OnAnimationDatas(datas: any): void;
+	OnAnimationDatas(datas): void;
 
 	/**
+	 * 显示右键上下文菜单
+	 */
+	ShowContextMenu(menuData: IContextMenuData): void;
+	/*
 	 * 外部调用添加动画属性
 	 * @param data 传入数据
 	 */
-	OnOutAnimationData(data: any): void
+	OnOutAnimationData(data): void;
+
+	/*
+	* 更新UI  Position 输入组件 disable  是否可输入
+	*/
+	OnTrans2DDisableUpDate(key: string, bool: boolean): void;
+
+	/**
+	 * ai生成ui返回数据
+	 * @param success 是否生成成功
+	 * @param message 如果生成失败, 则为错误消息
+	 */
+	OnUiGPTMessage(success: boolean, errorMessage?: string): void;
+	/**
+	 * 处理GPT返回的Ui数据
+	 */
+	OnHandlerGPTUiData(result: GPTUiData): void;
+
+	/**
+	 * ai生成返回数据
+	 * @param success 是否生成成功
+	 * @param message 如果成功, 则为代码, 如果生成失败, 则为错误消息
+	 */
+	OnGPTMessage(success: boolean, data: string): void;
 }

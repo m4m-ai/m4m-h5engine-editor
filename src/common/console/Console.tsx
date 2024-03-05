@@ -1,17 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import './index.css'
 import { CaretDownOutlined, ExclamationCircleFilled, SearchOutlined, StopFilled, WarningFilled } from '@ant-design/icons'
 import { Avatar, Checkbox, Divider, Dropdown, Input, List, Menu, MenuProps, } from 'antd'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox'
 import { EditorEventMgr } from '../../Game/Event/EditorEventMgr'
 import { ConsoleData, consoleMgr, ConsoleType } from '../../Game/Panel/consoleMgr'
+import { use } from 'echarts/core'
 
 
 const handleMenuClick: MenuProps['onClick'] = e => {
-  console.log('click', e)
+  //console.log('click', e)
 }
 const onChange = (e: CheckboxChangeEvent) => {
-  console.log(`checked = ${e.target.checked}`)
+  //console.log(`checked = ${e.target.checked}`)
 }
 
 const menu1 = (
@@ -65,26 +66,77 @@ const menu4 = (
 )
 
 export function Console() {
-  //组件面板是否打开
-  const [data, setData] = useState(null as (ConsoleData[]));
-  const [TitdeDase, setTide] = useState(null as string);
-
   // var Consdata = consoleMgr.Consdata;
   var Consdata = consoleMgr.ShowConsoleData;
   var logCount = consoleMgr.logCount;
   var warnCount = consoleMgr.warnCount;
   var errorCount = consoleMgr.errorCount;
 
+  const itemSize = 45; // 每个 li 的高度, li 修改这里一定要改，不然会出现抖动问题
+  //组件面板是否打开
+  const [data, setData] = useState(null as (ConsoleData[]));
+  const [TitdeDase, setTide] = useState(null as string);
+  const [collapseStatus, setCollapseStatus] = useState(false)
+  const [selectedId, setSelectedId] = useState(-1)
+
+  // 虚拟列表
+  const [screenHeight, setScreenHeight] = useState(0) //可视区域高度
+  const [listHeight, setListHeight] = useState(0) //列表总高度
+  const [startIndex, setStartIndex] = useState(0)
+  const [startOffset, setStartOffset] = useState(0)
+  const visibleCount = useMemo(() => Math.ceil(screenHeight / itemSize), [screenHeight]) //可显示的列表项数
+  const endIndex = useMemo(() => startIndex + visibleCount, [startIndex, visibleCount])
+  const visibleData = useMemo(() => data?.slice(startIndex, Math.min(endIndex, data.length)), [data, startIndex, endIndex])
+  const getTransform = useMemo(() => `translate3d(0,${startOffset}px,0)`, [startOffset])
+
   //引用: 添加组件面板 
-  const element = useRef(null);
+  const element = useRef<HTMLDivElement>(null);
   const consoleCount = useRef(null);
   const TitleDdase = useRef(null);
+
   useEffect(() => {
+    const scrollFn = () => {
+      const scrollTop = element.current.scrollTop
+      setStartIndex(Math.floor(scrollTop / itemSize))
+      setStartOffset(scrollTop - (scrollTop % itemSize))
+    }
+    if (element) {
+      element.current.addEventListener('scroll', scrollFn)
+    }
+    return () => {
+      element.current.removeEventListener('scroll', scrollFn)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (element) {
+      setScreenHeight(element.current.offsetHeight)
+    }
     const newLocal = (item: ConsoleData): void => {
+      let uuid = 0
       var setStart = []
-      for (const iterator of Consdata) {
-        setStart.push(iterator)
+      if (!collapseStatus) {
+        for (const iterator of Consdata) {
+          iterator.uuid = uuid++
+          setStart.push(iterator)
+        }
+      } else {
+        let setByTitle = {}
+        for (const iterator of Consdata) {
+          const { title } = iterator
+          if (!setByTitle[title]) {
+            setByTitle[title] = iterator
+            setByTitle[title].sum = 1
+          } else {
+            setByTitle[title].sum++
+          }
+        }
+        for (const key in setByTitle) {
+          setByTitle[key].uuid = uuid++
+          setStart.push(setByTitle[key])
+        }
       }
+      setListHeight(setStart.length * itemSize)
       setData(setStart)
     }
     let binder1 = EditorEventMgr.Instance.addEventListener("ConsoleMonitor", newLocal);
@@ -106,7 +158,7 @@ export function Console() {
       v = false;
       consoleMgr.logbool = false;
     }
-    console.log('按钮1', e.target);
+    //console.log('按钮1', e.target);
     ClassNameitemColor();
     consoleMgr.ShowLOG(ConsoleType.Log, v);
     setTimeout(() => {
@@ -126,7 +178,7 @@ export function Console() {
       v = false;
       consoleMgr.warnbool = false;
     }
-    console.log('按钮2')
+    //console.log('按钮2')
     ClassNameitemColor();
     consoleMgr.ShowLOG(ConsoleType.Warn, v);
     setTimeout(() => {
@@ -146,7 +198,7 @@ export function Console() {
       v = false;
       consoleMgr.errorbool = false;
     }
-    console.log('按钮3')
+    //console.log('按钮3')
     ClassNameitemColor();
     consoleMgr.ShowLOG(ConsoleType.Error, v);
     setTimeout(() => {
@@ -155,13 +207,14 @@ export function Console() {
   }
 
   const titclik1 = e => {
+    setCollapseStatus(!collapseStatus)
     var aa: any = document.querySelectorAll('.dd')
     if (aa[0].style.backgroundColor == 'rgb(112, 112, 112)') {
       aa[0].style.backgroundColor = '#363636'
     } else {
       aa[0].style.backgroundColor = '#707070'
     }
-    console.log('按钮1x', aa[0])
+    console.dir('按钮1x', aa)
     e.preventDefault()
   }
 
@@ -172,7 +225,7 @@ export function Console() {
     } else {
       aa[1].style.backgroundColor = '#707070'
     }
-    console.log('按钮2x', aa[0], aa[1])
+    //console.log('按钮2x', aa[0], aa[1])
     e.preventDefault()
   }
 
@@ -183,7 +236,7 @@ export function Console() {
     } else {
       aa[2].style.backgroundColor = '#707070'
     }
-    console.log('按钮3x', aa[0], aa[1], aa[2])
+    //console.log('按钮3x', aa[0], aa[1], aa[2])
     e.preventDefault()
   }
 
@@ -201,8 +254,7 @@ export function Console() {
 
 
   const onCounsole = (item, index) => {
-    var counsol: any = ClassNameitemColor()
-    counsol[index].style.backgroundColor = '#2e6fda';
+    setSelectedId(item.uuid)
     let title = item.title;
     setTide(title);
     consoleMgr.indexCoun = index;
@@ -279,17 +331,26 @@ export function Console() {
       </div>
       <Divider />
       <div className="console-content2" ref={element}>
+        <div style={{ height: listHeight }} className="infinite-list-phantom"></div>)
         <List
+          style={{ transform: getTransform }}
+          className='infinite-list'
           itemLayout="horizontal"
-          dataSource={data == null && Consdata || data != null && data}
+          // dataSource={data == null && Consdata || data != null && data}
+          dataSource={visibleData}
           renderItem={(item, index) => (
-            <List.Item onClick={e => onCounsole(item, index)}>
+            <List.Item
+              style={{ background: item.uuid === selectedId ? '#2e6fda' : '' }}
+              actions={collapseStatus ? [<span style={{ background: '#5f5f5f', padding: '2px 6px', borderRadius: 20, color: '#fff' }}>{item.sum}</span>] : [<></>]}
+              onClick={e => onCounsole(item, index)}>
               {item.visible &&
                 <List.Item.Meta
                   avatar={item.calssName == "StopFilled" && <Avatar src={<StopFilled className={item.ConsoelLogIcon == "StopF" && item.ConsoelLogIcon} />} />
                     || item.calssName == "WarningFilled" && <Avatar src={<WarningFilled className={item.ConsoelLogIcon == "WarningF" && item.ConsoelLogIcon} />} />
                     || item.calssName == "ExclamationCircleFilled" && <Avatar src={<ExclamationCircleFilled className={item.ConsoelLogIcon == "exclamationC" && item.ConsoelLogIcon} />} />}
-                  title={<a>{item.title}</a>}
+                  title={(
+                    <a>{item.title}</a>
+                  )}
                   description={<a>{item.desc}</a>}
                 />}
             </List.Item>

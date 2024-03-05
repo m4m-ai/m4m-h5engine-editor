@@ -9,7 +9,7 @@ interface PropsType {
 }
 
 export default function MenuCom(props: PropsType) {
-    console.log('props.menuList[0].key.toString()',props.menuList[0].key.toString());
+    //console.log('props.menuList[0].key.toString()',props.menuList[0].key.toString());
     
 
     return (

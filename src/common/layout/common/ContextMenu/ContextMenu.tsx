@@ -1,13 +1,14 @@
 import React, {useContext, useEffect} from 'react'
-import { Menu, Item } from 'react-contexify'
+import { Menu, Item, Submenu, ItemParams  } from 'react-contexify'
 import { EditorEventMgr } from '../../../../Game/Event/EditorEventMgr'
 import { WebsocketTool } from '../../../../CodeEditor/code/WebsocketTool'
 import { nanoid } from 'nanoid'
 import {ProjectContext} from '../../layout'
 import {FileInfoManager} from "../../../../CodeEditor/code/FileInfoManager";
+import { EditorAssetInfo } from '../../../../Game/Asset/EditorAssetInfo'
 
 
-export const ContextMenu = (props) => {
+export const ContextMenu = (props: { menuId: string, emitSetData?: Function }) => {
     const {treeData, setTreeData, setSelectNode} = useContext(ProjectContext)
 
     const treeRightMenu2 = {
@@ -15,43 +16,49 @@ export const ContextMenu = (props) => {
         items2: [
           {
             key: 'add',
-            name: '新建文件夹',
-            handler: (props: any) => {
+            name: 'Create Folder',
+            handler: (props: ItemParams) => {
               onAddb(props.props.key, 0);
             }
           },
           {
             key: 'addTsDir',
-            name: '创建Ts工程',
-            handler: (props: any) => {
+            name: 'Create Typescript Project',
+            handler: (props: ItemParams) => {
               onAddb(props.props.key, 1);
             }
           },
           {
             key: 'addTs',
-            name: '创建TypeScript',
-            handler: (props: any) => {
+            name: 'Create TypeScript File',
+            handler: (props: ItemParams) => {
               onAddb(props.props.key, 2);
             }
           },
           {
             key: 'edit',
-            name: '重命名',
-            handler: (props: any) => {
-              onEditb(props.props.key);
+            name: 'Rename File',
+            handler: (props: ItemParams) => {
+              if (props.props) {
+                console.log("name:", (props.props as EditorAssetInfo).value);
+                
+                onEditb(props.props.key);
+              }
             }
           },
           {
             key: 'del',
-            name: '删除',
-            handler: (props: any) => {
-              onDeleteb2(props.props.key);
+            name: 'Delete File',
+            handler: (props: ItemParams) => {
+              if (props.props) {
+                onDeleteb2(props.props);
+              }
             }
           },
           {
             key: 'Save',
-            name: '保存',
-            handler: (props: any) => {
+            name: 'Save File',
+            handler: (props: ItemParams) => {
               EditorEventMgr.Instance.emitEvent("OnSave", cb => cb(props.props.key));
             }
           }
@@ -63,24 +70,23 @@ export const ContextMenu = (props) => {
         setTreeData(treeData.slice())
     }
 
-    const onEditb = (key: any, isnew = false) => {
+    const onEditb = (key: string, isnew = false) => {
         editNode(key, treeData)
         setTreeData(treeData.slice())
     }
 
-    const onDeleteb2 = (key: any) => {
-      const parentKey = FileInfoManager.Instance.getDirByKey(key).parentDirInfo.key
+    //删除文件/文件夹
+    const onDeleteb2 = (info: EditorAssetInfo) => {
+      if (!info) {
+        return;
+      }
 
-      WebsocketTool.Instance.ProjectManager_deleteDir(key);
-
-      const binder = EditorEventMgr.Instance.addEventListener('WaitNetFileInfosUpdate', () => {
-        const assetData = FileInfoManager.Instance.getDirByKey(parentKey)
-        console.log('assetData-------------------', assetData);
-        
-        setSelectNode(assetData)
-        EditorEventMgr.Instance.emitEvent("ResourceFileUpDate", cb => cb(assetData));
-        binder.removeListener()
-      })
+      let isDeleteFile = info.isLeaf;
+      if (isDeleteFile) { //删除文件
+        WebsocketTool.Instance.ProjectManager_deleteFile(info.key);
+      } else { //删除文件夹
+        WebsocketTool.Instance.ProjectManager_deleteDir(info.key);
+      }
     }
     
     const addNode = (key: any, data2: any, type: number) => {
@@ -122,9 +128,10 @@ export const ContextMenu = (props) => {
         }})
     }
     
-    const editNode = (key: any, data2: any) => {
-        data2.forEach((item2: any) => {
+    const editNode = (key: string, data2: EditorAssetInfo[]) => {
+        data2.forEach((item2: EditorAssetInfo) => {
             if (item2.key === key) {
+              //item2.defaultValue = item2.value;
               item2.isEditable = true
               // 是新增才会触发
               if(props.emitSetData && !item2.id) {
@@ -134,19 +141,41 @@ export const ContextMenu = (props) => {
               item2.isEditable = false
             }
             item2.value = item2.defaultValue // 当某节点处于编辑状态，并改变数据，点击编辑其他节点时，此节点变成不可编辑状态，value 需要回退到 defaultvalue
+            
             if (item2.children) {
               editNode(key, item2.children)
             }
+
+            // if (item2.children || item2.childrenFile) {
+            //   let arr: EditorAssetInfo[] = [];
+            //   if (item2.children) {
+            //     arr.push(...item2.children);
+            //   }
+            //   if (item2.childrenFile) {
+            //     arr.push(...item2.childrenFile);
+            //   }
+            //   editNode(key, arr)
+            // }
         })
     }
     
     return (
         <Menu id={treeRightMenu2.menuId}>
             {treeRightMenu2.items2.map(item2 => (
-                // 这里需要加key，不然要报错
-                <Item key={item2.key} onClick={item2.handler}>
-                    {item2.name}
-                </Item>
+              <Item key={item2.key} onClick={item2.handler}>
+                {item2.name}
+              </Item>
+              // 若需要增加子菜单，用下面这组件包裹
+              // <Submenu label="Submenu" key={item2.key}>
+              //   <Submenu label="111">
+              //     <Item key={item2.key} onClick={item2.handler}>
+              //       {item2.name}
+              //     </Item>
+              //   </Submenu>
+              //   <Item key={item2.key} onClick={item2.handler}>
+              //       {item2.name}
+              //     </Item>
+              // </Submenu>
             ))}
         </Menu>
     )

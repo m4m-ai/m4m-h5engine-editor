@@ -66,7 +66,12 @@ export default function HeaderCom(props: PropsType) {
                         <div><ArrowLeftOutlined onClick={() => props.emitSettingFn(false)}/></div>
                         <div>首选项</div>
                     </div>
-                ) : <div>logo</div> 
+                ) : (
+                    <div>
+                        <img src="logo.png" style={{ width: 40, height: 40, marginRight: 25 }}></img>
+                        <img src="logo2.png" style={{ width: 40 / 0.28, height: 40 }}></img>
+                    </div>
+                )
             }
             {/* 未实现功能屏蔽: 项目列表页面头部 */}
             {/* <div className="right">

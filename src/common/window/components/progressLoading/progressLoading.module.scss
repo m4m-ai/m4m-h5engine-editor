@@ -1,0 +1,21 @@
+.progressLoading {
+    padding: 16px 10px;
+}
+
+.progressLoading :global {
+    .progress-box {
+        width: 100%;
+        height: 24px;
+        border: 1px solid #bcbcbc;
+        background: #000;
+        .progress-bar {
+            height: 100%;
+            background: #bcbcbc;
+        }
+    }
+    .progress-info {
+        margin-top: 10px;
+        color: #fff;
+        font-size: 12px;
+    }
+}

@@ -12,11 +12,17 @@ import { EditorApplication } from "../../Game/EditorApplication";
 import transform = m4m.framework.transform;
 import transform2D = m4m.framework.transform2D;
 import { EditorComponentMgr, IComponentInfo } from "../../Game/Component/EditorComponentMgr";
+import { InspectorAnimator } from './animator/InspectorAnimator';
+import { InspectorAudio } from './audio/InspectorAudio';
+import { FileInfoManager } from '../../CodeEditor/code/FileInfoManager';
 // import { AddComponent } from './Input/AddComponent'
 
 const handleMenuClick: MenuProps['onClick'] = e => {
-    console.log('click', e)
+    //console.log('click', e)
 }
+
+let _pvData: EditorAssetInfo;
+let _viewType: InspertorViewType;
 
 export function Inspector() {
     //组件面板是否打开
@@ -27,6 +33,9 @@ export function Inspector() {
     const [gmData, setGmData] = useState<IInspertorGameobjectData>(null);
     //预览数据
     const [pvData, setPvData] = useState<EditorAssetInfo>(null);
+
+    _pvData = pvData;
+    _viewType = viewType;
 
     const element = useRef(null);
     //引用: 添加组件面板
@@ -46,7 +55,7 @@ export function Inspector() {
 
     useEffect(() => {
         EditorEventMgr.Instance.addEventListener('OnSelectColor', (data) => {
-            console.log(data);
+            //console.log(data);
         })
     }, [])
 
@@ -57,12 +66,16 @@ export function Inspector() {
             }
         });
 
-        //清理预览面板数据
-        let binder1 = EditorEventMgr.Instance.addEventListener("ClearInspector", () => {
+        function clearInspector() {
             InspertorMgr.ViewType = InspertorViewType.Hide;
             setViewType(InspertorViewType.Hide);
             setGmData(null);
             setPvData(null);
+        }
+
+        //清理预览面板数据
+        let binder1 = EditorEventMgr.Instance.addEventListener("ClearInspector", () => {
+            clearInspector();
         });
 
         //显示gameobject数据
@@ -89,11 +102,32 @@ export function Inspector() {
             }
         });
 
+        //预览文件丢失
+        let binder5 = EditorEventMgr.Instance.addEventListener("WaitNetFileInfosUpdate", () => {
+            if (_viewType == InspertorViewType.PreviewFile) {
+                if (!_pvData) {
+                    clearInspector();
+                    EditorApplication.Instance.selection.setActiveAsset(null);
+                } else if (_pvData.isLeaf) {
+                    if (!FileInfoManager.Instance.getFileByKey(_pvData.key)) {
+                        clearInspector();
+                        EditorApplication.Instance.selection.setActiveAsset(null);
+                    }
+                } else {
+                    if (!FileInfoManager.Instance.getDirByKey(_pvData.key)) {
+                        clearInspector();
+                        EditorApplication.Instance.selection.setActiveAsset(null);
+                    }
+                }
+            }
+        });
+
         return () => {
             binder1.removeListener();
             binder2.removeListener();
             binder3.removeListener();
             binder4.removeListener();
+            binder5.removeListener();
         }
     }, []);
 
@@ -116,10 +150,10 @@ export function Inspector() {
         isOpen = !isOpen
         if ((listCom.style.display = 'none')) {
             listCom.style.display = 'block'
-            console.log('弹出下拉框')
+            //console.log('弹出下拉框')
         } else {
             listCom.style.display = 'none'
-            console.log('关闭下拉框')
+            //console.log('关闭下拉框')
         }
         setComponentDatas(getComponentDatas());
     }
@@ -132,7 +166,8 @@ export function Inspector() {
             return
         }
 
-        const filterDatas = getComponentDatas().filter(item => item.name.toLocaleLowerCase().indexOf(value) !== -1)
+        let str = value.toLocaleLowerCase();
+        const filterDatas = getComponentDatas().filter(item => item.name.toLocaleLowerCase().indexOf(str) !== -1)
         setComponentDatas(filterDatas)
     }
 
@@ -225,6 +260,20 @@ export function Inspector() {
                     <InspertorPreview assetInfo={pvData}></InspertorPreview>
                 )
             }
+
+            {/* {
+                //动画连线
+                (<>
+                    <InspectorAnimator></InspectorAnimator>
+                </>)
+            } */}
+
+            {/* {
+                // 混音属性
+                (<>
+                    <InspectorAudio></InspectorAudio>
+                </>)
+            } */}
         </div>
     )
 }

@@ -1,14 +1,24 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { engineDiv } from '../../index'
-
-export class Scene extends Component {
-  render(): React.ReactNode {
+import './index.css'
+export function Scene() {
     return (
-      <div
-        ref={element => {
-          element?.appendChild(engineDiv)
-        }}
-      ></div>
+        <>
+            {/* 屏蔽功能 */}
+            {/* <div className="scene-head">
+                    <div className="select-menu">
+                    <ToolSetting />
+                    <GridSnap />
+                    </div>
+                    <div className="select-menu">
+                    <ViewOptions />
+                    </div>
+                </div> */}
+            <div
+                ref={element => {
+                    element?.appendChild(engineDiv)
+                }}
+            ></div>
+        </>
     )
-  }
 }

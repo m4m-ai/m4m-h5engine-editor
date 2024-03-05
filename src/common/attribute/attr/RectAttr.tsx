@@ -4,52 +4,49 @@ import {DragLabel} from "../DragLabel";
 import {TouchPosition} from "../../../Game/Input/TouchPosition";
 import {Utils} from "../../../Game/Utils";
 import {IAttrComponent} from "../Attribute";
-
-export interface IRectAttrData extends IAttrComponent {
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-    onChange: (x: number, y: number,w: number, h: number) => void;
-}
+import rect = m4m.math.rect;
 
 /**
  * 4维向量
  */
-export function RectAttr(data: IRectAttrData) {
-    let [x, setX] = useState(data.x);
-    let [y, setY] = useState(data.y);
-    let [w, setW] = useState(data.w);
-    let [h, setH] = useState(data.h);
+export function RectAttr(data: IAttrComponent<m4m.math.rect>) {
+    let [r, setR] = useState<rect>(new rect(data.attrValue.x, data.attrValue.y, data.attrValue.w, data.attrValue.h));
 
     useEffect(() => {
-        setX(data.x);
-        setY(data.y);
-        setW(data.w);
-        setH(data.h);
+        data.setRefresh(setR);
+
+        setR(new rect(data.attrValue.x, data.attrValue.y, data.attrValue.w, data.attrValue.h));
     }, [data]);
     
     let dragX = useCallback((touch: TouchPosition, xDelta: number) => {
-        setX((x) => {
-            return Utils.number(x + xDelta * 0.05);
+        setR((oldR) => {
+            let v = Utils.number(oldR.x + xDelta * 0.05);
+            data.onChange(new rect(v, oldR.y, oldR.w, oldR.h));
+            return new rect(v, oldR.y, oldR.w, oldR.h);
         })
     }, [data])
 
     let dragY = useCallback((touch: TouchPosition, xDelta: number) => {
-        setY((y) => {
-            return Utils.number(y + xDelta * 0.05);
+        setR((oldR) => {
+            let v = Utils.number(oldR.y + xDelta * 0.05);
+            data.onChange(new rect(oldR.x, v, oldR.w, oldR.h));
+            return new rect(oldR.x, v, oldR.w, oldR.h);
         })
     }, [data])
 
     let dragW = useCallback((touch: TouchPosition, xDelta: number) => {
-        setW((w) => {
-            return Utils.number(w + xDelta * 0.05);
+        setR((oldR) => {
+            let v = Utils.number(oldR.w + xDelta * 0.05);
+            data.onChange(new rect(oldR.x, oldR.y, v, oldR.h));
+            return new rect(oldR.x, oldR.y, v, oldR.h);
         })
     }, [data])
 
     let dragH = useCallback((touch: TouchPosition, xDelta: number) => {
-        setH((h) => {
-            return Utils.number(h + xDelta * 0.05);
+        setR((oldR) => {
+            let v = Utils.number(oldR.h + xDelta * 0.05);
+            data.onChange(new rect(oldR.x, oldR.y, oldR.w, v));
+            return new rect(oldR.x, oldR.y, oldR.w, v);
         })
     }, [data])
 
@@ -59,26 +56,28 @@ export function RectAttr(data: IRectAttrData) {
                 <div className="right-inp-con-1">
                     <DragLabel label={"X"} onDrag={dragX}></DragLabel>
                     <div className="right-p">
-                        <NumberInput value={x}
+                        <NumberInput value={r.x}
+                                     disable={data.disable}
                                      onChange={
                                          (v) => {
-                                             data.onChange(v, y, w, h);
+                                             data.onChange(new rect(Utils.convertToNumber(v), r.y, r.w, r.h));
                                          }
                                      }
-                                     setValue={setX}
+                                     setValue={(v) => setR(new rect(Utils.convertToNumber(v), r.y, r.w, r.h))}
                         ></NumberInput>
                     </div>
                 </div>
                 <div className="right-inp-con-1">
                     <DragLabel label={"Y"} onDrag={dragY}></DragLabel>
                     <div className="right-p">
-                        <NumberInput value={y}
+                        <NumberInput value={r.y}
+                                     disable={data.disable}
                                      onChange={
                                          (v) => {
-                                             data.onChange(x, v, w, h);
+                                             data.onChange(new rect(Utils.convertToNumber(v), r.y, r.w, r.h));
                                          }
                                      }
-                                     setValue={setY}
+                                     setValue={(v) => setR(new rect(Utils.convertToNumber(v), r.y, r.w, r.h))}
                         ></NumberInput>
                     </div>
                 </div>
@@ -87,26 +86,28 @@ export function RectAttr(data: IRectAttrData) {
                 <div className="right-inp-con-1">
                     <DragLabel label={"W"} onDrag={dragW}></DragLabel>
                     <div className="right-p">
-                        <NumberInput value={w}
+                        <NumberInput value={r.w}
+                                     disable={data.disable}
                                      onChange={
                                          (v) => {
-                                             data.onChange(x, y, v, h);
+                                             data.onChange(new rect(Utils.convertToNumber(v), r.y, r.w, r.h));
                                          }
                                      }
-                                     setValue={setW}
+                                     setValue={(v) => setR(new rect(Utils.convertToNumber(v), r.y, r.w, r.h))}
                         ></NumberInput>
                     </div>
                 </div>
                 <div className="right-inp-con-1">
                     <DragLabel label={"H"} onDrag={dragH}></DragLabel>
                     <div className="right-p">
-                        <NumberInput value={h}
+                        <NumberInput value={r.h}
+                                     disable={data.disable}
                                      onChange={
                                          (v) => {
-                                             data.onChange(x, y, w, v);
+                                             data.onChange(new rect(Utils.convertToNumber(v), r.y, r.w, r.h));
                                          }
                                      }
-                                     setValue={setH}
+                                     setValue={(v) => setR(new rect(Utils.convertToNumber(v), r.y, r.w, r.h))}
                         ></NumberInput>
                     </div>
                 </div>

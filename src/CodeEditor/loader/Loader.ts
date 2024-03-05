@@ -84,7 +84,7 @@ export class Loader {
                 break;
         }
         let url = this.url;
-        console.error("++++++++++++++++++++++++++++++++++++  "+url)
+        // console.error("++++++++++++++++++++++++++++++++++++  "+url)
         let req = new XMLHttpRequest();
         let isLoaded = false;
         req.open("GET", url);

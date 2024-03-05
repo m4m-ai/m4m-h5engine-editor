@@ -1,0 +1,21 @@
+
+.contextMenuSlot {
+    position: fixed;
+    z-index: 300;
+    left: 0;
+    top: 0;
+}
+
+.context-menu.item{
+    max-width: 300px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.context-menu.submenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

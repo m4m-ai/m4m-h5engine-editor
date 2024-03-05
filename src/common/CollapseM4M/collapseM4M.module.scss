@@ -1,0 +1,31 @@
+.collapse {
+    background: #414141;
+    padding: 4px 8px;
+}
+
+.collapse :global {
+    // 折叠整体
+    .ant-collapse {
+        background-color: #414141;
+        border: none;
+    }
+    // 折叠项每一条
+    .ant-collapse > .ant-collapse-item {
+        background: #474747;
+        margin-bottom: 4px;
+        padding: 2px 6px ;
+        border: 1px solid #000;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 550;
+    }
+    .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+        color: #d2d2d2;
+    }
+    // 展开内容区域
+    .ant-collapse-content {
+        background: #474747;
+        border: none;
+        color: #d2d2d2;
+    }
+}

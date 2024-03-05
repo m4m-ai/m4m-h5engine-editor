@@ -24,25 +24,25 @@ const { Panel } = Collapse
 const { Option, OptGroup } = Select
 
 const onChange1 = (e: CheckboxChangeEvent) => {
-  console.log(`checked = ${e.target.checked}`)
+  //`checked = ${e.target.checked}`)
 }
 
 const onclick0 = () => {
-  console.log('Camera图标icon按钮')
+  //console.log('Camera图标icon按钮')
 }
 const onclick1 = e => {
   e.stopPropagation()
   e.defaultPrevented = false
 
-  console.log('Camera按钮1', e, e.preventDefault())
+  //console.log('Camera按钮1', e, e.preventDefault())
 }
 const onclick2 = e => {
   e.stopPropagation()
-  console.log('Camera按钮2')
+  //console.log('Camera按钮2')
 }
 const onclick3 = e => {
   e.stopPropagation()
-  console.log('Camera按钮3')
+  //console.log('Camera按钮3')
 }
 
 //Camera的标题行布局
@@ -110,7 +110,7 @@ const InspectordataList: any = [
 ]
 
 const handleChange = (value: { value: any; label: React.ReactNode }) => {
-  console.log(value)
+  //console.log(value)
 }
 
 const Camera = () => {

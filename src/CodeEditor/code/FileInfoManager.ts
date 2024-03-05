@@ -44,13 +44,19 @@ export class FileInfoManager {
     public getKeyByPath(path: string){
         return this.keyPathMap.get(path);
     }
+    public getFileByPath(path: string){
+        return this.getFileByKey(this.getKeyByPath(path));
+    }
     public getFileByKey(key: string) {
         return this.fileMap.get(key);
     }
     public getDirByKey(key: string) {
         return this.dirMap.get(key);
     }
-    public diguiDirPare(res, isInit = true) {
+    public getDirByPath(path: string) {
+        return this.getDirByKey(this.keyPathMap.get(path));
+    }
+    public diguiDirPare(res: EditorAssetInfo, isInit = true) {
         if (isInit) {
             this.fileMap.clear();
             this.dirMap.clear();

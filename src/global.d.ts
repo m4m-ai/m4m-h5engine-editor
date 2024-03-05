@@ -31,3 +31,12 @@ declare var System: {
     startRecord(assembly: string): void;
     overRecord(): void;
 };
+
+
+
+declare module "sortablejs" {
+    const Sortable: {
+        create(ele: HTMLElement, config: any)
+    };
+    export default Sortable;
+}

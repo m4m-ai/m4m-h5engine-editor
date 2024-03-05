@@ -3,27 +3,21 @@ import React from "react";
 import { Checkbox, Space } from "antd";
 import { NumberInput } from "../NumberInput";
 import {IAttrComponent} from "../Attribute";
+import { Utils } from "../../../Game/Utils";
 
-export interface ILayoutSetAttrData extends IAttrComponent {
-    checkeState: { checked: boolean, value: number, isshow: string }[],
-    onChange: (val: any) => void
-    setRefresh(func: Function): void;
+export type LayoutSetData = { checked: boolean, value: number, isshow: string }[];
+
+export interface ILayoutSetAttrData extends IAttrComponent<LayoutSetData> {
 }
 
 /**
  * 布局框属性
  */
 export function LayoutSetAttr(data: ILayoutSetAttrData) {
-    let [checkedArr, setChecked] = useState(data.checkeState);
-
+    let [checkedArr, setChecked] = useState(data.attrValue);
     useEffect(() => {
-        data.setRefresh((valArr: { checked: boolean, value: number, isshow: string }[]) => {
-            // console.error(valArr);
-            setChecked(valArr);
-            // valArr.length = 0;
-            // valArr = null;
-        });
-        setChecked(data.checkeState);
+        data.setRefresh(setChecked);
+        setChecked(data.attrValue);
     }, [data])
     let outisShow = (select: boolean) => {
         if (select) {
@@ -42,6 +36,7 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                         <label>L</label>
                         <Space size={20}>
                             <Checkbox
+                                disabled={data.disable}
                                 checked={checkedArr[0].checked}
                                 onChange={(e) => {
                                     // console.error(e.target.checked);
@@ -57,6 +52,7 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                         </Space>
                         <Space size={20}>
                             <Checkbox
+                                disabled={data.disable}
                                 checked={checkedArr[1].checked}
                                 onChange={(e) => {
                                     // console.error(e.target.checked);
@@ -70,6 +66,7 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                             <label>R</label>
                         </Space>
                         <Checkbox
+                            disabled={data.disable}
                             checked={checkedArr[2].checked}
                             onChange={(e) => {
                                 // console.error(e.target.checked);
@@ -93,6 +90,7 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                         <label>T</label>
                         <Space size={168}>
                             <Checkbox
+                                disabled={data.disable}
                                 checked={checkedArr[3].checked}
                                 onChange={(e) => {
                                     // console.error(e.target.checked);
@@ -105,11 +103,11 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                                 }}
                             ></Checkbox>
                             <div style={{ display: checkedArr[3].isshow }}>
-                                <NumberInput value={checkedArr[3].value} setValue={(val) => {
+                                <NumberInput disable={data.disable} value={checkedArr[3].value} setValue={(val) => {
                                     // console.error(val);
-                                }} onChange={(val: number) => {
+                                }} onChange={(val:string|number) => {
                                     let checkChangeArr = checkedArr.concat();
-                                    checkChangeArr[3].value = val;
+                                    checkChangeArr[3].value = Utils.convertToNumber(val);
                                     setChecked(checkChangeArr);
                                     data.onChange(checkChangeArr);
                                 }} style={{ width: 36 }}></NumberInput>
@@ -136,6 +134,7 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                         <label>M</label>
                         <Space size={168}>
                             <Checkbox
+                                disabled={data.disable}
                                 checked={checkedArr[4].checked}
                                 onChange={(e) => {
                                     // console.error(e.target.checked);
@@ -148,11 +147,11 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                                 }}
                             ></Checkbox>
                             <div style={{ display: checkedArr[4].isshow }}>
-                                <NumberInput value={checkedArr[4].value} setValue={(val) => {
+                                <NumberInput disable={data.disable} value={checkedArr[4].value} setValue={(val) => {
                                     // console.error(val);
-                                }} onChange={(val: number) => {
+                                }} onChange={(val: string|number) => {
                                     let checkChangeArr = checkedArr.concat();
-                                    checkChangeArr[4].value = val;
+                                    checkChangeArr[4].value = Utils.convertToNumber(val);
                                     setChecked(checkChangeArr);
                                     data.onChange(checkChangeArr);
                                 }} style={{ width: 36 }}></NumberInput>
@@ -179,6 +178,7 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                         <label>B</label>
                         <Space size={168}>
                             <Checkbox
+                                disabled={data.disable}
                                 checked={checkedArr[5].checked}
                                 onChange={(e) => {
                                     // console.error(e.target.checked);
@@ -191,11 +191,11 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                                 }}
                             ></Checkbox>
                             <div style={{ display: checkedArr[5].isshow }}>
-                                <NumberInput value={checkedArr[5].value} setValue={(val) => {
+                                <NumberInput disable={data.disable} value={checkedArr[5].value} setValue={(val) => {
                                     // console.error(val);
-                                }} onChange={(val: number) => {
+                                }} onChange={(val) => {
                                     let checkChangeArr = checkedArr.concat();
-                                    checkChangeArr[5].value = val;
+                                    checkChangeArr[5].value = Utils.convertToNumber(val);
                                     setChecked(checkChangeArr);
                                     data.onChange(checkChangeArr);
                                 }} style={{ width: 36 }}></NumberInput>
@@ -223,11 +223,11 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                     <div style={{ width: "53px" }}>
                         <div style={{ display: checkedArr[0].isshow }}>
                             {/* <Space size={16}> */}
-                            <NumberInput value={checkedArr[0].value} setValue={(val: number) => {
+                            <NumberInput disable={data.disable} value={checkedArr[0].value} setValue={(val) => {
                                 //  console.error(val);
-                            }} onChange={(val: number) => {
+                            }} onChange={(val) => {
                                 let checkChangeArr = checkedArr.concat();
-                                checkChangeArr[0].value = val;
+                                checkChangeArr[0].value = Utils.convertToNumber(val);
                                 setChecked(checkChangeArr);
                                 data.onChange(checkChangeArr);
                             }} style={{ width: 36 }}></NumberInput>
@@ -235,11 +235,11 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                     </div>
                     <div style={{ width: "53px" }}>
                         <div style={{ display: checkedArr[1].isshow }}>
-                            <NumberInput value={checkedArr[1].value} setValue={(val) => {
+                            <NumberInput disable={data.disable} value={checkedArr[1].value} setValue={(val) => {
                                 //  console.error(val);
-                            }} onChange={(val: number) => {
+                            }} onChange={(val) => {
                                 let checkChangeArr = checkedArr.concat();
-                                checkChangeArr[1].value = val;
+                                checkChangeArr[1].value = Utils.convertToNumber(val);
                                 setChecked(checkChangeArr);
                                 data.onChange(checkChangeArr);
                             }} style={{ width: 36 }}></NumberInput>
@@ -247,11 +247,11 @@ export function LayoutSetAttr(data: ILayoutSetAttrData) {
                     </div>
                     <div style={{ width: "53px" }}>
                         <div style={{ display: checkedArr[2].isshow }}>
-                            <NumberInput value={checkedArr[2].value} setValue={(val) => {
+                            <NumberInput disable={data.disable} value={checkedArr[2].value} setValue={(val) => {
                                 //  console.error(val);
-                            }} onChange={(val: number) => {
+                            }} onChange={(val) => {
                                 let checkChangeArr = checkedArr.concat();
-                                checkChangeArr[2].value = val;
+                                checkChangeArr[2].value = Utils.convertToNumber(val);
                                 setChecked(checkChangeArr);
                                 data.onChange(checkChangeArr);
                             }} style={{ width: 36 }}></NumberInput>

@@ -1,0 +1,74 @@
+.build-setting{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.build-setting :global {
+  /* 中间区域 */
+  .bd-content{
+    flex: 1;
+    padding: 10px 10px 20px 10px;
+    color: #b5b5b5;
+  }
+  .bd-middle{
+    height: 100%;
+    border: 1px solid #000000;
+    padding-right: 10px;
+    .bd-item {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      color: #c8c8c8;
+    }
+  }
+  
+  .bd-platform{
+    height: 412px;
+    padding: 10px 10px;
+    color: #b5b5b5;
+    .platform-layout {
+      height: 370px;
+    }
+    .platform-footer-btn {
+      height: 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+
+  // 当前组件通用样式
+  .bd-button {
+    background: #585858;
+    width: 120px;
+    height: 20px;
+    font-size: 12px;
+    padding: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .pitch-status{ // 选中状态的背景颜色
+    background-color: #1890ff;
+  }
+
+
+  // ant 样式修改
+  .ant-checkbox-wrapper {
+    color: #c8c8c8;
+  }
+  .ant-layout {
+    background: #333;
+  }
+  .ant-menu {
+    color: #c5c5c5;
+    background: #3F3F3F;
+  }
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #2c5d87;
+  }
+  .ant-menu-item-selected {
+    color: #c5c5c5;
+  }
+}

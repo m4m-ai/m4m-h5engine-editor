@@ -1,0 +1,33 @@
+.tabsM4M {}
+
+.tabsM4M :global {
+    .tabs-bar {
+        width: 100%;
+        background: #353535;
+        display: flex;
+        color: #c4c4c4;
+        .tabs-item {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2px 0;
+            border-right: 1px solid #000;
+            border-bottom: 1px solid #000;
+            &:hover {
+                background: #303030;
+            }
+        }
+    }
+    // 选中样式
+    .tabs-item.tabs-active {
+        background: #414141;
+        border-bottom: 1px solid #414141;
+        &:hover {
+            background: #414141;
+        }
+    }
+    .tabs-content {
+        background: #414141;
+    }
+}

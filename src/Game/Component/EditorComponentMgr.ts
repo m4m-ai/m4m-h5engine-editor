@@ -24,6 +24,9 @@ import I2DComponent = m4m.framework.I2DComponent;
 import vector2 = m4m.math.vector2;
 import vector3 = m4m.math.vector3;
 import border = m4m.math.border;
+import { ComponentFieldHandler } from "./ComponentFieldHandler";
+import { ComponentFieldMapping } from "./ComponentFieldMapping";
+import { CustomFieldsHandler } from "./CustomFieldsHandler";
 
 export interface IComponentInfo {
     title: string;
@@ -31,15 +34,22 @@ export interface IComponentInfo {
     type: "2D" | "3D";
     assembly: string;
     classInfo: { new(): INodeComponent | I2DComponent };
+    /** 包含的字段 */
     fields: IComponentFieldInfo[];
 }
 
 export interface IComponentFieldInfo {
+    /** 字段名称 */
     name: string;
+    /** 字段在编辑器中显示的名称 */
     title: string;
+    /** 组件类型 */
     type: ComponentFieldEnum;
+    /** 默认值 */
     defaultValue: any;
+    /** 是否是引用类型 */
     isRef: boolean;
+    /** 是否是数组 */
     isArray: boolean;
 }
 
@@ -50,6 +60,8 @@ export class EditorComponentMgr {
 
     private static readonly _component2d: Map<string, IComponentInfo> = new Map<string, IComponentInfo>();
     private static readonly _component3d: Map<string, IComponentInfo> = new Map<string, IComponentInfo>();
+
+    private static readonly _componentFiled: Map<string, ComponentFieldHandler<any>> = new Map<string, ComponentFieldHandler<any>>();
 
     /**
      * 获取所有2D组件
@@ -125,6 +137,12 @@ export class EditorComponentMgr {
      * 初始化默认组件, 该函数必须在加载用户脚本之前调用
      */
     public static initComponent() {
+        // //初始化组件字段配置
+        // for (let key in ComponentFieldMapping) {
+        //     let item = ComponentFieldMapping[key];
+        //     this.registerComponentField(key, item);
+        // }
+        
         //临时处理, 在 m4m.m4m_reflect_root 下寻找组件数据
         let gdmeta = m4m.m4m_reflect_root.__gdmeta__;
         for (let key in gdmeta) {
@@ -138,7 +156,7 @@ export class EditorComponentMgr {
                 let custom = cls.custom;
                 if (custom["nodecomp"]) { //3d组件
                     let fields: IComponentInfo["fields"] = this.getFields(gmmeta);
-
+                    CustomFieldsHandler(cls.typename, fields);
                     this._component3d.set(cls.typename, {
                         type: "3D",
                         name: cls.typename,
@@ -149,7 +167,7 @@ export class EditorComponentMgr {
                     });
                 } else if (custom["2dcomp"]) { //2d组件
                     let fields: IComponentInfo["fields"] = this.getFields(gmmeta);
-
+                    CustomFieldsHandler(cls.typename, fields);
                     this._component2d.set(cls.typename, {
                         type: "2D",
                         name: cls.typename,
@@ -202,6 +220,7 @@ export class EditorComponentMgr {
                 if (custom["nodecomp"]) { //3d组件
                     if (!this._component3d.has(cls.typename)) {
                         let fields: IComponentInfo["fields"] = this.getFields(gmmeta);
+                        CustomFieldsHandler(cls.typename, fields);
                         this._component3d.set(cls.typename, {
                             type: "3D",
                             name: cls.typename,
@@ -214,6 +233,7 @@ export class EditorComponentMgr {
                 } else if (custom["2dcomp"]) { //2d组件
                     if (!this._component2d.has(cls.typename)) {
                         let fields: IComponentInfo["fields"] = this.getFields(gmmeta);
+                        CustomFieldsHandler(cls.typename, fields);
                         this._component2d.set(cls.typename, {
                             type: "2D",
                             name: cls.typename,
@@ -228,6 +248,20 @@ export class EditorComponentMgr {
         }
         // console.log("所有2d组件: ", this._component2d);
         // console.log("所有3d组件: ", this._component3d);
+    }
+
+    /** 
+     * 注册字段类型
+     */
+    public static registerComponentField(fieldType: string, handler: ComponentFieldHandler<any>): void {
+        this._componentFiled.set(fieldType, handler);
+    }
+
+    /**
+     * 
+     */
+    public static getComponentField() {
+        
     }
 
     /**
@@ -257,7 +291,10 @@ export class EditorComponentMgr {
                     case ComponentFieldEnum.Boolean:
                         component[field.name] = false;
                         break;
-                    case ComponentFieldEnum.Number:
+                    case ComponentFieldEnum.Float:
+                        component[field.name] = 0;
+                        break;
+                    case ComponentFieldEnum.Integer:
                         component[field.name] = 0;
                         break;
                     case ComponentFieldEnum.String:
@@ -300,7 +337,11 @@ export class EditorComponentMgr {
             case "boolean":
                 return ComponentFieldEnum.Boolean;
             case "number":
-                return ComponentFieldEnum.Number;
+            case "floar":
+                return ComponentFieldEnum.Float;
+            case "int":
+            case "integer":
+                return ComponentFieldEnum.Integer;
             case "string":
                 return ComponentFieldEnum.String;
             case "vector2":
@@ -309,7 +350,10 @@ export class EditorComponentMgr {
                 return ComponentFieldEnum.Vector3;
             case "border":
                 return ComponentFieldEnum.Border;
+            case "texture":
+                return ComponentFieldEnum.texture;
         }
+        console.log("未知映射类型: " + type);
         return ComponentFieldEnum.HideInInspector;
     }
 }

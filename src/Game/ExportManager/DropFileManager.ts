@@ -103,7 +103,7 @@ export async function DropFileCallBack(e: DragEvent) {
         }
 
         //上传操作
-        await ExportManager.uploadFiles(fileList, async (response, index) => {
+        ExportManager.uploadFiles(fileList, async (response, index) => {
             if (response.status != 200) {
                 result.failCount++;
                 response.text().then(value => {
@@ -114,9 +114,11 @@ export async function DropFileCallBack(e: DragEvent) {
                 response.text().then(value => {
                     console.log("上传成功: " + fileList[index].path + " key:", value);
                 })
+                
             }
+        }, () => {
+            console.log(`所有文件上传完成, 成功: ${result.successCount}, 失败: ${result.failCount}`);
+            EditorEventMgr.Instance.emitEvent("OnDropFileUploadFinish", cb => cb(fileList, result.successCount, result.failCount));
         });
-        console.log(`文件上传完成, 成功: ${result.successCount}, 失败: ${result.failCount}`);
-        EditorEventMgr.Instance.emitEvent("OnDropFileUploadFinish", cb => cb(fileList, result.successCount, result.failCount));
     }
 }

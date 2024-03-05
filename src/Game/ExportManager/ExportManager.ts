@@ -17,12 +17,12 @@ limitations under the License.
 import { FileInfoManager } from "../../CodeEditor/code/FileInfoManager";
 import { WebsocketTool } from "../../CodeEditor/code/WebsocketTool";
 import { Loader } from "../../CodeEditor/loader/Loader";
-import { LoaderManager } from "../../CodeEditor/loader/LoaderManager";
+import { LoadType, LoaderManager } from "../../CodeEditor/loader/LoaderManager";
 import { Creat2d } from "../../CodeEditor/loader/otherPlan/Creat2d";
 import { Creat3d } from "../../CodeEditor/loader/otherPlan/Creat3d";
-import { LoadType } from "../../CodeEditor/loader/otherPlan/LoaderManage";
 import { testReadTool } from "../../CodeEditor/loader/otherPlan/testReadTool";
 import { EditorApplication } from "../EditorApplication";
+import { EditorSceneViewType } from "../Scene/EditorScene";
 import { Utils } from "../Utils";
 import { CmopFileManager } from "./CmopFileManager";
 import { ExportNameList } from "./ExportNameList";
@@ -114,7 +114,7 @@ export class ExportManager {
                 return;
             }
             var mesh = Creat3d.createMesh(dataList, _mesh, m4m.framework.assetMgr.Instance.webgl);
-            console.error("111166666 " + mesh.getName() + "   " + key);
+            // console.error("111166666 " + mesh.getName() + "   " + key);
             mesh["_fileKey"] = key;
             if (pare) {
                 pare["meshKey"] = key;
@@ -217,22 +217,26 @@ export class ExportManager {
     public static test2(dirKey: string, fileName: string) {
         ExportNameList.Instance.init();
         var tran = EditorApplication.Instance.editorScene.getCurrentRoot();
-        ExportManager.Creat3DPrefabByKey("821b0f556f0046a3b8227ff4e14882d9", tran);
+        ExportManager.Creat3DPrefabByKey("79d536e47c404c148cd03b80a73a9810", tran);
+        //ExportManager.Creat3DPrefabByKey("a46f901aa48a40fa8d1e2bb3318f8de5", tran);
         //setTimeout(() => {
 
-           // var scene = EditorApplication.Instance.editorScene.scene;
-           // var tran = EditorApplication.Instance.editorScene.getCurrentRoot();
-           // dirKey = FileInfoManager.Instance.getKeyByPath("Scenes/test/");
-            //fileName = "ttttbbiiiyyyy";
-           // WebsocketTool.Instance.PrefabExport_exportScene(dirKey, fileName, JSON.stringify(ExportManager.getTranInfo(tran)), scene.fog);
-       // }, 150000);
+        // var scene = EditorApplication.Instance.editorScene.scene;
+        // var tran = EditorApplication.Instance.editorScene.getCurrentRoot();
+        // dirKey = FileInfoManager.Instance.getKeyByPath("Scenes/test/");
+        //fileName = "ttttbbiiiyyyy";
+        // WebsocketTool.Instance.PrefabExport_exportScene(dirKey, fileName, JSON.stringify(ExportManager.getTranInfo(tran)), scene.fog);
+        // }, 150000);
 
         // ExportManager.CreatSceneByKey("20c42715f3da4e2d90ec81da40b0a1f6");
     }
     public static exportScene(dirKey: string, fileName: string) {
         var scene = EditorApplication.Instance.editorScene.scene;
         var tran = EditorApplication.Instance.editorScene.getCurrentRoot();
-        WebsocketTool.Instance.PrefabExport_exportScene(dirKey, fileName, JSON.stringify(ExportManager.getTranInfo(tran)), scene.fog);
+        console.warn(tran);
+        let transObj = ExportManager.getTranInfo(tran);
+        console.error(transObj);
+        WebsocketTool.Instance.PrefabExport_exportScene(dirKey, fileName, JSON.stringify(transObj), scene.fog);
     }
     public static CreatSceneByKey(jsonKey) {
         let fileInfo = FileInfoManager.Instance.getFileByKey(jsonKey);
@@ -243,9 +247,17 @@ export class ExportManager {
         if (!tranUrl) {
             return;
         }
+        // console.error(tranUrl);
+        //清理原场景
+        EditorApplication.Instance.editorScene.clearScene();
+        EditorApplication.Instance.editorScene.viewType = EditorSceneViewType.Scene;
+
         var pareTran = EditorApplication.Instance.editorScene.getCurrentRoot();
+        //加载配置之前清掉 原缓存数据
+        LoaderManager.Instance.removeLoader(tranUrl);
         LoaderManager.Instance.load(tranUrl, (loader: Loader, json: any) => {
             var prefabFileInfo = JSON.parse(json);
+            // console.error(prefabFileInfo);
             var prefabKey = prefabFileInfo.prefabKey;
             var filesKey = prefabFileInfo.filesKey as { [key: string]: string };
             var scene = EditorApplication.Instance.editorScene.scene;
@@ -294,6 +306,8 @@ export class ExportManager {
         if (!tranUrl) {
             return;
         }
+        //加载配置之前清掉 原缓存数据
+        LoaderManager.Instance.removeLoader(tranUrl);
         LoaderManager.Instance.load(tranUrl, (loader: Loader, json: any) => {
             var prefabFileInfo = JSON.parse(json);
             var prefabKey = prefabFileInfo.prefabKey;
@@ -332,6 +346,8 @@ export class ExportManager {
             return;
         }
         let tranUrl = ExportManager.getFileUrl(fileInfo.relativePath);
+        //加载配置之前清掉 原缓存数据
+        LoaderManager.Instance.removeLoader(tranUrl);
         LoaderManager.Instance.load(tranUrl, (loader: Loader, bytes: any) => {
             var buffer = new Uint8Array(bytes);
             var dataList = testReadTool.testRead(buffer);
@@ -346,10 +362,9 @@ export class ExportManager {
             Creat3d.setCompsToTran(trans, dataList, insidMap);
             if (!isScene) {
                 pareTran.addChild(trans);
-                setTimeout(() => {
-
-                    console.error(trans);
-                }, 2000);
+                // setTimeout(() => {
+                //     console.error(trans);
+                // }, 2000);
             } else {
                 let children: m4m.framework.transform[] = [];
                 for (const key in trans.children) {
@@ -359,10 +374,17 @@ export class ExportManager {
                 for (let index = 0; index < children.length; index++) {
                     const element = children[index];
                     pareTran.addChild(element);
-                    setTimeout(() => {
+                    // setTimeout(() => {
 
-                        console.error(element);
-                    }, 20000);
+                    //     console.error(element);
+                    // }, 20000);
+                }
+                let mainCamTrans: m4m.framework.transform = pareTran.find("MainCamera");
+                let mainCam = mainCamTrans.gameObject.getComponent("camera") as m4m.framework.camera;
+                if (mainCam) {
+                    //如果是主相机 暂设置隐藏
+                    mainCam.gameObject.visible = false;
+                    // console.error(mainCam);
                 }
             }
         }, LoadType.ARRAYBUFFER);
@@ -371,14 +393,16 @@ export class ExportManager {
      * 多文件上传
      * @param files 文件列表
      * @param callback 服务器响应回调, response: 请求响应数据, index: 当前文件索引, count: 文件总数
+     * @param finish 所有文件上传完成后回调
      */
-    public static async uploadFiles(files: FileData[], callback?: (response: Response, index: number, count: number) => Promise<void>): Promise<void> {
+    public static async uploadFiles(files: FileData[], callback?: (response: Response, index: number, count: number) => Promise<void>, finish?: () => void): Promise<void> {
         let count = files.length;
         for (let i = 0; i < count; i++) {
             let file = files[i];
             let res = await this.uploadFile(file.path, file.buffer);
             callback && await callback(res, i, count);
         }
+        finish && finish();
     }
 
     public static test(dirKey: string) {
@@ -476,7 +500,7 @@ export class ExportManager {
         if (ts) {
             for (const key in ts) {
                 const element = ts[key];
-                ts[key]=Math.floor(element);
+                ts[key] = Math.floor(element);
             }
         }
         tranInfo["localScale"] = tran.localScale;
@@ -489,7 +513,7 @@ export class ExportManager {
         if (layoutValueMap) {
             for (const key in layoutValueMap) {
                 const element = layoutValueMap[key];
-                layoutValueMap[key]=Math.floor(element);
+                layoutValueMap[key] = Math.floor(element);
             }
         }
         tranInfo["insid"] = tran.insId.getInsID();
@@ -695,11 +719,13 @@ export class ExportManager {
         gameObject["visible"] = tran.gameObject.visible;
         let componentsList = {};
 
+        // console.error(tran.name + "   " + tran.gameObject.components.length);
         for (const key in tran.gameObject.components) {
             let comp = tran.gameObject.components[key];
             let className = Utils.getName(comp.comp);
             let compOut = {};
             compOut["className"] = className;
+            // console.error("className  " + className);
             let nameList = ExportNameList.Instance.exportList.get(className);
             if (!nameList) {
                 continue;
@@ -747,6 +773,7 @@ export class ExportManager {
         for (const key in tran.children) {
             let child = tran.children[key];
             if (child.gameObject.tag == "Ui") {
+                // console.error(child.name);
                 continue;
             }
             children.push(ExportManager.getTranInfo(child));

@@ -1,0 +1,279 @@
+.animator {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+}
+
+.controller-title {
+  font-size: small;
+  font-weight: 400;
+  padding: 0 4px;
+  margin: 0 2px;
+}
+
+.layer-list {
+  width: 100%;
+  list-style: none;
+  height: calc(100% - 2px);
+  background: #363636;
+}
+
+.grid-panel {
+  width: 4000px;
+  height: 4000px;
+  background-color: rgb(42, 42, 42);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.animator .box2 {
+  height: 100%;
+  min-width: 240px;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.grid-line {
+  display: flex;
+  min-height: 22px;
+  background-color: #262626;
+  width: 100%;
+  font-size: 12px;
+  color: rgb(187, 187, 187);
+}
+
+.grid-line-bottom {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding-right: 8px;
+  justify-content: flex-end;
+  background-color: rgb(64, 64, 64);
+}
+
+.layer-list {
+  position: relative;
+  height: calc(100% - 22px);
+  /* overflow-y: auto; */
+}
+
+.layer {
+  box-sizing: border-box;
+  display: flex;
+  height: 40px;
+  padding: 2px 8px;
+  margin: 0 2px;
+  border-radius: 4px 4px 0 0;
+  font-size: small;
+  position: relative;
+}
+
+.layer-active,
+.params-active,
+.ins-active {
+  background-color: rgb(44, 93, 135);
+}
+
+.layer-icon {
+  color: rgb(98, 98, 98);
+}
+
+.layer-info {
+  width: 100%;
+  padding-left: 4px;
+}
+
+.layer-top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: rgb(196, 196, 196);
+  font-size: 13px;
+}
+
+.layer-name {
+  color: #fff;
+  font-weight: 300;
+}
+
+.layer-rename {
+  width: 90%;
+  color: #fff;
+  height: 18px;
+  margin-top: 4px;
+}
+
+.layer-slider,
+.progress {
+  height: 14px;
+  line-height: 8px;
+}
+
+.setting-panel {
+  display: none;
+  width: 300px;
+  height: 200px;
+  padding: 5px;
+  border: 1px solid #636363;
+  position: absolute;
+  left: 105%;
+  top: 10%;
+  z-index: 10;
+  background-color: rgb(54, 54, 54);
+}
+
+.params {
+  display: flex;
+  height: 30px;
+  padding: 5px;
+  margin: 0 2px;
+  box-sizing: border-box;
+  border-radius: 4px 4px 0 0;
+  font-size: small;
+  position: relative;
+}
+
+.params-icon {
+  color: rgb(98, 98, 98);
+}
+
+.params-info {
+  width: 100%;
+  padding-left: 4px;
+}
+
+.params-top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: rgb(196, 196, 196);
+  font-size: 13px;
+}
+
+.params-name {
+  color: #fff;
+  font-weight: 300;
+}
+
+.params-rename {
+  width: 90%;
+  color: #fff;
+  height: 18px;
+  margin-top: 4px;
+}
+
+.panel-box {
+  width: 100%;
+  height: calc(100% - 40px);
+  overflow: auto;
+  position: relative;
+}
+
+.panel-box::-webkit-scrollbar {
+  display: none;
+}
+
+.panel {
+  position: relative;
+}
+
+.state {
+  position: absolute;
+  border-radius: 5px;
+  box-shadow: 0px 0px 3px 3px rgb(64, 64, 64);
+  color: #fff;
+  text-align: center;
+  transform-origin: center;
+  width: 160px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+}
+
+.state-active {
+  box-shadow: 0px 0px 3px 3px rgb(89, 128, 191);
+}
+
+.entry {
+  background: linear-gradient(rgb(8, 200, 72), rgb(4, 149, 8));
+  top: 200px;
+  left: 50px;
+}
+
+.exit {
+  background: linear-gradient(rgb(174, 7, 7), rgba(146, 4, 4, 0.858));
+  top: 200px;
+  left: 250px;
+}
+
+.any {
+  background: linear-gradient(rgb(47, 161, 130), rgb(62, 120, 111));
+  top: 150px;
+  left: 50px;
+}
+
+.new-state {
+  width: 200px;
+  height: 40px;
+  background: linear-gradient(rgb(240, 137, 35), rgb(181, 95, 9));
+  top: 100px;
+  left: 100px;
+}
+
+.animator .react-contexify__item__content {
+  line-height: 20px;
+  padding: 0px 12px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  color: #333;
+  position: relative;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.animator .react-contexify {
+  position: fixed;
+  opacity: 0;
+  -webkit-user-select: none;
+  user-select: none;
+  background-color: #fff;
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px -5px rgb(0 0 0 / 30%);
+  border-radius: 0;
+  padding: 0;
+  min-width: 200px;
+  z-index: 100;
+  transform-origin: top left;
+}
+
+.layer-bread {
+  background-color: #333333;
+  padding: 0 8px;
+  font-size: 12px;
+}
+
+.params-select {
+  height: 18px;
+  line-height: 18px;
+  padding: 0 2px;
+  position: relative;
+}
+
+.params-select:hover {
+  background-color: #464646;
+}
+
+.params-options {
+  display: none;
+  width: 200px;
+  height: 80px;
+  position: absolute;
+  top: 22px;
+  left: 0;
+  background-color: #fff;
+}

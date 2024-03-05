@@ -2,27 +2,17 @@ import {Checkbox} from "antd";
 import React, {useEffect, useState} from "react";
 import {IAttrComponent} from "../Attribute";
 
-export interface ICheckboxAttrData extends IAttrComponent {
-    onChange: (check: boolean) => void;
-    setRefresh(func: Function): void;
-    value?: boolean;
-}
-
-export function CheckboxAttr(data: ICheckboxAttrData) {
-    let [checked, setChecked] = useState(data.value);
+export function CheckboxAttr(data: IAttrComponent<boolean>) {
+    let [checked, setChecked] = useState(data.attrValue);
     useEffect(() => {
-        data.setRefresh((checked: boolean) => {
-            console.error(checked);
-            setChecked(checked);
-            // valArr.length = 0;
-            // valArr = null;
-        });
+        data.setRefresh(setChecked);
         // console.error("1111  "+checked);
         setChecked(checked);
     }, [data])
     return (
         <Checkbox
             className="checkb2"
+            disabled={data.disable}
             checked={checked}
             onChange={(e) => {
                 setChecked(e.target.checked);

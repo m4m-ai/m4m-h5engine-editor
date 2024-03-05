@@ -24,46 +24,48 @@ import I2DComponent = m4m.framework.I2DComponent;
 
 export class RawAttributeDataMgr {
     public static getRaw2DData(node: I2DComponent): IComponentData {
-        let selection = EditorApplication.Instance.selection;
-        let assetmgr = m4m.framework.sceneMgr.app.getAssetMgr();
-        let rawImage2D = node as m4m.framework.rawImage2D;
+        return null;
 
-        let textureRefresh: Function = null;
-        let setTexture = selection.addPropertyListener(rawImage2D, "image", ValueType.object, (value) => {
-            if (textureRefresh) {
-                textureRefresh(value);
-            }
-        });
+        // let selection = EditorApplication.Instance.selection;
+        // let assetmgr = m4m.framework.sceneMgr.app.getAssetMgr();
+        // let rawImage2D = node as m4m.framework.rawImage2D;
+
+        // let textureRefresh: Function = null;
+        // let setTexture = selection.addPropertyListener(rawImage2D, "image", ValueType.object, (value) => {
+        //     if (textureRefresh) {
+        //         textureRefresh(value);
+        //     }
+        // });
         
-        return {
-            enable: null,
-            title: "RawImage2D",
-            component: rawImage2D,
-            ticon: null,
-            attrs: [
-                {
-                    title: "Texture",
-                    type: "asset",
-                    attr: {
-                        value: rawImage2D.image,
-                        assetType: ["png", "jpg"],
-                        onChange(reference: AssetReference) {
-                            //加载贴图
-                            let ea = EditorApplication.Instance;
-                            ea.editorResources.loadTextureByKey(reference.key, (tex) => {
-                                tex["_ref"] = {...reference};
-                                setTexture(tex);
-                                if (textureRefresh) {
-                                    textureRefresh(tex);
-                                }
-                            });
-                        },
-                        setRefresh(func: Function) {
-                            textureRefresh = func;
-                        }
-                    }
-                },
-            ]
-        }
+        // return {
+        //     enable: null,
+        //     title: "RawImage2D",
+        //     component: rawImage2D,
+        //     ticon: null,
+        //     attrs: [
+        //         {
+        //             title: "Texture",
+        //             type: "asset",
+        //             attr: {
+        //                 value: rawImage2D.image,
+        //                 assetType: ["png", "jpg"],
+        //                 onChange(reference: AssetReference) {
+        //                     //加载贴图
+        //                     let ea = EditorApplication.Instance;
+        //                     ea.editorResources.loadTextureByKey(reference.key, (tex) => {
+        //                         tex["_ref"] = {...reference};
+        //                         setTexture(tex);
+        //                         if (textureRefresh) {
+        //                             textureRefresh(tex);
+        //                         }
+        //                     });
+        //                 },
+        //                 setRefresh(func: Function) {
+        //                     textureRefresh = func;
+        //                 }
+        //             }
+        //         },
+        //     ]
+        // }
     }
 }

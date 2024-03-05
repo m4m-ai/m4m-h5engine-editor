@@ -1,0 +1,122 @@
+.ins-ani {
+  width: 100%;
+  height: 100%;
+}
+
+.ins-ani-header {
+  width: 100%;
+  min-height: 60px;
+  background-color: rgb(60, 60, 60);
+  border-bottom: 1px solid;
+  padding: 8px;
+}
+
+.header-top,
+.header-bottom {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.header-bottom {
+  color: rgb(170, 170, 170);
+}
+
+.add {
+  display: inline;
+  padding: 2px;
+  background-color: rgb(105, 105, 105);
+  cursor: pointer;
+  color: #d4d4d4;
+  font-size: 12px;
+}
+
+.ins-ani-header-name {
+  color: rgb(170, 170, 170);
+  flex: 1;
+  margin-left: 10px;
+}
+
+.icon {
+  color: rgb(170, 170, 170);
+  font-size: 16px;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+}
+
+.icon:hover {
+  background-color: #545353;
+}
+
+.state-type {
+  font-size: 14px;
+}
+
+.state-key {
+  display: inline-block;
+  width: 180px;
+  color: #BEBEBE;
+}
+
+.state-value {
+  display: inline-block;
+  color: #b7b7b7;
+  font-weight: 700;
+}
+
+.ins-ani-body {
+  padding: 8px 14px;
+}
+
+.ins-ani-transitions {
+  width: 98%;
+  margin: 0 auto;
+  position: relative;
+  border-radius: 4px;
+  border: 1px solid #000000;
+  background-color: rgb(65, 65, 65);
+  color: #b7b7b7;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+.ins-ani-transitions-after {
+  position: absolute;
+  display: flex;
+  right: 5%;
+  text-align: center;
+  background-color: rgb(65, 65, 65);
+  border: 1px solid #000;
+  border-top: transparent;
+}
+
+.ins-button {
+  width: 24px;
+  height: 20px;
+}
+
+.ins-button :hover {
+  background-color: rgb(70, 70, 70);
+}
+
+.list-head {
+  background-color: rgb(53, 53, 53);
+  color: #bebebe;
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 8px;
+}
+
+.transition-name {
+  display: flex;
+}
+
+.transition-data {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 14px;
+  padding: 4px 8px;
+}

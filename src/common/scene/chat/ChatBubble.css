@@ -1,0 +1,20 @@
+
+.chat-bubble {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.chat-bubble.mine {
+    flex-direction: row-reverse;
+}
+
+.chat-bubble .ant-avatar {
+    margin: 0 10px;
+}
+
+.chat-bubble .ant-card-body {
+    padding: 10px;
+    border-radius: 10px;
+    user-select: text;
+}

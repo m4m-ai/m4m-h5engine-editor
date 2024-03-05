@@ -21,7 +21,7 @@ import { FileInfoManager } from '../../CodeEditor/code/FileInfoManager'
 
 const { Option, OptGroup } = Select
 const handleChange = (value: { value: any; label: React.ReactNode }) => {
-    console.log(value)
+    //console.log(value)
 }
 
 const menu: any = (
@@ -103,38 +103,63 @@ const menu: any = (
     />
 )
 const openVSCode = () => {
-    console.log('打开VSCode');
+    //console.log('打开VSCode');
     // const assetData = FileInfoManager.Instance.getDirByKey("9613082d34e546688c651f400cddbad6");
     // console.error(assetData);
-    WebsocketTool.Instance.ProjectManager_openVSCode("1","1");
+    //
+    //WebsocketTool.Instance.ProjectManager_openVSCode("1","1");
+    const div = document.createElement('div');
+  
+    // 使用iframe嵌入网页
+    const iframe = document.createElement('iframe');
+    iframe.src = 'http://localhost:9696/m4m_h5/h5/index.html';
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+    
+    // 将iframe添加到DIV元素中
+    div.appendChild(iframe);
+    
+    // 设置DIV元素的样式属性
+    div.style.position = 'fixed';
+    div.style.top = '0';
+    div.style.left = '0';
+    div.style.width = '100%';
+    div.style.height = '100%';
+    div.style.backgroundColor = '#ffffff';
+    // div.style.opacity = '0.8';
+    div.style.zIndex = '9999';
+    
+    // 将DIV元素添加到文档中
+    document.body.appendChild(div);
 }
 const reloadCode = () => {
     EditorEventMgr.Instance.emitEvent("OnTsCompileSuccess", cb => cb());
 }
 const dianji1 = () => {
-    console.log('点击图标1')
+    //console.log('点击图标1')
 }
 const dianji2 = () => {
-    console.log('点击图标2')
+    //console.log('点击图标2')
 }
 const dianji3 = () => {
-    console.log("点击play")
+    //console.log("点击play")
     EditorApplication.Instance.isPlay = !EditorApplication.Instance.isPlay;
 }
 const dianji4 = () => {
     if (EditorApplication.Instance.isPlay) {
-        console.log('点击pause')
+        //console.log('点击pause')
         EditorApplication.Instance.isPause = !EditorApplication.Instance.isPause;
     }
 }
 const dianji5 = () => {
-    console.log('点击切换按钮')
+    //console.log('点击切换按钮')
 }
 const dianji6 = () => {
-    console.log('点击历史记录按钮')
+    //console.log('点击历史记录按钮')
 }
 const dianji7 = () => {
-    console.log('点击搜索按钮')
+    //console.log('点击搜索按钮')
 }
 
 export function Nav() {
@@ -143,12 +168,12 @@ export function Nav() {
 
     useEffect(() => {
         let binder1 = EditorEventMgr.Instance.addEventListener("OnPlay", (play) => {
-            console.log("play状态: ", play)
+            //console.log("play状态: ", play)
             setIsPlay(play);
         })
 
         let binder2 = EditorEventMgr.Instance.addEventListener("OnPause", (pause) => {
-            console.log("pause状态: ", pause)
+            //console.log("pause状态: ", pause)
             setIsPause(pause);
         })
 
@@ -184,11 +209,11 @@ export function Nav() {
                 </div> */}
 
                 <div className="nav-1-4">
-                    <Button onClick={openVSCode}>打开VScode</Button>
+                    <Button onClick={openVSCode}>Open VScode</Button>
                 </div>
 
                 <div className="nav-1-5">
-                    <Button onClick={reloadCode}>重载脚本</Button>
+                    <Button onClick={reloadCode}>Reload Script</Button>
                 </div>
 
             </div>

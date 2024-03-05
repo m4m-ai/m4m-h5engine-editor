@@ -9,7 +9,7 @@ import PrimitiveType = m4m.framework.PrimitiveType;
 
 //点击菜单项
 const handleMenuClick: MenuProps['onClick'] = e => {
-    console.log('click', e)
+    //console.log('click', e)
 }
 
 const menu = (
@@ -20,7 +20,7 @@ const menu = (
                 key: '1',
                 label: 'Create Empty',
                 onClick() {
-                    EditorHierarchyHandle.createEmpty(EditorApplication.Instance.editorScene.getCurrentRoot());
+                    EditorHierarchyHandle.create3dEmptyObject(EditorApplication.Instance.editorScene.getCurrentRoot());
                 }
             },
             {
@@ -30,9 +30,9 @@ const menu = (
                     let ea = EditorApplication.Instance;
                     let activeTransform = ea.selection.activeTransform;
                     if (activeTransform instanceof transform) {
-                        EditorHierarchyHandle.createEmpty(activeTransform);
+                        EditorHierarchyHandle.create3dEmptyObject(activeTransform);
                     } else {
-                        EditorHierarchyHandle.createEmpty(ea.editorScene.getCurrentRoot());
+                        EditorHierarchyHandle.create3dEmptyObject(ea.editorScene.getCurrentRoot());
                     }
                 }
             },
@@ -96,7 +96,7 @@ const menu = (
 )
 
 const onclick2 = () => {
-    console.log('点击icon')
+    //console.log('点击icon')
 }
 
 const FeatureBar = (props) => (

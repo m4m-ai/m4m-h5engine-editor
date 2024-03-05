@@ -65,6 +65,7 @@ body {
   margin-top: 5px !important;
   font-weight: 600 !important;
   color: aliceblue !important;
+
 }
 
 .dragable:hover {
@@ -100,9 +101,6 @@ body {
 
 .boxInput:focus {
   outline: none;
-  /* outline-color: 0px;
-  outline-style: 0px;
-  outline-width: 0px; */
 }
 
 .lightCode {
@@ -115,10 +113,12 @@ body {
   background: #1f2324;
   box-sizing: content-box;
   transform-origin: bottom right;
+  border-color: rgb(177, 96, 95);
+  /* cursor: move; */
 }
 
 .lightCode .head {
-  color: #aaa;
+  color: rgb(177, 96, 95);
   text-align: center;
   font-weight: 400;
   letter-spacing: 1px;
@@ -174,22 +174,34 @@ body {
   min-height: 14px;
   background: transparent;
   vertical-align: middle;
+  color: rgb(189,145,241);
 }
 
 .dot {
   display: inline-block;
-  width: 4px;
-  height: 4px;
+  cursor: pointer;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background-color: #555;
+  background-color: rgb(214, 125, 237);
 }
 
 .inputs .dot {
   margin-right: 4px;
+  transform: scale(1);
+}
+
+.inputs .dot:hover {
+  transform: scale(1.6);
+}
+
+.outputs .dot:hover {
+  transform: scale(1.6);
 }
 
 .outputs .dot {
   margin-left: 4px;
+  transform: scale(1);
 }
 
 .field:hover .inner-field {
@@ -215,4 +227,25 @@ body {
 
 .field-hover:hover .dot {
   background-color: #ff7800;
+}
+
+.div-inp {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.div-inp-con-z{
+  align-content: center;
+}
+.div-inp-con {
+  display: flex;
+}
+
+.div-p {
+  width: 30%;
+}
+
+.div-inp-con-1 {
+  display: flex;
+  align-items: center;
 }

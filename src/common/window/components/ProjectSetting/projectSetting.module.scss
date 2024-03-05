@@ -1,0 +1,28 @@
+
+
+.project-setting{}
+
+.project-setting :global {
+    .header {
+        background: #3c3c3c;
+        display: flex;
+        justify-content: right;
+    }
+
+    .ant-input-affix-wrapper {
+        height: 24px;
+    }
+    .ant-layout {
+        background: #333;
+    }
+    .ant-menu {
+        color: #c5c5c5;
+        background: #3F3F3F;
+    }
+    .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+        background-color: #2c5d87;
+    }
+    .ant-menu-item-selected {
+        color: #c5c5c5;
+    }
+}

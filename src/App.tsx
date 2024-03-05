@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useRef, useState } from 'react'
 // import { Route, Routes } from 'react-router-dom';
 
 import './App.css'
@@ -7,11 +7,11 @@ import Menus from './common/menus/App'
 import { Nav } from './common/nav/nav'
 import Bottom from './common/bottom/Bottom'
 import ProjectEntrance from './common/ProjectEntrance/projectEntrance'
-import { AttributeManager } from "./common/attribute/AttributeManager";
 import Loading from './common/ProjectEntrance/Loading/loading'
 import { EditorEventMgr } from "./Game/Event/EditorEventMgr";
 import { WindowManager } from "./common/window/WindowManager";
 import { WindowSlot } from "./common/window/WindowSlot";
+import { ContextMenuSlot } from './common/contextMenu/ContextMenuSlot'
 
 const AppContext = createContext(null)
 
@@ -27,7 +27,6 @@ function App() {
 			// navigate('/project')
 		})
 	})
-
 
 	return (
 		<div className="App">
@@ -68,6 +67,9 @@ function App() {
 
 			{/*窗口插槽*/}
 			<WindowSlot></WindowSlot>
+
+			{/* 上下文右键菜单 */}
+			<ContextMenuSlot></ContextMenuSlot>
 		</div>
 	)
 }

@@ -456,3 +456,8 @@ a {
 .ant-modal-title {
     font-weight: 800;
 }
+
+/* 拖拽样式 */
+.attr-sortable-chosen {
+    background: #f0f2f5;
+}

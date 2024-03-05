@@ -31,7 +31,7 @@ export class CodeEditorReference {
   public static initEvents() {
     let selectbind = EditorEventMgr.Instance.addEventListener("OnSelectFile", (str) => {
       // console.error(str);
-      WebsocketTool.Instance.ProjectManager_selectFileFun(str);
+      WebsocketTool.Instance.ProjectManager_selectFileFun(str.relativePath);
     });
     let savebind = EditorEventMgr.Instance.addEventListener("OnSave", (str) => {
       console.error(str);

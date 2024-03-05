@@ -28,6 +28,7 @@ import {
     LockOutlined,
     MoreOutlined,
     SettingFilled,
+    SlidersFilled,
     UnlockOutlined
 } from '@ant-design/icons'
 import { Dropdown, Menu, Space } from 'antd'
@@ -40,6 +41,9 @@ import { Window } from "../common/window/Window";
 import { WindowSlot } from "../common/window/WindowSlot";
 import { WindowManager } from "../common/window/WindowManager";
 import { AttributeManager } from "../common/attribute/AttributeManager";
+import { Animator } from '../common/animator/animator'
+import { AudioMixer } from '../common/audioMixer/AudioMixer'
+import { Ai } from '../common/ai/Ai'
 // body显示
 var zindex: any = 0
 // import {  } from "../common/samples/browser-amd-iframe/inner.html";
@@ -51,7 +55,7 @@ export const Home = () => {
     setTimeout(() => {
 
         let titleDown = function titmou(e: any) {
-            console.log('点击title(每个模块的标题)事件')
+            //console.log('点击title(每个模块的标题)事件')
 
             if (e.target.className !== 'header') {
                 // 创建要移动的节点
@@ -75,7 +79,7 @@ export const Home = () => {
                         zindex += 1
                         bnode = e.target.parentNode.parentNode.children[j]
                         bnode.style.zIndex = zindex
-                        console.log('z', zindex)
+                        //console.log('z', zindex)
                     }
                 }
                 // for (let v = 0; v < dataBody.length; v++) {
@@ -239,7 +243,7 @@ export const Home = () => {
                 title.appendChild(cloneHeader)
                 // 添加鼠标松开事件
                 document.onmouseup = e => {
-                    console.log('点击title(每个模块的标题)松开事件')
+                    //console.log('点击title(每个模块的标题)松开事件')
                     // 销毁事件
                     bodyEle.removeEventListener('mousemove', bodymove, false)
                     bodyEle.onmousemove = null
@@ -1407,7 +1411,7 @@ export const Home = () => {
             }
             // 移入body
             dataBody[x].addEventListener('mouseenter', (e: any) => {
-                console.log('移入 body(存放模块内容部分的盒子)')
+                //console.log('移入 body(存放模块内容部分的盒子)')
 
                 databodymove(e, x)
             })
@@ -1423,7 +1427,7 @@ export const Home = () => {
                 }
             )
             // 移出body
-            console.log('移出body(存放模块内容部分的盒子)')
+            //console.log('移出body(存放模块内容部分的盒子)')
 
             dataBody[x].addEventListener('mouseleave', (e: any) => {
                 databodyleave(e, x)
@@ -1461,7 +1465,7 @@ export const Home = () => {
                 }
             } else {
             }
-            console.log('移出header(存放title(模块标题)的盒子)')
+            //console.log('移出header(存放title(模块标题)的盒子)')
 
             header = document.querySelectorAll('[data-index]')
         }
@@ -1480,7 +1484,7 @@ export const Home = () => {
                 'TouchEnter',
                 // eslint-disable-next-line no-loop-func
                 (touch: TouchPosition) => {
-                    console.log('移入header(存放title(模块标题)的盒子)')
+                    //console.log('移入header(存放title(模块标题)的盒子)')
                     for (let y = 0; y < xzbody?.children.length; y++) {
                         if (xzbody?.children[y] == div) {
                             xzbody.removeChild(div)
@@ -1501,7 +1505,7 @@ export const Home = () => {
             )
         }
         const boder2down = (e: any, pz: any, brod1: any, brod0: any) => {
-            console.log('点击broder（横向）(每个模块之间的那根线条)事件')
+            //console.log('点击broder（横向）(每个模块之间的那根线条)事件')
             var bodera = e.target
             var ofsetleft = e.target.parentNode.offsetTop
             var ofsetwidth = e.target.parentNode.offsetHeight
@@ -1511,7 +1515,7 @@ export const Home = () => {
             var bord2tast: any = 0
             var borderpan: any = bordernode2[pz].parentNode
             borderpan.onmousemove = (e: any) => {
-                console.log('移动broder（横向）(每个模块之间的那根线条)事件')
+                //console.log('移动broder（横向）(每个模块之间的那根线条)事件')
 
                 var brodlist1: any = []
                 var brodlist2: any = []
@@ -1570,7 +1574,7 @@ export const Home = () => {
                 for (let t = 0; t < layoutbox.length; t++) {
                     // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-loop-func
                     layoutbox[t].onmouseup = () => {
-                        console.log('松开broder（横向）(每个模块之间的那根线条)事件')
+                        //console.log('松开broder（横向）(每个模块之间的那根线条)事件')
 
                         defdul.onmousemove = null
                         bordernode2[pz].onmousedown = null
@@ -1594,7 +1598,7 @@ export const Home = () => {
         }
         // ------
         const boderdown = (e: any, pz: any, brod1: any, brod0: any) => {
-            console.log('点击broder（纵向）(每个模块之间的那根线条)事件')
+            //console.log('点击broder（纵向）(每个模块之间的那根线条)事件')
 
             var bodera = e.target
             var ofsetleft = e.target.parentNode.offsetLeft
@@ -1605,7 +1609,7 @@ export const Home = () => {
             var bord2tast: any = 0
             var borderpan: any = bordernode[pz].parentNode
             borderpan.onmousemove = (e: any) => {
-                console.log('移动broder（纵向）(每个模块之间的那根线条)事件')
+                //console.log('移动broder（纵向）(每个模块之间的那根线条)事件')
 
                 var brodlist1: any = []
                 var brodlist2: any = []
@@ -1704,7 +1708,7 @@ export const Home = () => {
                 for (let t = 0; t < layoutbox.length; t++) {
                     // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-loop-func
                     layoutbox[t].onmouseup = () => {
-                        console.log('松开broder（纵向）(每个模块之间的那根线条)事件')
+                        //console.log('松开broder（纵向）(每个模块之间的那根线条)事件')
 
                         defdul.onmousemove = null
                         bordernode[pz].onmousedown = null
@@ -1883,14 +1887,18 @@ export const Home = () => {
                                 style={{ flex: '1 1 0%', width: '100%', height: '100%' }}
                             >
                                 <div className="header">
-                                    <div data-index="1" className="title-content">
+                                    {/* <div data-index="1" className="title-content">
                                         <EditFilled className="title-icon" />
                                         CodeEdit
-                                    </div>
+                                    </div> */}
                                     <div data-index="2" className="title-content active">
                                         <EditFilled className={'title-icon'} />
                                         Scene
                                     </div>
+                                    {/* <div data-index="9" className="title-content">
+                                        <EditFilled className={'title-icon'} />
+                                        Animator
+                                    </div> */}
                                     {/* 锁型开关按钮和菜单按钮 */}
                                     {/* <div className="right-icon">
                   <div onClick={lockButton}>
@@ -1907,15 +1915,16 @@ export const Home = () => {
                   </div>
                 </div> */}
                                 </div>
-                                <div className="body one" data-body="1" ref={bodyonenode}>
-                                    {/* <div className="borderleft"></div> */}
+                                {/* <div className="body one" data-body="1" ref={bodyonenode}>
                                     <Editor />
-                                    {/* <div className="borderrigth"></div>
-                      <div className="borderbuttom"></div> */}
-                                </div>
+                                </div> */}
+                                {/* <div className="body nine" data-body="9" ref={bodyonenode}>
+                                    <Animator />
+                                </div> */}
                                 <div className="body two" data-body="2" ref={bodyonenode}>
                                     <Scene></Scene>
                                 </div>
+
                             </div>
                         </div>
                         <div
@@ -1944,12 +1953,16 @@ export const Home = () => {
                                 </div>
                                 <div data-index="5" className="title-content">
                                     <AppstoreFilled className="title-icon" />
-                                    Excel
+                                    Ai
                                 </div>
-                                <div data-index="6" className="title-content">
+                                {/* <div data-index="6" className="title-content">
                                     <SettingFilled className="title-icon" />
                                     FreeText
-                                </div>
+                                </div> */}
+                                {/* <div data-index="10" className="title-content">
+                                    <SlidersFilled className="title-icon" />
+                                    Audio Mixer
+                                </div> */}
                             </div>
                             <div className="body therr" data-body="3" style={{ zIndex: `1` }}>
                                 <Project />
@@ -1958,11 +1971,14 @@ export const Home = () => {
                                 <Console />
                             </div>
                             <div className="body five" data-body="5">
-                                <Excel />
+                                <Ai />
                             </div>
-                            <div className="body six" data-body="6" style={{ zIndex: `0` }}>
+                            {/* <div className="body six" data-body="6" style={{ zIndex: `0` }}>
                                 <FreeTexture />
-                            </div>
+                            </div> */}
+                            {/* <div className="body ten" data-body="10" style={{ zIndex: `0` }}>
+                                <AudioMixer />
+                            </div> */}
                         </div>
                     </div>
 
@@ -1987,10 +2003,10 @@ export const Home = () => {
                                 Inspector
                             </div>
                             {/* 未实现功能屏蔽: 连连看 */}
-                            {/* <div data-index="7" className="title-content">
+                            <div data-index="7" className="title-content">
                                 <GatewayOutlined className="title-icon" />
                                 LightCode
-                            </div> */}
+                            </div>
                             <div data-index="8" className="title-content">
                                 <GatewayOutlined className="title-icon" />
                                 UIComponent
@@ -2000,9 +2016,9 @@ export const Home = () => {
                             <Inspector />
                         </div>
                         {/* 未实现功能屏蔽: 连连看 */}
-                        {/* <div className="body seven" data-body="7" style={{ zIndex: `0` }}>
+                        <div className="body seven" data-body="7" style={{ zIndex: `0` }}>
                             <Lianxian />
-                        </div> */}
+                        </div>
                         <div className="body eight" data-body="8" style={{ zIndex: `0` }}>
                             <UIComponent />
                         </div>

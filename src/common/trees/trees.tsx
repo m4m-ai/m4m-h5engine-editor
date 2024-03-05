@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 // import type { DataNode, DirectoryTreeProps } from 'antd/es/tree'
-import { CaretDownOutlined, CodeSandboxOutlined } from '@ant-design/icons'
+import { CaretDownOutlined, CodeSandboxOutlined, EyeOutlined } from '@ant-design/icons'
 import './index.css'
 import 'antd/dist/antd.css'
 import { Item, Menu, useContextMenu } from 'react-contexify'
@@ -46,7 +46,7 @@ export function TreeDemo() {
     const [expandKey, setExpandKey] = useState<Key[]>([]);
 
     const boxRef = useRef<HTMLDivElement>();
-
+    
     useEffect(() => {
         setData(HierarchyMgr.getTreeData());
 
@@ -57,12 +57,16 @@ export function TreeDemo() {
             setData(datas);
         });
         let binder2 = EditorEventMgr.Instance.addEventListener("OnSelectActiveObject", (trans) => {
-
+            
             if (trans) {
                 let key = trans.insId.getInsID().toString();
 
                 const parentKeys = searchParentIds(trans)
-
+                // 2d 元素 临时处理
+                if(parentKeys.some(item => item === '35')) {
+                    parentKeys.push('34')
+                }
+                
                 setExpandKey(prev => {
                     let filterArr: string[] = []
                     if (parentKeys.length > 0) {
@@ -90,7 +94,7 @@ export function TreeDemo() {
                     }
                     if (state == 0) {
                         binder4 = EditorInputMgr.Instance.addElementEventListener(boxRef.current, "TouchUp", touch => {
-                            console.log("创建prefab2D: ", assetInfo);
+                            //console.log("创建prefab2D: ", assetInfo);
                             //临时处理
                             let info = assetInfo.childrenFile.find(value => value.value == assetInfo.value + ".bin");
                             if (info) {
@@ -107,7 +111,7 @@ export function TreeDemo() {
                     }
                     if (state == 0) {
                         binder4 = EditorInputMgr.Instance.addElementEventListener(boxRef.current, "TouchUp", touch => {
-                            console.log("创建prefab3D: ", assetInfo);
+                            //console.log("创建prefab3D: ", assetInfo);
                             //临时处理
                             let info = assetInfo.childrenFile.find(value => value.value == assetInfo.value + ".json");
                             if (info) {
@@ -144,25 +148,56 @@ export function TreeDemo() {
         items: [
             {
                 key: 'addSub',
-                name: '添加子节点',
+                name: 'Add Child Node',
                 handler: (props) => {
                     let trans = queryTransById(data, props.props.key);
                     if (trans) {
                         if (trans instanceof transform) {
-                            EditorHierarchyHandle.createEmpty(trans);
+                            let canvasRenderer = EditorApplication.Instance.editorScene.canvasRenderer;
+                            if (trans.gameObject == canvasRenderer.gameObject) { //如果选中的是canvas
+                                EditorHierarchyHandle.create2dEmptyObject(canvasRenderer.canvas.getRoot());
+                            } else {
+                                EditorHierarchyHandle.create3dEmptyObject(trans);
+                            }
                         } else {
-                            let trans = new transform2D();
-                            trans.name = "Game Object 2D";
-                            trans.addChild(trans);
-                            EditorEventMgr.Instance.emitEvent("SetActiveObject", cb => cb(trans));
-                            EditorEventMgr.Instance.emitEvent("CameraLookTransform", cb => cb(trans));
+                            EditorHierarchyHandle.create2dEmptyObject(trans);
+                        }
+                    }
+                }
+            },
+            {
+                key: 'copy',
+                name: 'Copy Node',
+                handler: (props) => {
+                    let trans = queryTransById(data, props.props.key);
+                    if (trans) {
+                        if (trans instanceof transform) {
+                            let canvasRenderer = EditorApplication.Instance.editorScene.canvasRenderer;
+                            if (trans.gameObject == canvasRenderer.gameObject) { //如果选中的是canvas
+                                //EditorHierarchyHandle.create2dEmptyObject(canvasRenderer.canvas.getRoot());
+                            } else {
+                                trans.parent.addChild(trans.clone());
+                                //EditorHierarchyHandle.create3dEmptyObject(trans);
+                            }
+                        } else {
+                            let ch = trans.clone();
+                            //临时处理
+                            let labels = ch.getComponentsInChildren("label") as m4m.framework.label[];
+                            if (labels != null) {
+                                for (let lab of labels) {
+                                    lab.font = EditorApplication.Instance.editorResources.defaultFont;
+                                    lab["_fontName"] = EditorApplication.Instance.editorResources.defaultFont.fontname;
+                                    lab.transform.markDirty();
+                                }
+                            }
+                            trans.parent.addChild(ch);
                         }
                     }
                 }
             },
             {
                 key: 'del',
-                name: '删除此节点',
+                name: 'Delete Node',
                 handler: (props) => {
                     let trans = queryTransById(data, props.props.key);
                     if (trans) {
@@ -186,7 +221,18 @@ export function TreeDemo() {
     const renderTreeNodes = (data: IHierarchyData[]) => {
         return data.map((item) => {
             let title = (
-                <span>{item.title}</span>
+                <div className='treeTest-box2-node-content' onMouseEnter={() => {
+                    // item 中 应有个 属性控制状态
+                }}>
+                    <div className='controller' style={{display: 'none'}}>
+                        <EyeOutlined onClick={(e) => {
+                            e.stopPropagation()
+                            //console.log(111)
+                        }}/>
+                        <EyeOutlined />
+                    </div>
+                    <div>{item.title}</div>
+                </div>
             );
             if (item.children) {
                 return (
@@ -344,7 +390,6 @@ export function TreeDemo() {
                     }
                     onExpand={
                         (keys) => {
-                            console.log('onExpand', keys);
                             setExpandKey(keys)
                         }
                     }

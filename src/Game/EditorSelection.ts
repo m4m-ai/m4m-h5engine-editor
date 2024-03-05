@@ -26,13 +26,11 @@ import vector2 = m4m.math.vector2;
 import border = m4m.math.border;
 import I2DComponent = m4m.framework.I2DComponent;
 import { EditorApplication } from "./EditorApplication";
-import {TouchPosition} from "./Input/TouchPosition";
-import {ElementInputMap} from "./Input/ElementInputMap";
-import {EditorAssetInfo} from "./Asset/EditorAssetInfo";
-import {FileInfoManager} from "../CodeEditor/code/FileInfoManager";
+import { TouchPosition } from "./Input/TouchPosition";
+import { ElementInputMap } from "./Input/ElementInputMap";
+import { EditorAssetInfo } from "./Asset/EditorAssetInfo";
+import { FileInfoManager } from "../CodeEditor/code/FileInfoManager";
 import INodeComponent = m4m.framework.INodeComponent;
-import {IEventBinder} from "./Event/IEventBinder";
-import {EditorInputMgr} from "./Input/EditorInputMgr";
 
 interface PropertyListenerData<T extends (INodeComponent | transform | transform2D | I2DComponent), P extends keyof T> {
     nowData: T[P];
@@ -47,7 +45,6 @@ interface PropertyListenerData<T extends (INodeComponent | transform | transform
  * 编辑器选中对象管理类
  */
 export class EditorSelection implements IEditorCode {
-
     /**
      * 当前选中的transform
      */
@@ -61,10 +58,18 @@ export class EditorSelection implements IEditorCode {
      * 选中的资源
      */
     public get activeAsset() {
-        return this._activeAsset;
+        return FileInfoManager.Instance.getFileByKey(this._activeAssetKey);
     }
 
-    private _activeAsset: EditorAssetInfo;
+    private _activeAssetKey: string;
+
+    /**
+     * 当前多选的文件
+     */
+    public get activeAssetList() {
+        return this._activeAssetList;
+    }
+    private readonly _activeAssetList: EditorAssetInfo[] = [];
 
     /**
      * 当前选中的文件夹
@@ -78,13 +83,14 @@ export class EditorSelection implements IEditorCode {
      */
     public get activeFolderInfo(): EditorAssetInfo {
         let manager = FileInfoManager.Instance;
-        if (this._activeFolderInfo == null || manager.getDirByKey(this._activeFolderInfo.key) == null) {
-            this._activeFolderInfo = manager.rootFolder;
+        let result = manager.getDirByKey(this._activeFolderKey);
+        if (!result) {
+            return manager.rootFolder;
         }
-        return this._activeFolderInfo;
+        return result;
     }
-    
-    private _activeFolderInfo: EditorAssetInfo;
+
+    private _activeFolderKey: string;
 
     private propertyListenerList: PropertyListenerData<any, any>[] = [];
 
@@ -116,18 +122,30 @@ export class EditorSelection implements IEditorCode {
      * 选中资源
      */
     public setActiveAsset(assetData: EditorAssetInfo) {
-        if (this._activeAsset != assetData) {
-            if (assetData) {
-                console.log("选中资源key: ", assetData.key);
+        if (assetData) {
+            if (this._activeAssetKey != assetData.key) {
+                //console.log("选中资源key: ", assetData.key);
                 if (assetData.isLeaf || assetData.DirType) { //不是文件夹, 或者是特殊文件夹
                     EditorEventMgr.Instance.emitEvent("ShowInspectorPreview", cb => cb(assetData));
-                    this._activeFolderInfo = assetData.parentDirInfo;
+                    this._activeFolderKey = assetData.parentDirInfo.key;
                 } else {
-                    this._activeFolderInfo = assetData;
+                    this._activeFolderKey = assetData.key;
                 }
             }
+            this._activeAssetKey = assetData.key;
+        } else {
+            this._activeAssetKey = null;
         }
-        this._activeAsset = assetData;
+    }
+
+    /**
+     * 设置多选的列表
+     */
+    public setActiveAssetList(list: EditorAssetInfo[]) {
+        this._activeAssetList.length = 0;
+        if (list != null && list.length > 0) {
+            this._activeAssetList.push(...list);
+        }
     }
 
     /**
@@ -211,11 +229,67 @@ export class EditorSelection implements IEditorCode {
                             }
                             break;
                         case ValueType.layout:
+                            let trans2d = item.inst as transform2D;
+                            //切换布局
                             if (data != item.nowData.layoutState) {
                                 item.nowData.layoutState = data;
                                 change = true;
+
+                                let parent = trans2d.parent;
+                                let x = trans2d.localTranslate.x;
+                                let y = trans2d.localTranslate.y;
+
+                                let leftFlag = (trans2d.layoutState & m4m.framework.layoutOption.LEFT) != 0;
+                                let h_centerFlag = (trans2d.layoutState & m4m.framework.layoutOption.H_CENTER) != 0;
+                                let rightFlag = (trans2d.layoutState & m4m.framework.layoutOption.RIGHT) != 0;
+            
+                                let topFlag = (trans2d.layoutState & m4m.framework.layoutOption.TOP) != 0;
+                                let v_centerFlag = (trans2d.layoutState & m4m.framework.layoutOption.V_CENTER) != 0;
+                                let bottomFlag = (trans2d.layoutState & m4m.framework.layoutOption.BOTTOM) != 0;
+            
+                                if (leftFlag) {
+                                    let leftLayVal = x + parent.pivot.x * parent.width - trans2d.pivot.x * trans2d.width;
+                                    item.nowData["LEFT"] = leftLayVal;
+                                    trans2d.setLayoutValue(m4m.framework.layoutOption.LEFT, leftLayVal);
+                                }
+
+                                if (h_centerFlag) {
+                                    let h_centerLayVal = x - parent.width / 2 + trans2d.width / 2 + parent.pivot.x * parent.width - trans2d.pivot.x * trans2d.width;
+                                    item.nowData["H_CENTER"] = h_centerLayVal;
+                                    trans2d.setLayoutValue(m4m.framework.layoutOption.H_CENTER, h_centerLayVal);
+                                }
+
+                                if (rightFlag) {
+                                    let rightLayVal=parent.width - trans2d.width - x - parent.pivot.x * parent.width + trans2d.pivot.x * trans2d.width;
+                                    item.nowData["RIGHT"] = rightLayVal;
+                                    trans2d.setLayoutValue(m4m.framework.layoutOption.RIGHT, rightLayVal);
+                                }
+
+                                if (topFlag) {
+                                    let topLayVal=y + parent.pivot.y * parent.height - trans2d.pivot.y * trans2d.height;
+                                    item.nowData["TOP"] = topLayVal;
+                                    trans2d.setLayoutValue(m4m.framework.layoutOption.TOP, topLayVal);
+                                }
+
+                                if (v_centerFlag) {
+                                    let v_centerLayVal=y - parent.height / 2 + trans2d.height / 2 + parent.pivot.y * parent.height - trans2d.pivot.y * trans2d.height;
+                                    item.nowData["V_CENTER"] = v_centerLayVal;
+                                    trans2d.setLayoutValue(m4m.framework.layoutOption.V_CENTER, v_centerLayVal);
+                                }
+
+                                if (bottomFlag) {
+                                    let bottomLayVal=parent.height - trans2d.height - y - parent.pivot.y * parent.height + trans2d.pivot.y * trans2d.height;
+                                    item.nowData["BOTTOM"] = bottomLayVal;
+                                    trans2d.setLayoutValue(m4m.framework.layoutOption.BOTTOM, bottomLayVal);
+                                }
+                                let disVal:boolean=true;
+                                if (!leftFlag && !topFlag && !h_centerFlag && !rightFlag && !v_centerFlag && !bottomFlag) {
+                                    disVal = false;
+                                }
+                                //Position 输入框状态更新
+                                EditorEventMgr.Instance.emitEvent("OnTrans2DDisableUpDate", f => f("Position",disVal));
                             }
-                            let trans2d = item.inst as transform2D;
+                            //场景中拖动或属性栏中改动布局的参数值
                             let leftNum = trans2d.getLayoutValue(m4m.framework.layoutOption.LEFT);
                             if (item.nowData["LEFT"] != leftNum) {
                                 item.nowData["LEFT"] = leftNum;
@@ -314,6 +388,13 @@ export class EditorSelection implements IEditorCode {
                 } else {
                     inst[property] = value;
                     bindData.nowData = value;
+                }
+                if (inst instanceof transform2D) {
+                    inst.markDirty();
+                } else if (inst instanceof transform) {
+                    inst.markDirty();
+                } else if ("transform" in inst) {
+                    inst.transform.markDirty();
                 }
             }
         }

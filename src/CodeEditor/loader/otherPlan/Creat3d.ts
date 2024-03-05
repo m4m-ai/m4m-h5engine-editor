@@ -29,6 +29,7 @@ import { Loader } from "./Loader";
 import { testPvrParse } from "./pvr";
 
 export class Creat3d {
+    private static aniplayer:m4m.framework.aniplayer;
     //组装Prefab
     public static makeAPrefab(pfInfo: Prefab, insidMap) {
         let trans = new m4m.framework.transform();
@@ -148,7 +149,7 @@ export class Creat3d {
                         let tPos = compAnipBones[key] as m4m.framework.tPoseInfo;
                         let addTpos = new m4m.framework.tPoseInfo();
                         if (tPos) {
-                            addTpos.name = tPos["tranName"];
+                            addTpos.name = tPos["name"];
                             addTpos.tposep = new m4m.math.vector3();
                             addTpos.tposeq = new m4m.math.quaternion();
                             if (tPos.tposep) {
@@ -167,6 +168,7 @@ export class Creat3d {
                     for (const key in compAnipSPos) {
                         let spos = compAnipSPos[key] as m4m.framework.PoseBoneMatrix;
                         let addSpos = new m4m.framework.PoseBoneMatrix();
+                        addSpos["name"]=spos["name"];
                         addSpos.t = new m4m.math.vector3();
                         addSpos.r = new m4m.math.quaternion();
                         if (spos.t) {
@@ -178,11 +180,11 @@ export class Creat3d {
                         compAnip.startPos.push(addSpos);
                     }
                 }
-                // testCreat.aniplayer = compAnip;
-                return null;
+                this.aniplayer = compAnip;
+                return compAnip;
             case "skinnedMeshRenderer":
                 let compSkin = new m4m.framework.skinnedMeshRenderer();
-                let compInfoSkin = compInfo;
+                let compInfoSkin = compInfo ;
                 compSkin.materials = [];
                 let compSkinMats = compInfoSkin["materialsKey"];
                 if (compSkinMats) {
@@ -193,11 +195,11 @@ export class Creat3d {
                         ExportManager.getMatByKey(matKey, compSkin);
                     }
                 } else {
-                    // let mat = new m4m.framework.material();
-                    // let sh = m4m.framework.sceneMgr.app.getAssetMgr()
-                    //     .getShader("diffuse.shader.json");
-                    // mat.setShader(sh);
-                    // compSkinMats.materials.push(mat);
+                     let mat = new m4m.framework.material();
+                     let sh = m4m.framework.sceneMgr.app.getAssetMgr()
+                         .getShader("diffuse.shader.json");
+                     mat.setShader(sh);
+                     compSkin.materials.push(mat);
                 }
                 compSkin.center = new m4m.math.vector3();
                 compSkin.size = new m4m.math.vector3();
@@ -234,7 +236,7 @@ export class Creat3d {
                     }
                 }
                 compSkin.rootBone = insidMap[compInfoSkin.rootBone];
-                // compSkin.player = testCreat.aniplayer;
+                compSkin.player = this.aniplayer;
                 return compSkin;
             case "meshFilter":
                 let compMF = new m4m.framework.meshFilter();
@@ -469,10 +471,10 @@ export class Creat3d {
             _mesh.data.triIndexBufferData = new Uint16Array();
             _mesh.data.trisindex = [];
         }
-
-        if(_mesh.data.getTriIndexCount() > 65535){
+        
+         if(_mesh.data.getTriIndexCount() > 65535){
             _mesh.data.triIndexUint32Mode = true;
-        }
+         }
         // var v32 = _mesh.data.genVertexDataArray(vf);
 
         let i16 = _mesh.data.genIndexDataArray();
@@ -481,7 +483,6 @@ export class Creat3d {
 
         // _mesh.maximun=new m4m.math.vector3();
         // _mesh.minimun=new m4m.math.vector3();
-
         _mesh.glMesh.initBuffer(webgl, vf, meshData.posCount);
         _mesh.glMesh.uploadVertexData(webgl, v32);
         _mesh.glMesh.addIndex(webgl, i16.length);

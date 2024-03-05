@@ -7,7 +7,7 @@ import { EditorEventMgr } from "../../Game/Event/EditorEventMgr";
 import { WindowManager } from "../window/WindowManager";
 
 const handleMenuClick: MenuProps['onClick'] = e => {
-    console.log('click', e)
+    //console.log('click', e)
 }
 
 //菜单组件的数据
@@ -62,21 +62,21 @@ export function InspectorHead(data: IInspertorGameobjectData) {
         return colorWindowId
     }
     const handleOk = () => {
-        console.log('handleOk');
+        //console.log('handleOk');
         EditorEventMgr.Instance.emitEvent('OnSelectColor', cb => cb(color))
     }
     const handleCancel = () => {
-        console.log('handleCancel');
-        console.log('colorWindowId', colorWindowId);
+        //console.log('handleCancel');
+        //console.log('colorWindowId', colorWindowId);
         
         WindowManager.closeWindow(colorWindowId);
     }
 
     const handleChange1 = (value: { value: any; label: React.ReactNode }) => {
-        console.log('Tag打印', value)
+        //console.log('Tag打印', value)
     }
     const handleChange2 = (value: { value: any; label: React.ReactNode }) => {
-        console.log('Layer打印', value)
+        //console.log('Layer打印', value)
     }
 
     return (

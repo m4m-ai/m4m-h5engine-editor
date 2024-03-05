@@ -12,7 +12,7 @@ export default function StudyWindow() {
             <div className="main-content">
                 <Tabs defaultActiveKey="1" style={{height: '100%'}}>
 
-                    <Tabs.TabPane tab="项目" key="1">
+                    <Tabs.TabPane tab="Project" key="1">
                         <Project></Project>
                     </Tabs.TabPane>
 

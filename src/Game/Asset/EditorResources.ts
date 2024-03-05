@@ -49,7 +49,7 @@ export class EditorResources implements IEditorCode {
         });
         //ts代码编译成功
         EditorEventMgr.Instance.addEventListener("OnTsCompileSuccess", () => {
-            console.log("ts代码编译成功!");
+            //console.log("ts代码编译成功!");
             //2秒后更新代码
             this.tsRefreshTimer = 2;
         });
@@ -72,40 +72,47 @@ export class EditorResources implements IEditorCode {
      * 重新加载用户代码
      */
     public reloadUserCode(path: string) {
-        this.isTsRealoading = true;
-        this.loadFile(path, "string", (result) => {
-            //先卸载之前已经加载好的模块
-            let keys = Object.keys(System.models);
-            for (let key of keys) {
-                let model = System.models[key];
-                if (model.____assembly____ == path) {
-                    let modelKeys = Object.keys(model);
-                    for (let modelKey of modelKeys) {
-                        delete model[modelKey];
+        this.existFile(path, (result) => {
+            if (result) {
+                this.isTsRealoading = true;
+                this.loadFile(path, "string", (result) => {
+                    //先卸载之前已经加载好的模块
+                    let keys = Object.keys(System.models);
+                    for (let key of keys) {
+                        let model = System.models[key];
+                        if (model.____assembly____ == path) {
+                            let modelKeys = Object.keys(model);
+                            for (let modelKey of modelKeys) {
+                                delete model[modelKey];
+                            }
+                            console.log("卸载模块: ", key);
+                            delete System.models[key];
+                        }
                     }
-                    console.log("卸载模块: ", key);
-                    delete System.models[key];
-                }
+                    //卸载组件
+                    EditorComponentMgr.uninstallComponents(path);
+                    
+                    let context = result as string;
+                    System.startRecord(path);
+                    //执行代码
+                    eval(context);
+                    System.overRecord();
+                    System.init();
+                    
+                    //更新所有组件数据
+                    EditorComponentMgr.refreshComponents(path);
+                    //通知编辑器重新挂载脚本
+                    EditorEventMgr.Instance.emitEvent("OnRemountComponent", cb => cb());
+                    this.isTsRealoading = false;
+                }, error => {
+                    console.error(`脚本"${path}"更新失败: `, error);
+                    this.isTsRealoading = false;
+                });
+            } else {
+                console.log('没有用户脚本');
             }
-            //卸载组件
-            EditorComponentMgr.uninstallComponents(path);
-            
-            let context = result as string;
-            System.startRecord(path);
-            //执行代码
-            eval(context);
-            System.overRecord();
-            System.init();
-            
-            //更新所有组件数据
-            EditorComponentMgr.refreshComponents(path);
-            //通知编辑器重新挂载脚本
-            EditorEventMgr.Instance.emitEvent("OnRemountComponent", cb => cb());
-            this.isTsRealoading = false;
-        }, error => {
-            console.error(`脚本"${path}"更新失败: `, error);
-            this.isTsRealoading = false;
         });
+        
     }
     
     /**
@@ -121,6 +128,27 @@ export class EditorResources implements IEditorCode {
         await this.loadAsset("resource/icon/axis_5.png");
         await this.loadAsset("resource/shader/shader.assetbundle.json");
         this.defaultFont = EditorApplication.Instance.assetMgr.getAssetByName("方正粗圆_GBK.font.json");
+    }
+
+    /**
+     * 检测是否存在文件
+     * @param path 文件路径
+     * @param callback 回调
+     */
+    public existFile(path: string, callback: (result: boolean) => void) {
+        let url = EditorApplication.Instance.serverResourcesUrl + path;
+        var xhr = new XMLHttpRequest();
+        xhr.open('HEAD', url, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            }
+        }
+        xhr.send(null);
     }
 
     /**
@@ -167,7 +195,7 @@ export class EditorResources implements IEditorCode {
     }
 
     /**
-     * 跟具文件key异步下载文件, 回调形式返回数据
+     * 根据文件key异步下载文件, 回调形式返回数据
      * @param key 文件唯一key
      * @param type 下载的数据类型
      * @param success 下载成功回调
@@ -191,9 +219,24 @@ export class EditorResources implements IEditorCode {
         let fileInfo = FileInfoManager.Instance.getFileByKey(key);
         if (fileInfo != null) {
             return this.loadFilePromise(fileInfo.relativePath, type);
-        } else {
-            fail && fail(`没有找到key: '${key}'对应的文件!`);
         }
+    }
+
+    /**
+     * 根据文件key加载texture
+     * @param key
+     */
+    public loadTextureByKeyPromise(key: string): Promise<m4m.framework.texture> {
+        return new Promise<m4m.framework.texture>((resolve, reject) => {
+            let fileInfo = FileInfoManager.Instance.getFileByKey(key);
+            if (fileInfo) {
+                this.loadTexture(fileInfo.relativePath, (tex) => {
+                    resolve(tex);
+                }, (e) => {
+                    reject(e);
+                });
+            }
+        })
     }
 
     /**
@@ -204,7 +247,11 @@ export class EditorResources implements IEditorCode {
      */
     public loadTextureByKey(key: string, success: (tex: m4m.framework.texture) => void, fail?: (error: any) => void) {
         let fileInfo = FileInfoManager.Instance.getFileByKey(key);
-        this.loadTexture(fileInfo.relativePath, success, fail);
+        if (fileInfo) {
+            this.loadTexture(fileInfo.relativePath, success, fail);
+        } else {
+            fail && fail(new Error(`没有找到key: '${key}'对应的文件!`));
+        }
     }
 
     /**
@@ -248,9 +295,9 @@ export class EditorResources implements IEditorCode {
             callback(null);
             return;
         }
-        if (atlas.key == null || atlas.key.length == 0) {
+        if (atlas.guid == null || atlas.guid.length === 0) {
             //直接加载texture, 并转为 sprite
-            this.loadTextureByKey(atlas.guid, (tex) => {
+            this.loadTextureByKey(atlas.key, (tex) => {
                 let _sprite = new sprite();
                 let ref: AtlasReference = {
                     key: atlas.key,
@@ -341,11 +388,9 @@ export class EditorResources implements IEditorCode {
 
     /**
      * 打开编辑器中的文件 (双击), 需要执行异步操作
-     * @param fileName 文件名称
-     * @param path 文件路径, 相对于 Contents 的路径
      * @param assetInfo 该文件的描述对象
      */
-    public async openFile(fileName: string, path: string, assetInfo: EditorAssetInfo): Promise<void> {
+    public async openFile(assetInfo: EditorAssetInfo): Promise<void> {
         if (EditorApplication.Instance.isPlay) {
             return;
         }
@@ -359,7 +404,7 @@ export class EditorResources implements IEditorCode {
                 //     this.currUserSceneInst = null;
                 // }
                 if (dataData.ResName) {
-                    await this.openScene(ea.serverResourcesUrl + "Art/" + path, dataData.ResName);
+                    await this.openScene(ea.serverResourcesUrl + "Art/" + assetInfo.relativePath, dataData.ResName);
                 } else {
                     //打开空场景
                     ea.editorScene.openEmptyScene();
@@ -393,8 +438,10 @@ export class EditorResources implements IEditorCode {
                 // }
                 //await this.openPrefab(ea.serverResourcesUrl + "Art/" + path, dataData.ResName);
             } else if (dataData.DirectoryType == "Scene3D") { //打开场景, 新方式
+                // console.error("打开场景 "+assetInfo.value + ".json");
                 let configJson = assetInfo.childrenFile.find(value => value.value == assetInfo.value + ".json");
                 if (configJson) {
+                    // console.error("打开场景 "+configJson.key);
                     ExportManager.CreatSceneByKey(configJson.key);
                 }
             }

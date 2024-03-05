@@ -70,7 +70,7 @@ export const Directory = () => {
   // 选中触发
   const onSelect: DirectoryTreeProps['onSelect'] = (keys, info) => {
     
-    const dirInfo = info.selectedNodes[0];
+    const dirInfo: EditorAssetInfo = info.selectedNodes[0] as EditorAssetInfo;
     const selectedKey = keys[0].toString()
 
     setSelectNode(dirInfo)
@@ -90,8 +90,8 @@ export const Directory = () => {
     EditorEventMgr.Instance.emitEvent("ResourceFileUpDate", cb => cb(dirInfo));
 
     // getMainDirAll(dirInfo)
-    console.log(assetData);
-    console.log(dirInfo);
+    //console.log(assetData);
+    //console.log(dirInfo);
     
     
     // if(dirInfo.id === 0) {
@@ -132,8 +132,8 @@ export const Directory = () => {
     EditorEventMgr.Instance.emitEvent("ResourceFileUpDate", cb => cb(assetData));
 
     show(event, {
-                props: assetData
-        })
+      props: assetData
+    })
   }
 
   return (

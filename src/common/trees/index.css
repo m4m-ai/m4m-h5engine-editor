@@ -18,6 +18,25 @@
   border: 2px solid #333333;
   overflow: auto;
 }
+.treeTest-box2-node-content {
+  display: flex;
+}
+.treeTest-box2-node-content .controller {
+  position: absolute;
+  left: 0;
+  width: 30px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.treeTest-box2 .ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
+  display: none;
+}
+
+.treeTest-box2 .ant-tree.ant-tree-directory .ant-tree-treenode .ant-tree-switcher {
+  margin-left: 32px;
+}
 .ant-tree {
   background: #363636 !important;
   width: 100%;
@@ -28,6 +47,9 @@
 .ant-tree-title {
   color: #dad6d6;
   margin-left: 5px !important;
+}
+.treeTest-box2 .ant-tree .ant-tree-node-content-wrapper {
+  position: static;
 }
 .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
   background-color: #363636;

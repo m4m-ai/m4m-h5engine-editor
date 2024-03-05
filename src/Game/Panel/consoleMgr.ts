@@ -24,6 +24,7 @@ export interface ConsoleData {
     desc: string;
     ConsoelLogIcon: string;
     visible: boolean,
+    [propName: string]: any;
 }
 export enum ConsoleType {
     Log = 0,

@@ -15,12 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 export enum ComponentFieldEnum {
-    HideInInspector,
-    Number,
-    String,
-    Boolean,
-    Vector2,
-    Vector3,
-    Border,
-    Layout,
+    HideInInspector = "",
+    Integer = "int",
+    Float = "floar",
+    String = "string",
+    Boolean = "boolean",
+    Vector2 = "vector2",
+    Vector3 = "vector3",
+    Rect = "rect",
+    Border = "border",
+    Layout = "layout",
+    texture = "texture",
+    sprite = "sprite",
+    color = "color"
 }

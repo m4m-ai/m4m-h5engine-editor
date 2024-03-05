@@ -33,6 +33,10 @@ import transform2D = m4m.framework.transform2D;
 import { EditorComponentMgr } from "./Component/EditorComponentMgr";
 import overlay2D = m4m.framework.overlay2D;
 import camera = m4m.framework.camera;
+import { ExportNameList } from "./ExportManager/ExportNameList";
+import { CreateUINodeManager } from "./UI/CreateUINodeManager";
+import { PSDUiManager } from "./UI/PSDUiManager";
+import { GPTApiHandler } from "../gpt/handler/GPTApiHandler";
 
 
 /**
@@ -40,19 +44,22 @@ import camera = m4m.framework.camera;
  */
 export class EditorApplication implements m4m.framework.IEditorCode {
 
-    /**
-     * WebSocket 服务器地址
-     */
     public static readonly wsServerUrl: string = "ws://127.0.0.1:8004/";
-    /**
-     * 文件服务器地址
-     */
-    public static readonly fileServerUrl: string = "http://127.0.0.1:9696/";
-
-    /**
-     * 文件上传服务器地址
-     */
+    public static readonly fileServerUrl: string = "http://127.0.0.1:9696/Res/";
     public static readonly postServerUrl: string = "http://127.0.0.1:7777/";
+
+    // /**
+    //  * WebSocket 服务器地址
+    //  */
+    // public static readonly wsServerUrl: string = "wss://ide-svc.meta4d.me:443/";
+    // /**
+    //  * 文件服务器地址
+    //  */
+    // public static readonly fileServerUrl: string = "https://ide-svc.meta4d.me:4436/";
+    // /**
+    //  * 文件上传服务器地址
+    //  */
+    // public static readonly postServerUrl: string = "https://ide-svc.meta4d.me:4437/";
     
     public static get Instance(): EditorApplication {
         return this._inst;
@@ -158,6 +165,10 @@ export class EditorApplication implements m4m.framework.IEditorCode {
         window["m4m"]["editor"].EditorEventMgr = EditorEventMgr;
         window["m4m"]["editor"].WebsocketTool = WebsocketTool;
         window["m4m"]["editor"].ExportManager = ExportManager;
+
+        window["testFunc"] = (uiName: string) => {
+            PSDUiManager.showUi(uiName, this.editorScene.getCurrentOrigin2DRoot());
+        }
     }
 
 
@@ -170,6 +181,10 @@ export class EditorApplication implements m4m.framework.IEditorCode {
         if (EditorApplication._init) {
             return;
         }
+        ExportNameList.Instance.init();
+        CreateUINodeManager.Instance.init();
+        GPTApiHandler.init();
+
         this.projectName = peojectName;
         EditorApplication._init = true;
         this.engineApp = new m4m.framework.application();
@@ -183,6 +198,7 @@ export class EditorApplication implements m4m.framework.IEditorCode {
         let devicePixelRatio = window.devicePixelRatio || 1; //处理 硬件像素比例的影响
         let val = tempPixel / devicePixelRatio;
         this.engineApp.start(owner, m4m.framework.CanvasFixedType.FixedHeightType, val);
+        owner.style.height = "100%";
 
         //scene窗口场景
         //this.scene = this.engineApp.getScene();
@@ -447,10 +463,10 @@ export class EditorApplication implements m4m.framework.IEditorCode {
             instance.navTrans = null;
         }
 
-        // if (m4m.framework.physics) {
-        //     m4m.framework.physics.dispose();
-        //     m4m.framework.physics = null;
-        // }
+        if (m4m.framework.physics) {
+            m4m.framework.physics.dispose();
+            m4m.framework.physics = null;
+        }
 
         //场景脚本
         if (this.editorScene.currUserSceneInst) {

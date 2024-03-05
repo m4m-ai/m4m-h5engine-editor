@@ -37,10 +37,10 @@ let bind = EditorEventMgr.Instance.addEventListener("OnConsoleLog", (arr) => {
 });
 
 const handleMenuClick: MenuProps['onClick'] = e => {
-    console.log('click', e)
+    //console.log('click', e)
 }
 const onChange = (e: CheckboxChangeEvent) => {
-    console.log(`checked = ${e.target.checked}`)
+    //console.log(`checked = ${e.target.checked}`)
 }
 const menu1 = (
     <Menu
@@ -121,14 +121,14 @@ const menu4 = (
 
 const onclick1 = e => {
     var aa: any = document.querySelectorAll('.iconbox')
-    console.log('nnnnnnnnnnnnnnnn', aa[1].style.backgroundColor)
+    //console.log('nnnnnnnnnnnnnnnn', aa[1].style.backgroundColor)
 
     if (aa[0].style.backgroundColor == 'rgb(112, 112, 112)') {
         aa[0].style.backgroundColor = '#363636'
     } else {
         aa[0].style.backgroundColor = '#707070'
     }
-    console.log('按钮1', e.target)
+   // console.log('按钮1', e.target)
 }
 const onclick2 = e => {
     var aa: any = document.querySelectorAll('.iconbox')
@@ -137,17 +137,17 @@ const onclick2 = e => {
     } else {
         aa[1].style.backgroundColor = '#707070'
     }
-    console.log('按钮2')
+   // console.log('按钮2')
 }
 const onclick3 = e => {
     var aa: any = document.querySelectorAll('.iconbox')
-    console.log('nnnnnnnnnnnnnnnn', aa[1].style.backgroundColor)
+    //console.log('nnnnnnnnnnnnnnnn', aa[1].style.backgroundColor)
     if (aa[2].style.backgroundColor == 'rgb(112, 112, 112)') {
         aa[2].style.backgroundColor = '#363636'
     } else {
         aa[2].style.backgroundColor = '#707070'
     }
-    console.log('按钮3')
+    //console.log('按钮3')
 }
 const titclik1 = e => {
     var aa: any = document.querySelectorAll('.dd')
@@ -156,7 +156,7 @@ const titclik1 = e => {
     } else {
         aa[0].style.backgroundColor = '#707070'
     }
-    console.log('按钮1x', aa[0])
+    //console.log('按钮1x', aa[0])
     e.preventDefault()
 }
 const titclik2 = e => {
@@ -166,7 +166,7 @@ const titclik2 = e => {
     } else {
         aa[1].style.backgroundColor = '#707070'
     }
-    console.log('按钮2x', aa[0], aa[1])
+    //console.log('按钮2x', aa[0], aa[1])
     e.preventDefault()
 }
 const titclik3 = e => {
@@ -176,7 +176,7 @@ const titclik3 = e => {
     } else {
         aa[2].style.backgroundColor = '#707070'
     }
-    console.log('按钮3x', aa[0], aa[1], aa[2])
+    //console.log('按钮3x', aa[0], aa[1], aa[2])
     e.preventDefault()
 }
 

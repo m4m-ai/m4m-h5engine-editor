@@ -40,16 +40,16 @@ const data = [
 ]
 
 const onclick1 = () => {
-  console.log('按钮一')
+  //console.log('按钮一')
 }
 const onclick2 = () => {
-  console.log('按钮二')
+  //console.log('按钮二')
 }
 const onclick3 = () => {
-  console.log('按钮三')
+  //console.log('按钮三')
 }
 const onclick4 = () => {
-  console.log('按钮四')
+  //console.log('按钮四')
 }
 
 const Bottom = () => (

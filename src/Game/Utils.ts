@@ -15,11 +15,37 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 import transform = m4m.framework.transform;
-import {EditorObjectTags} from "./EditorObjectTags";
-import {EditorApplication} from "./EditorApplication";
+import { EditorObjectTags } from "./EditorObjectTags";
+import { EditorApplication } from "./EditorApplication";
 import transform2D = m4m.framework.transform2D;
 
 export class Utils {
+
+    /**
+     * 弧度制转角度制
+     */
+    public static radianToDegree(radian: number) {
+        return radian * (180 / Math.PI);
+    }
+
+    /**
+     * 角度制转弧度制
+     */
+    public static degreesToRadians(degrees: number) {
+        return degrees * (Math.PI / 180);
+    }
+
+    /**
+     * 将颜色转为16进制字符串
+     */
+    public static colorToHex(color: m4m.math.color): string {
+        return this.toHex(color.r) + this.toHex(color.g) + this.toHex(color.b) + this.toHex(color.a);
+    }
+
+    private static toHex(c: number) {
+        var hex = Math.round(c * 255).toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    }
 
     /**
      * 将获取一个类对象的名称
@@ -48,14 +74,28 @@ export class Utils {
         str = s0 + str.replace(/([A-Z])/g, substring => " " + substring.toUpperCase());
         return str.replace(/(?<= )([a-z])/g, substring => substring.toUpperCase());
     }
-    
+    /**
+     * 转为 number
+     */
+    public static convertToNumber(v: string | number): number {
+        let outNum:number=0;
+        if (typeof v == "string") {
+            outNum=Number(v);
+            if (isNaN(outNum)) {
+                console.error("转number失败 "+v);
+                return 0;
+            }
+         } else {
+            outNum=v;
+         }
+        return outNum;
+    }
     /**
      * 验证是否为数字
      * @param str 字符串
      * @param defaultVal 验证失败时返回的默认值
      */
-    public static verificationNumber(str: string, defaultVal: number): { success: boolean, standard: number } {
-        let num = Number(str);
+    public static verificationNumber(num: number, defaultVal: number): { success: boolean, standard: number } {
         if (isNaN(num)) {
             return {
                 success: false,
@@ -129,7 +169,7 @@ export class Utils {
 
     //绘制线段
     public static drawLine(trans: transform, points: m4m.math.vector3[], color: m4m.math.color) {
-        
+
         let ps: m4m.math.vector3[] = [];
         for (let i = 0; i < points.length - 1; i++) {
             ps.push(points[i]);
@@ -195,5 +235,5 @@ export class Utils {
         }
         return _mesh;
     }
-    
+
 }

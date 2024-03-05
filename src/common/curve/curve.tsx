@@ -42,14 +42,14 @@ interface CurveProps {
 	symbolSize?: number
 	title?: string
 }
-console.log()
+//console.log()
 
 global['test1'] = () => {
 	EditorEventMgr.Instance.emitEvent('ResetMaxAndMin', (cb) => cb(50, -50))
 }
 global['test2'] = () => {
 	EditorEventMgr.Instance.addEventListener('DispatchNodeChange', (e) => {
-		console.log(e)
+		//console.log(e)
 	})
 }
 global['test3'] = () => {
@@ -179,7 +179,7 @@ const Curve: React.FC<CurveProps> = ({ data: data1, symbolSize = 10, title }) =>
 				dispatchNodeChange(res)
 				// console.log('添加新点')
 			} else {
-				console.log(2)
+				//console.log(2)
 			}
 			addDraggingPoint()
 		})
@@ -307,7 +307,7 @@ const Curve: React.FC<CurveProps> = ({ data: data1, symbolSize = 10, title }) =>
 		removeGraphicPoint()
 		addDraggingPoint()
 		reRenderEcharts()
-		console.log('删除节点')
+		//console.log('删除节点')
 	}
 
 	// 数据更改后Echarts重新渲染
@@ -373,7 +373,7 @@ const Curve: React.FC<CurveProps> = ({ data: data1, symbolSize = 10, title }) =>
 						})
 						reRenderEcharts()
 					} else {
-						console.log(2)
+						//console.log(2)
 					}
 					addDraggingPoint()
 					clickCount.current = 0

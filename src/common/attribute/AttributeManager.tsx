@@ -1,21 +1,40 @@
 
 import React from "react";
 import { Utils } from "../../Game/Utils";
+
 import { SelectAttr } from "./attr/SelectAttr";
 import { CheckboxAttr } from "./attr/CheckboxAttr";
 import { Vector2Attr } from "./attr/Vector2Attr";
 import { Vector3Attr } from "./attr/Vector3Attr";
 import { RectAttr } from "./attr/RectAttr";
-import { NumberInputAttr } from "./attr/NumberInputAttr";
+import {NumberInputAttr} from "./attr/NumberInputAttr";
 import { SliderAttr } from "./attr/SliderAttr";
 import { StringInputAttr } from "./attr/StringInputAttr";
 import { SelectListAttr } from "./attr/SelectListAttr";
 import { LayoutSetAttr } from "./attr/LayoutSetAttr";
-import { InputGroupAttr } from "./attr/InputGroupAttr";
+// import { InputGroupAttr } from "./attr/InputGroupAttr";
 import { AssetSelectionAttr } from "./attr/AssetSelectionAttr";
 import { ColorSelectionAttr } from "./attr/ColorSelectionAttr";
-import { Attribute, IAttributeData } from "./Attribute";
+import { RadioGroupAttr } from "./attr/RadioGroupAttr";
+import { Attribute, IAttrComponent, IAttributeData } from "./Attribute";
 
+//注册属性
+export const AttributeMap = {
+    "select": SelectAttr,
+    "checkbox": CheckboxAttr,
+    "vector2": Vector2Attr,
+    "vector3": Vector3Attr,
+    "rect": RectAttr,
+    "number": NumberInputAttr,
+    "slider": SliderAttr,
+    "string": StringInputAttr,
+    "selectList": SelectListAttr,
+    "layoutSet": LayoutSetAttr,
+    //"inputGroup": InputGroupAttr,
+    "asset": AssetSelectionAttr,
+    "color": ColorSelectionAttr,
+    "radioGroup": RadioGroupAttr,
+}
 
 /**
  * 通用属性管理器
@@ -29,19 +48,9 @@ export class AttributeManager {
      * 初始化所有属性数据
      */
     public static init() {
-        AttributeManager.registerAttribute("select", SelectAttr);
-        AttributeManager.registerAttribute("checkbox", CheckboxAttr);
-        AttributeManager.registerAttribute(Utils.nameof(m4m.math.vector2), Vector2Attr);
-        AttributeManager.registerAttribute(Utils.nameof(m4m.math.vector3), Vector3Attr);
-        AttributeManager.registerAttribute(Utils.nameof(m4m.math.rect), RectAttr);
-        AttributeManager.registerAttribute("number", NumberInputAttr);
-        AttributeManager.registerAttribute("slider", SliderAttr);
-        AttributeManager.registerAttribute("string", StringInputAttr);
-        AttributeManager.registerAttribute("selectList", SelectListAttr);
-        AttributeManager.registerAttribute("layoutSet", LayoutSetAttr);
-        AttributeManager.registerAttribute("inputGroup", InputGroupAttr);
-        AttributeManager.registerAttribute("asset", AssetSelectionAttr);
-        AttributeManager.registerAttribute("color", ColorSelectionAttr);
+        for (const key in AttributeMap) {
+            AttributeManager.registerAttribute(key, AttributeMap[key]);
+        }
     }
 
     /**
@@ -59,7 +68,7 @@ export class AttributeManager {
     /**
      * 根据类型和传入的数据实例化属性组件
      */
-    public static getAttribute(typeName: string, data: any): JSX.Element {
+    public static getAttribute(typeName: string, data: IAttrComponent<any>): JSX.Element {
         let AttrFunc = this._map[typeName];
         if (AttrFunc) {
             return <AttrFunc {...data}></AttrFunc>;

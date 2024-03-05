@@ -46,7 +46,7 @@ let exportD: exportDataType[] = []
 /**
  * 外部创建轨道
  */
-export const createTrack = (data) => {
+export const createTrack = (data:TimelineType) => {
   EditorEventMgr.Instance.emitEvent('OnOutAnimationData', cb => cb(data))
 }
 
@@ -91,7 +91,7 @@ export const TimelineEditor = (datas: { datas: IComponentInfo[] }) => {
         update: ({ action, time }) => {
           if (time) {
             const val = (action as CustomTimelineAction).data.val
-            console.log(val, time);
+            //console.log(val, time);
           }
         },
         // leave: ({ action, engine }) => {

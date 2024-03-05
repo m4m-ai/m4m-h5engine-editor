@@ -80,7 +80,7 @@ export function InspertorPreview(data: IInspertorPreviewData) {
                         let value = data.assetInfo[key];
 
                         return (
-                            <div className="inspector-preview-body-row">
+                            <div className="inspector-preview-body-row" key={key}>
                                 <div >{key}</div>
                                 <div >{value + ""}</div>
                                 {/* {
