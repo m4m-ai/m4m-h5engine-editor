@@ -1,0 +1,21 @@
+.box {
+    background: #f2f3f4;
+}
+
+.box :global {
+    
+    .header-operation .ant-btn.add-btn {
+        width: 100px;
+        background: #fafafa;
+        color: #000;
+    }
+    .header-operation .create-btn {
+        width: 90px;
+    }
+    .header-operation .drop-btn {
+        width: 40px;
+    }
+
+}
+
+

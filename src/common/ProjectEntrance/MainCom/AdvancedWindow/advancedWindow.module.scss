@@ -1,0 +1,19 @@
+.advance {}
+
+.advance :global {
+    .advance-card {
+        background: #fff;
+        box-shadow: 2px 2px 2px #a4a5a6;
+        padding: 20px;
+        .card-title {
+            font-size: 22px;
+        }
+        div {
+            margin-bottom: 10px;
+        }
+        .advance-link {
+            color: #2297f3;
+            font-weight: 550;
+        }
+    }
+}

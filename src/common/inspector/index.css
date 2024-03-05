@@ -1,0 +1,228 @@
+.inspector-box {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: #363636;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.inspector-content-1 {
+  display: flex;
+}
+
+.inspector-left {
+  display: flex;
+  padding-top: 5px;
+}
+
+.inspector-right {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-right: 5px;
+}
+
+.inspector-right-up {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  width: 100%;
+}
+
+
+
+.inspector-right-down {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+  margin-bottom: -10px;
+}
+
+
+.inspector-content-2 {
+  display: flex;
+}
+
+
+.inspector-box .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: #575757;
+  border: 1px solid #575757;
+  border-radius: 0;
+  height: 20px;
+}
+
+.inspector-box .ant-select-single.ant-select-show-arrow .ant-select-selection-item,
+.ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+  color: rgb(212, 211, 211);
+  margin-top: -6px;
+}
+
+
+.inspector-box .ant-checkbox-inner {
+  background-color: #1b1b1b;
+  border: 1px solid #1b1b1b;
+}
+
+.add-component {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  text-align: center;
+  margin: 10px auto;
+  font-size: 10px;
+}
+
+.clickOpen {
+  display: inline;
+  padding: 2px 20px;
+  background-color: rgb(105, 105, 105);
+  cursor: pointer;
+  color: #d4d4d4;
+  border-radius: 5px;
+}
+
+.list-com {
+  list-style: none;
+  background-color: rgb(61, 61, 61);
+  margin-top: 1px;
+  display: none;
+  border: 1px solid #141414;
+  color: #d4d4d4;
+  border-radius: 3px;
+}
+
+.searchOutlin {
+  color: rgb(211, 210, 210);
+}
+
+.list-com-li1 {
+  padding: 2px 3px;
+}
+
+.list-com-input {
+  border-radius: 5px;
+}
+
+.list-com-li2 {
+  border-top: 1px solid #2c2c2c;
+  border-bottom: 1px solid #2c2c2c;
+  padding: 2px 0;
+}
+
+.list-com-li3 {
+  height: 280px;
+  overflow: auto;
+  padding: 0 16px;
+}
+
+.list-com-li3 .ant-list-item {
+  padding: 2px 5px 2px 15px;
+  color: rgb(211, 210, 210);
+  font-size: 10px;
+}
+
+.list-com-li3-content {
+  display: flex;
+}
+
+.list-com-li3-content:hover {
+  background-color: rgba(40, 118, 235, 0.6);
+}
+
+.inspector-right span {
+  color: rgb(212, 211, 211);
+}
+
+.con-right .ant-input-number {
+  width: 100%;
+  /* margin: 0 2px 0 8px; */
+  height: 21px;
+  font-size: 10px;
+  background-color: #1b1b1b;
+  border: 1px solid #000;
+}
+
+.con-right .ant-input-number-handler-wrap {
+  display: none;
+}
+
+.con-right .ant-input-number-input {
+  height: 19px;
+  color: rgb(231, 231, 231);
+}
+
+
+/* 预览面板 */
+.inspector-preview-head {
+  width: 100%;
+  height: 55px;
+  border-bottom: black 1px solid;
+  padding: 5px;
+}
+
+.inspector-preview-head>div {
+  display: inline-block;
+}
+
+.inspector-preview-body {
+  display: block;
+  color: rgb(231, 231, 231);
+  padding: 10px 15px 10px 15px;
+}
+
+/* .inspector-preview-body-row div {
+  display: inline-block;
+}
+
+.inspector-preview-body-row div:first-child {
+  width: 150px;
+  margin-right: 10px;
+} */
+
+.inspector-preview-body-row {
+  display: flex;
+}
+
+.inspector-preview-body-row div {
+  min-width: 150px;
+}
+
+.inspector-preview-window {
+  width: 100%;
+  min-height: 400px;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  background-color: #363636;
+}
+
+.inspector-preview-widow-head {
+  width: auto;
+  height: 20px;
+  background-color: #2E2E2E;
+}
+
+.inspector-preview-window-body {
+  box-sizing: border-box;
+  min-height: 385px;
+  height: calc(100% - 25px);
+  color: rgb(231, 231, 231);
+  vertical-align: middle;
+  text-align: center;
+  padding: 10px;
+}
+
+.inspector-preview-window-body .ant-image {
+  width: auto;
+  height: 100%;
+}
+
+.inspector-preview-widow-head div {
+  display: inline;
+  height: 100%;
+  color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+}

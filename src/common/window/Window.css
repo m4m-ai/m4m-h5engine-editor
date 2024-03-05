@@ -1,0 +1,149 @@
+.win-keepOut {
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.win-box {
+    position: fixed;
+    z-index: 100;
+    background: #363636;
+    box-shadow: 0 0 8px black;
+}
+
+.win-icon {
+    width: 15px;
+    height: 15px;
+    /* background: pink; */
+    display: inline-block;
+    margin-right: 6px;
+    /* 控制传进来的 icon 大小 */
+
+}
+
+.win-icon span {
+    width: 100%;
+    height: 100%;
+}
+
+.win-body {
+    width: 100%;
+    background: #333333;
+    height: calc(100% - 30px);
+    overflow: auto;
+}
+
+.win-header {
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #262626;
+    padding-left: 4px;
+}
+
+
+.win-close {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    font-size: 8px;
+    background: #595959;
+    color: #C7C7C7;
+}
+
+.win-close:hover {
+    background: #727272;
+}
+
+.flex-middle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.line-common {
+    position: absolute;
+    z-index: 10;
+}
+
+.corner-common {
+    position: absolute;
+    z-index: 11;
+    width: 8px;
+    height: 8px;
+}
+
+.win-top-line {
+    width: 100%;
+    height: 4px;
+    top: 0;
+    left: 0;
+    cursor: ns-resize;
+}
+
+.win-bottom-line {
+    width: 100%;
+    height: 4px;
+    bottom: 0;
+    left: 0;
+    cursor: ns-resize;
+}
+
+.win-left-line {
+    width: 4px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    cursor: ew-resize;
+}
+
+.win-right-line {
+    width: 4px;
+    height: 100%;
+    right: 0;
+    top: 0;
+    cursor: ew-resize;
+}
+
+.win-topleft-corner {
+    top: 0;
+    left: 0;
+    cursor: nwse-resize;
+}
+
+.win-topright-corner {
+    top: 0;
+    right: 0;
+    cursor: nesw-resize;
+}
+
+.win-bottomleft-corner {
+    bottom: 0;
+    left: 0;
+    cursor: nesw-resize;
+}
+
+.win-bottomright-corner {
+    bottom: 0;
+    right: 0;
+    cursor: nwse-resize;
+}
+.win-confirm {
+    margin: 10px;
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
+}
+
+.win-confirm-body {
+    height: calc(100% - 40px);
+    overflow: auto;
+}
+.win-confirm-bottom {
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+}

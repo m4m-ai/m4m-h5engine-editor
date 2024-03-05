@@ -1,0 +1,72 @@
+
+// 按钮
+.ant-btn {
+    background: #363636;
+    border: 1px solid #363636;
+}
+.ant-btn:hover,.ant-btn:focus,.ant-btn:active {
+  background: #646664;
+  border-color: #646664;
+}
+
+.ant-btn:not([disabled]):hover {
+    color: #fff;
+}
+// 选项框
+.ant-select {
+    font-size: 10px;
+}
+.ant-select-item {
+    position: relative;
+    display: block;
+    min-height: 15px;
+    padding: 0px 12px;
+    color: rgba(190, 190, 190, 0.9);
+    font-weight: normal;
+    font-size: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.ant-select-single.ant-select-show-arrow .ant-select-selection-item, .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+    margin-top: 0;
+    color: rgb(212, 211, 211);
+}
+.ant-select-dropdown {
+    background: #4e4e4e;
+}
+.ant-space-item {
+    color: rgba(190, 190, 190, 0.9);
+}
+.ant-select-item.ant-select-item-option.ant-select-item-option-active {
+    background-color: #333;
+}
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    background-color: #575757;
+    border: 1px solid #575757;
+    border-radius: 0;
+}
+
+.ant-select.ant-select-single.ant-select-show-arrow {
+    width: 100%;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-radius: 3px;
+}
+.ant-select-item.ant-select-item-option.ant-select-item-option-active {
+    background-color: rgb(212, 211, 211);
+}
+
+span.ant-select-arrow {
+    color: rgb(190, 190, 190);
+}
+
+
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-submenu-title {
+  padding: 1px 12px;
+  font-size: 12px;
+}
+.ant-dropdown-menu-item-group-title {
+  padding: 0;
+}

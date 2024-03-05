@@ -1,0 +1,32 @@
+.license{}
+
+.license :global {
+    .no-lic {
+        height: 80vh;
+        background: #fff;
+        box-shadow: 2px 2px 2px #dcddde;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .no-lic-content {
+            display: flex;
+            height: 20vh;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            .no-pic {
+                width: 80px;
+                height: 80px;
+                background: pink;
+            }
+            .no-title {
+                font-size: 30px;
+                font-weight: 600;
+            }
+            .no-desc {
+                text-align: center;
+            }
+        }
+    }
+
+}

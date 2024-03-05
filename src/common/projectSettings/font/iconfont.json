@@ -1,0 +1,86 @@
+{
+  "id": "3803568",
+  "name": "..",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1444967",
+      "name": "nodejs",
+      "font_class": "nodejs",
+      "unicode": "e80e",
+      "unicode_decimal": 59406
+    },
+    {
+      "icon_id": "1567694",
+      "name": "windows",
+      "font_class": "windows",
+      "unicode": "e6bc",
+      "unicode_decimal": 59068
+    },
+    {
+      "icon_id": "5476625",
+      "name": "电脑",
+      "font_class": "diannao",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "11349131",
+      "name": "ps",
+      "font_class": "ps",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "13253882",
+      "name": "android-o",
+      "font_class": "android-o",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "13744045",
+      "name": "xbox",
+      "font_class": "xbox",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
+      "icon_id": "15378487",
+      "name": "ios",
+      "font_class": "ios",
+      "unicode": "ebd5",
+      "unicode_decimal": 60373
+    },
+    {
+      "icon_id": "24891700",
+      "name": "HTML-5",
+      "font_class": "HTML-5",
+      "unicode": "e879",
+      "unicode_decimal": 59513
+    },
+    {
+      "icon_id": "658025",
+      "name": "关闭",
+      "font_class": "guanbi",
+      "unicode": "e659",
+      "unicode_decimal": 58969
+    },
+    {
+      "icon_id": "1713965",
+      "name": "59-上边框",
+      "font_class": "-shangbiankuang",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "7596588",
+      "name": "24gf-ellipsisVertical",
+      "font_class": "24gf-ellipsisVertical",
+      "unicode": "eb10",
+      "unicode_decimal": 60176
+    }
+  ]
+}

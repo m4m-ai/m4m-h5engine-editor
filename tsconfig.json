@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "module": "CommonJS",
+    "baseUrl": "./node_modules",
+    // "jsx": "preserve",
+    "typeRoots": ["node_modules/@types"],
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "es5",
+      "es2015.collection",
+      "es2015.promise"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    // "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "strictNullChecks": false,
+    "experimentalDecorators": true,
+    "noEmit": true,
+    "jsx": "react",
+    "noImplicitAny": false, // 是否在表达式和声明上有隐含的any类型时报错
+    "outDir": "./dist",
+    "types": []
+  },
+  // "include": ["src", "dist"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "src/tress/index.jsx",
+    "src/layout/index.jsx",
+    "src/layout/index.jsx",
+    "src/excel/Excel.jsx",
+    "src/excel/Excel.jsx",
+    "src/FreeTexturePacker/index.jsx"
+  ],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,58 @@
+.community {
+
+}
+
+.community :global {
+    .community-content {
+        height: 100vh;
+        overflow: auto;
+    }
+    .title-version {
+        display: inline-block;
+        margin-left: 10px;
+        font-size: 14px;
+        padding: 2px 10px;
+        border-radius: 20px;
+        position: relative;
+        top: -2px;
+        background: #d3d3d3;
+    }
+    .community-item {
+        display: flex;
+        height: 120px;
+        margin-bottom: 20px;
+        background: #fff;
+        box-shadow: 0 2px 2px #a5a6a6;
+        .item-pic {
+            width: 120px;
+            height: 120px;
+            background: pink;
+        }
+        .item-info {
+            flex: 1;
+            padding: 20px 20px;
+            div:first-child {
+                font-weight: 600;
+                font-size: 12px;
+            }
+            div:nth-child(2) {
+                color: #aaa;
+                margin-top: 6px;
+            }
+            div:nth-child(3) {
+                margin-top: 6px;
+                span {
+                    color: #2b9bf4;
+                    font-weight: 600;
+                }
+                .a-pic {
+                    display: inline-block;
+                    background: pink;
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 6px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,108 @@
+.data-box {
+  height: 100%;
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+}
+.iconAndFont-layout1 {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 10px;
+}
+.iconAndFont-layout2 {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0 0 10px;
+  gap: 4px;
+}
+.iconAndFont-ul {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.iconAndFont-li {
+  display: flex;
+}
+.li-font {
+  margin-left: 3px;
+}
+.ul-font {
+  position: relative;
+}
+.ul-font-in {
+  font-size: 10px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.highlight-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(44,93,135, 0.3);
+}
+.data-show-ul {
+  display: flex;
+}
+.lay-2-box {
+  display: flex;
+  margin-top: 20px;
+  margin-left: 10px;
+  flex-wrap: wrap;
+}
+.lay-2-content {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+}
+
+.folder-img img {
+  /* min-width: 20px; */
+  min-height: 20px;
+  /* max-width: 100%; */
+  background-size: contain;
+}
+.folder-font {
+  display: flex;
+}
+.folder-font a {
+  color: rgba(209, 208, 208, 0.85);
+  font-size: 10px;
+}
+
+.data-show-li {
+  display: flex;
+}
+.lay-2-box-li {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.lay-li-content {
+  display: flex;
+}
+.li-img {
+  margin-right: 5px;
+}
+.li-img img {
+  width: 15px !important;
+  height: 15px;
+}
+.li-font {
+  font-size: 10px;
+  margin-top: 2px;
+}
+.not-drag {
+  -webkit-user-drag: none;
+}
+.input-tree2 {
+  touch-action: manipulation;
+  background-color: #333;
+  border: 1px solid #000;
+  box-shadow: 10 10px 10px #333;
+}
+.name-input {
+  width: 100%;
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="Rectangle_155409" d="M0 0H24V24H0z" class="cls-1" transform="translate(260.84 640.972)"/>
+        </clipPath>
+        <style>
+            .cls-1{fill:#fed33c}
+        </style>
+    </defs>
+    <g id="premium-2-fill" clip-path="url(#clip-path)" transform="translate(-260.84 -640.972)">
+        <path id="Path_62187" d="M266.286 659.729l-1.479-11.83a1 1 0 0 1 1.844-.655l1.9 3.036a1 1 0 0 0 1.787-.178l1.577-4.208a1 1 0 0 1 1.876 0l1.577 4.207a1 1 0 0 0 1.787.179l1.9-3.037a1 1 0 0 1 1.842.655l-1.479 11.831a1 1 0 0 1-.993.877h-11.146a1 1 0 0 1-.993-.877z" class="cls-1" transform="translate(0.005 0.029)"/>
+        <path id="Line_6379" fill="none" stroke="transparent" d="M0 0L17.024 0" transform="translate(264.345 658.463)"/>
+    </g>
+</svg>

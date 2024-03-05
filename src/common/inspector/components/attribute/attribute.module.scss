@@ -1,0 +1,137 @@
+.selectMaterial {
+
+}
+// 后期维护 所以没用scss 特性
+.selectMaterial :global {
+    .fd-searchP {
+        width: 10px;
+        height: 10px;
+    }
+    .flex-adaptive {
+        width: 100%;
+        position: absolute;
+        top: 46px;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .flex-adaptive-upper {
+        flex: 1;
+        overflow: auto;
+    }
+    
+    .fd-tab {
+        display: flex;
+        justify-content: space-between;
+        padding-left: 4px;
+        background: #3c3c3c;
+    }
+    
+    .fd-tab-left {
+        display: flex;
+    }
+    
+    .fd-tab-left div {
+        padding: 2px 4px;
+        border: 1px solid #3c3c3c;
+    }
+    
+    .fd-tab-left div:hover {
+        background: #333333;
+        border: 1px solid #232323;
+        border-radius: 2px;
+    }
+    
+    .fd-tab-left .fd-tab-active {
+        background: #333333;
+        border: 1px solid #232323;
+        border-radius: 2px;
+    }
+    
+    .fd-tab-right {
+        display: flex;
+        align-items: center;
+    }
+    
+    .fd-tab-right>div:last-child {
+        width: 40px;
+        padding: 2px;
+        background: #505050;
+        border: 1px solid #232323;
+    }
+    
+    .fd-tab .fd-tab-slider {
+        width: 80px;
+        height: 21px;
+        overflow: visible;
+        margin-right: 10px;
+    }
+    
+    .fd-content {
+        padding-left: 40px;
+    }
+    
+    .fd-content-flex {
+        padding-left: 10px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .fd-content-item {
+        display: flex;
+        align-items: center;
+    }
+    
+    .fd-content-item-pic {
+        width: 15px;
+        height: 15px;
+        margin-right: 2px;
+    }
+    
+    .fd-content-item-name {
+        text-align: center;
+    }
+
+    .fd-footer {
+        width: 100%;
+        height: 150px;
+        background: #2a2a2a;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .fd-footer-border {
+        cursor: ns-resize;
+    }
+    
+    .border-drag-first {
+        width: 100%;
+        height: 4px;
+        background: #3f3f3f;
+    }
+    
+    .border-drag-second {
+        width: 40px;
+        height: 4px;
+        background: #3f3f3f;
+        margin: 2px auto;
+    }
+    
+    .fd-footer-container {
+        flex: 1;
+        display: flex;
+    }
+    
+    .fd-footer-pic {
+        background: yellow;
+        width: 150px;
+        margin: 2px 4px 2px 4px;
+    }
+    
+    .fd-footer-content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

@@ -1,0 +1,20 @@
+.Excel {
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+.gc-ribbon-bar .ribbon-navigation .fileButton {
+  z-index: 0;
+}
+div#designer {
+  height: 100% !important;
+}
+.Excel a.title-content {
+  background-color: #fff;
+  border: 0;
+}

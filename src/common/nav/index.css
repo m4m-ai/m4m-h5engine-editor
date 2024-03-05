@@ -1,0 +1,119 @@
+.nav-box {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(17, 17, 17);
+  height: 34px;
+  width: 100%;
+}
+
+.nav-1 {
+  display: flex;
+  margin-top: 5px;
+}
+.nav-1-1 {
+  margin-left: 10px;
+}
+.nav-1-2 {
+  margin-left: 10px;
+}
+.nav-1-3 {
+  margin-left: 10px;
+}
+.nav-1-4 {
+  margin-left: 10px;
+}
+.nav-1-5 {
+  margin-left: 10px;
+}
+.nav-2 {
+  display: flex;
+  margin-top: 5px;
+}
+.nav-2-2 {
+  margin: 0 3px;
+}
+.nav-3 {
+  display: flex;
+  margin-top: 5px;
+}
+.nav-3-2 {
+  margin: 0 10px;
+}
+.nav-3-4 {
+  margin: 0 10px;
+}
+
+.nav-box .but {
+  background: #363636;
+  border: 1px solid #363636;
+}
+.cloudF {
+  color: rgb(190, 190, 190);
+}
+.settingO {
+  color: rgb(190, 190, 190);
+}
+.caretR {
+  color: rgb(190, 190, 190);
+}
+.pauseO {
+  color: rgb(209, 209, 209);
+}
+.stepF {
+  color: rgb(190, 190, 190);
+}
+.clockC {
+  color: rgb(190, 190, 190);
+}
+.searchO {
+  color: rgb(190, 190, 190);
+}
+
+.nav-box .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background-color: #4e4e4e;
+}
+
+.diver-n {
+  background-color: rgba(221, 221, 221, 0.9);
+  height: 2px;
+}
+.nav-box .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: #363636;
+  border: 1px solid #363636;
+  border-radius: 2px;
+}
+
+.nav-box span.ant-select-selection-item {
+  color: rgba(221, 221, 221, 0.9);
+}
+.nav-3-3-select {
+  font-size: 10px !important;
+}
+.nav-3-3-select
+  .ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  padding-top: 7px;
+}
+.nav-3-3 span.ant-select-selection-placeholder {
+  margin-top: 0 !important;
+}
+.nav-1-1 span.ant-select-selection-item {
+  margin-top: 0 !important;
+}
+.nav-box
+  .ant-select-single:not(.ant-select-customize-input)
+  .ant-select-selector {
+  height: 25px;
+}
+
+.nav-box button {
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-box .ant-select-single .ant-select-selector .ant-select-selection-item,
+.ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+  line-height: 22px;
+}

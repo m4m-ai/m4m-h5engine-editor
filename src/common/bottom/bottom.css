@@ -1,0 +1,62 @@
+.bottom-box {
+  width: 100%;
+}
+
+.bottom-content {
+  background-color: rgb(17, 17, 17);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding-left: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.bottom-content-font {
+  font-size: 10px;
+  color: #f5b502;
+}
+.bottom-content-icon {
+  display: flex;
+}
+.icon-a {
+  border-left: 0.5px solid #3c3c3c;
+  padding: 0 8px;
+}
+.icon-b {
+  border-left: 0.5px solid #3c3c3c;
+  border-right: 0.5px solid #3c3c3c;
+  padding: 0 8px;
+}
+.icon-c {
+  border-right: 0.5px solid #3c3c3c;
+  padding: 0 8px;
+}
+.icon-d {
+  border-right: 0.5px solid #3c3c3c;
+  padding: 0 8px;
+}
+.bugF {
+  color: #d3d3d3;
+}
+.daraB {
+  color: #d3d3d3;
+}
+.filterF {
+  color: #d3d3d3;
+}
+.checkC {
+  color: #d3d3d3;
+}
+.icon-a:hover {
+  background-color: #3c3c3c;
+}
+.icon-b:hover {
+  background-color: #3c3c3c;
+}
+.icon-c:hover {
+  background-color: #3c3c3c;
+}
+.icon-d:hover {
+  background-color: #3c3c3c;
+}

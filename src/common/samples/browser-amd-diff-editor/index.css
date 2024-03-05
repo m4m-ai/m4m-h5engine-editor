@@ -1,0 +1,7 @@
+.diff-editor {
+  width: 1000px;
+  height: 500px;
+  border: 1px solid #ccc;
+  text-align: left;
+  margin-left: 20px;
+}

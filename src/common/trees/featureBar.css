@@ -1,0 +1,32 @@
+.featureBar-box {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 5px;
+  border-bottom: 1px solid rgb(19, 19, 19);
+}
+.box-1 {
+  margin-right: 5px;
+}
+.box-2-input {
+  border-radius: 5px;
+  background-color: #1b1b1b !important;
+}
+.box-2 {
+  display: flex;
+}
+.box-2-2 {
+  margin-left: 5px;
+}
+.searchOutl {
+  color: rgb(211, 210, 210);
+}
+.apiOutl {
+  color: rgb(211, 210, 210);
+}
+.ant-input-affix-wrapper {
+  font-size: 11px;
+}
+.featureBar-box .ant-space.ant-space-horizontal.ant-space-align-center {
+  gap: 2px !important;
+}

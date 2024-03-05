@@ -1,0 +1,131 @@
+.box {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.box :global {
+    .back-preferences{
+        width: 100px;
+        display: flex;
+        justify-content: space-around;
+    }
+    .right{
+        display: flex;
+        align-items: center;
+        >div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .header-download {
+            border: 1px solid;
+            border-color: transparent #ebebeb ;
+            width: 200px;
+            position: relative;
+            z-index: 99;
+            .download-dialog {
+                width: 250px;
+                height: 220px;
+                background: #fff;
+                box-shadow: 2px 2px 2px #adadae;
+                border: 1px solid #f0f0f0;
+                position: absolute;
+                left: 0;
+                bottom: -220px;
+                .download-dialog-click {
+                    padding-left: 18px;
+                    height: 40px;
+                    line-height: 40px;
+                }
+                .download-dialog-desc {
+                    padding-left: 18px;
+                    height: 70px;
+                }
+                .desc-end {
+                   line-height: 20px;
+                   padding-top: 10px;
+                }
+            }
+            
+        }
+        .header-setting {
+            width: 80px;
+        }
+        .header-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: black;
+            position: relative;
+            .info-dialog {
+                width: 280px;
+                height: 400px;
+                background: #fff;
+                position: absolute;
+                left: -220px;
+                bottom: -402px;
+                z-index: 99;
+                box-shadow: 2px 2px 2px #b6b6b6;
+                border: 1px solid #b6b6b6;
+                .info-box {
+                    height: 100px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding-left: 30px;
+                    .info-avatar {
+                        width: 70px;
+                        height: 70px;
+                        border-radius: 50%;
+                        background: #e91e63;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 30px;
+                        color: #fff;
+                    }
+                    .info-right {
+                        flex: 1;
+                        line-height: 24px;
+                        margin-left: 8px;
+                        div:first-child {
+                            font-size: 20px;
+                        }
+                        div:nth-child(2) {
+                            color: #757575;
+                        }
+                        div:nth-child(3) a {
+                            color: #2297f3;
+                        }
+                    }
+                }
+                .info-content {
+                    line-height: 48px;
+                    div{
+                        padding-left: 50px;
+                        position: relative;
+                        &:hover {
+                            background: #ececec;
+                        }
+                        .log-out {
+                            display: inline-block;
+                            width: 18px;
+                            height: 20px;
+                            background: pink;
+                            position: absolute;
+                            left: 20px;
+                            top: 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .ant-divider {
+        border-top: 1px solid #e5e5e5;
+    }
+}

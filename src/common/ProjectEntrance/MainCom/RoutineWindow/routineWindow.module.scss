@@ -1,0 +1,43 @@
+.routine {}
+
+.routine :global {
+    .routine-card {
+        background: #fff;
+        padding: 30px 20px;
+        box-shadow: 1px 2px 2px #a4a5a6;
+        position: relative;
+        margin-bottom: 10px;
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .path-desc {
+            color: #ccc;
+            margin: 10px 0 6px;
+        }
+        .path-box {
+            width: 70%;
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 30px;
+            input {
+                flex: 1;
+                border: none;
+                padding: 8px;
+            }
+            button {
+                width: 25px;
+                font-size: 20px;
+                border: none;
+                background: none;
+            }
+        }
+        .save-btn {
+            position: absolute;
+            right: 20px;
+            bottom: 25px;
+            background: #2297f3;
+            border: none;
+        }
+    }
+}
